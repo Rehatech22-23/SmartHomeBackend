@@ -1,4 +1,4 @@
-package com.rehatech.smartHomeBackend
+package de.rehatech.smartHomeBackend
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
