@@ -1,4 +1,4 @@
-package de.rehatech.smartHomeBackend.dataDB.model
+package de.rehatech.smartHomeBackend.model
 
 import jakarta.persistence.*
 
