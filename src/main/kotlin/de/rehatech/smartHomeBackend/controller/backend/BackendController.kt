@@ -1,4 +1,4 @@
-package de.rehatech.smartHomeBackend.controller
+package de.rehatech.smartHomeBackend.controller.backend
 
 import org.springframework.stereotype.Controller
 
