@@ -6,5 +6,5 @@ data class StateDescription(
     var step: Double,
     var pattern: String,
     var readOnly: Boolean,
-    var options: Options,
+    var options: ArrayList<Options> ?= null,
 )
