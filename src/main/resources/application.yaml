@@ -1,0 +1,4 @@
+
+api:
+    openhabUrl: "http://raspberrypi:8080"
+    openhabToken: "oh.test.pWpeA30aw3VonRbhSOhs3GC0a6rSUxyUHHmJTeCrMZUa5gDQrbKjSu3s7Fi24g5DyjXeQ2Zr6xWkMrziD8w"
