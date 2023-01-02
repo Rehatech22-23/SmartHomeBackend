@@ -1,0 +1,92 @@
+[
+  {
+    "link": "http://raspberrypi:8080/rest/items/Strommesser_Gesamt",
+    "state": "123.27 W",
+    "stateDescription": {
+      "pattern": "%.2f %unit%",
+      "readOnly": true,
+      "options": []
+    },
+    "editable": true,
+    "type": "Number:Power",
+    "name": "Strommesser_Gesamt",
+    "label": "Stromverbrauch  Gesamt",
+    "category": "Energy",
+    "tags": [
+      "Measurement",
+      "Current"
+    ],
+    "groupNames": []
+  },
+  {
+    "link": "http://raspberrypi:8080/rest/items/Strommesser1",
+    "state": "185.43 W",
+    "stateDescription": {
+      "pattern": "%.2f %unit%",
+      "readOnly": true,
+      "options": []
+    },
+    "editable": true,
+    "type": "Number:Power",
+    "name": "Strommesser1",
+    "label": "Stromverbrauch 1",
+    "category": "Energy",
+    "tags": [
+      "Measurement",
+      "Current"
+    ],
+    "groupNames": []
+  },
+  {
+    "link": "http://raspberrypi:8080/rest/items/shellyplugs",
+    "state": "ON",
+    "editable": true,
+    "type": "Switch",
+    "name": "shellyplugs",
+    "label": "Betrieb",
+    "category": "Switch",
+    "tags": [
+      "Switch",
+      "Power"
+    ],
+    "groupNames": []
+  },
+  {
+    "link": "http://raspberrypi:8080/rest/items/Strommesser3",
+    "state": "123.27 W",
+    "stateDescription": {
+      "pattern": "%.2f %unit%",
+      "readOnly": true,
+      "options": []
+    },
+    "editable": true,
+    "type": "Number:Power",
+    "name": "Strommesser3",
+    "label": "Stromverbrauch 3",
+    "category": "Energy",
+    "tags": [
+      "Measurement",
+      "Current"
+    ],
+    "groupNames": []
+  },
+  {
+    "link": "http://raspberrypi:8080/rest/items/Strommesser2",
+    "state": "105.97 W",
+    "stateDescription": {
+      "pattern": "%.2f %unit%",
+      "readOnly": true,
+      "options": []
+    },
+    "editable": true,
+    "type": "Number:Power",
+    "name": "Strommesser2",
+    "label": "Stromverbrauch 2",
+    "category": "Energy",
+    "tags": [
+      "Measurement",
+      "Current"
+    ],
+    "groupNames": []
+  }
+]
