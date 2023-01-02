@@ -15,7 +15,9 @@ import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 @Component
-
+/**
+ *
+ */
 class OpenHabController @Autowired constructor (
 
     apiConfiguration: ApiConfiguration
@@ -25,6 +27,11 @@ class OpenHabController @Autowired constructor (
     val token = apiConfiguration.openhabToken
 
 
+    /**
+     * @param itemname This parameter contains the item name for OpenHab
+     * @param command This parameter contains the command for the OpenHab item
+     * @return
+     */
     fun sendcommand(itemname: String, command: String): Boolean{
         val request = Request.Builder()
             .url("${url}/rest/items/${itemname}")
@@ -44,6 +51,9 @@ class OpenHabController @Autowired constructor (
 
     }
 
+    /**
+     * @param itemname This parameter contains the item name for OpenHab
+     */
     fun getItemByName(itemname: String): Item?
     {
         val request = Request.Builder()
@@ -56,13 +66,16 @@ class OpenHabController @Autowired constructor (
             .build()
 
         val respond = client.newCall(request).execute()
-        val json = respond.body?.string();
+        val json = respond.body?.string()
         if(respond.isSuccessful) {
             return Gson().fromJson(json, Item::class.java)
         }
-        return null;
+        return null
     }
 
+    /**
+     * return It will return an ArrayList of the type Things
+     */
     fun getDevices():ArrayList<Things>?
     {
         val request = Request.Builder()
@@ -77,31 +90,36 @@ class OpenHabController @Autowired constructor (
         val respond = client.newCall(request).execute()
         val json = respond.body?.string()
         if(respond.isSuccessful) {
-            val arr = Gson().fromJson(json, Array<Things>::class.java);
+            val arr = Gson().fromJson(json, Array<Things>::class.java)
             val arrayList = ArrayList<Things>()
-            Collections.addAll(arrayList, *arr);
+            Collections.addAll(arrayList, *arr)
             return arrayList
         }
-        return null;
+        return null
     }
 
-    fun getDevice(UID:String):Things?
+    /**
+     * @param uid
+     * @return
+     */
+    fun getDevice(uid:String):Things?
     {
         val request = Request.Builder()
-            .url("${url}/rest/things/${UID}")
+            .url("${url}/rest/things/${uid}")
             .addHeader("Authorization","Bearer " + token)
             .build()
 
         val client = OkHttpClient.Builder()
+
             .connectTimeout(2500,TimeUnit.MILLISECONDS)
             .build()
 
         val respond = client.newCall(request).execute()
         val json = respond.body?.string()
         if(respond.isSuccessful) {
-            val arr = Gson().fromJson(json, Things::class.java);
+            val arr = Gson().fromJson(json, Things::class.java)
             return arr
         }
-        return null;
+        return null
     }
 }
