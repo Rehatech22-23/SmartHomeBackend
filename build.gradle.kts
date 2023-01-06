@@ -18,8 +18,13 @@ group = "de.rehatech"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
-repositories {
-	mavenCentral()
+allprojects {
+	repositories {
+		mavenCentral()
+		maven{
+			url = uri("https://jitpack.io")
+		}
+	}
 }
 
 dependencies {
@@ -37,6 +42,9 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+
+	// Füge eigene Dritt Library hinzu. Weitere Infos unter https://developerlife.com/2021/02/06/publish-kotlin-library-as-gradle-dep/
+	implementation("com.github.Rehatech22-23:smartHomeSharedLibrary:0.1.0")
 }
 
 tasks.withType<KotlinCompile> {
