@@ -14,6 +14,11 @@ data class OpenHab(
 
 )
 {
-    @OneToMany(cascade = [(CascadeType.ALL)], fetch= FetchType.EAGER, mappedBy = "deviceOpenHab", orphanRemoval = true)
-    var functionIDs = mutableListOf<Function>()
+    @OneToMany(cascade = [(CascadeType.ALL)], fetch= FetchType.EAGER, mappedBy = "deviceOpenHab", orphanRemoval = false)
+    var functionValuesIDS = mutableListOf<FunctionValues>()
+
+    fun getOpenHabID():String
+    {
+        return "OH:${id}"
+    }
 }

@@ -1,9 +1,6 @@
 package de.rehatech.smartHomeBackend.entities
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 
 @Entity
 data class Homee(
@@ -11,3 +8,12 @@ data class Homee(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 )
+{
+    @OneToMany(cascade = [(CascadeType.ALL)], fetch= FetchType.EAGER, mappedBy = "deviceHomee", orphanRemoval = false)
+    var functionValuesIDS = mutableListOf<FunctionValues>()
+
+    fun getOpenHabID():String
+    {
+        return "HM:${id}"
+    }
+}

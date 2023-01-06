@@ -24,9 +24,11 @@ class OpenHabRpositoryTest  {
         println(openHabRepository.count())
         val li = openHabRepository.findAll()
         openHabRepository.save(test2)
-        val li2 = openHabRepository.findAll()
+        val li2 = openHabRepository.findAll().toList()
+        assertEquals(2, li2.size)
         val t = openHabRepository.findById(2).get();
         assertEquals("hao", t.name)
+        assertEquals("OH:2",t.getOpenHabID())
 
     }
 
