@@ -1,6 +1,7 @@
 package de.rehatech.smartHomeBackend.controller.backend
 
 
+import datamodel.function
 import de.rehatech.smartHomeBackend.entities.FunctionValues
 import de.rehatech.smartHomeBackend.repositories.FunctionRepository
 import de.rehatech.smartHomeBackend.services.DeviceService
@@ -62,6 +63,25 @@ class BackendController @Autowired constructor(
         else
         {
             return false
+        }
+    }
+
+
+    fun getFunctionState(deviceID: String,functionValues: FunctionValues):function?
+    {
+        if(deviceID.contains("OH:"))
+        {
+
+            val item = openHabController.getItemByName(functionValues.name) ?: return null
+            return functionService.getFunctionFromItem(item, functionValues)
+        }
+        else if(deviceID.contains("HM:"))
+        {
+            return null
+        }
+        else
+        {
+            return null
         }
     }
 

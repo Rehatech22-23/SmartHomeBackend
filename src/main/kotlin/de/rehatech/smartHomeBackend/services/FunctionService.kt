@@ -1,5 +1,6 @@
 package de.rehatech.smartHomeBackend.services
 
+import datamodel.function
 import de.rehatech.smartHomeBackend.Enum.FunctionType
 import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Item
 import de.rehatech.smartHomeBackend.repositories.FunctionRepository
@@ -50,6 +51,35 @@ class FunctionService  @Autowired constructor(
         }
 
 
+
+    }
+
+    fun getFunctionFromItem(item: Item, functionValue: FunctionValues):function?
+    {
+        val functionType = functionsTypeOpenHab(item) ?: return null
+        when(functionType){
+            FunctionType.Switch -> {
+                var on = false
+                if(item.state == "ON")
+                {
+                    on = true
+                }
+                return  function(functionName = functionValue.name, functionId = functionValue.id!!, onOff = on, outputValue = item.state )
+            }
+            // ToDo return null durch die richtige umwandkung ersetzen
+            FunctionType.Color -> return null
+            FunctionType.Call -> return null
+            FunctionType.Contact -> return null
+            FunctionType.Datetime -> return null
+            FunctionType.Dimmer -> return null
+            FunctionType.Group -> return null
+            FunctionType.Image -> return null
+            FunctionType.Location -> return null
+            FunctionType.Number -> return  function(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
+            FunctionType.Player -> return null
+            FunctionType.Rollershutter -> return null
+            FunctionType.StringType -> return  function(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
+        }
 
     }
 }
