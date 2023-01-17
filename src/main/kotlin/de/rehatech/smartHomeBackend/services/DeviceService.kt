@@ -1,6 +1,8 @@
 package de.rehatech.smartHomeBackend.services
 
+import datamodel.device
 import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Things
+import de.rehatech.smartHomeBackend.controller.backend.responsesClass.hilfsclass.Device
 import de.rehatech.smartHomeBackend.entities.OpenHab
 import de.rehatech.smartHomeBackend.repositories.HomeeRepository
 import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
@@ -55,8 +57,34 @@ class DeviceService @Autowired constructor(
         openHabRepository.save(newDevice)
     }
 
-    fun getDevice()
-    {
+    //TODO: implementation of getDeviceIdList()
+    //TODO: adjust class diagram (getDevices() -> getDeviceIDList())
+    /**
+     * @return returns a list of deviceIds as List of DeviceIds (Strings)
+     */
+    fun getDeviceIdList(): List<String>{
+        return emptyList()
+    }
 
+    //TODO: implementation of getDevice(deviceId: String) + Device not nullable
+    //TODO:  edit class diagram
+    /**
+     * @param deviceId selects which Device gets returned
+     * @return returns info over a specific device as Device-object
+     */
+    fun getDevice(deviceId: String): Device?
+    {
+        var devi = Device("nameh","aidi", intArrayOf(1,2,3,4,5))
+
+        return devi
+    }
+
+    //TODO: implementation of updatedDevices()
+    //TODO: edit class diagram
+    /**
+     * @return returns all ids from updated devices since last update call as List of DeviceIds (Strings)
+     */
+    fun updatedDevices(): List<String>{
+        return emptyList()
     }
 }
