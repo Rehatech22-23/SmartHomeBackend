@@ -6,10 +6,16 @@ plugins {
 	kotlin("jvm") version "1.7.21"
 	kotlin("plugin.spring") version "1.7.21"
 	kotlin("plugin.jpa") version "1.7.21"
+	kotlin("plugin.allopen") version "1.7.21"
 
 
 	id("org.hibernate.orm") version "6.1.6.Final"
 
+}
+allOpen {
+	annotation("jakarta.persistence.Entity")
+	annotation("jakarta.persistence.Embeddable")
+	annotation("jakarta.persistence.MappedSuperclass")
 }
 
 
@@ -37,7 +43,9 @@ dependencies {
 	implementation("com.google.code.gson:gson:2.10")
 	annotationProcessor ("org.springframework.boot:spring-boot-configuration-processor")
 	implementation("com.squareup.okhttp3:okhttp:4.10.0")
+	implementation("org.javassist:javassist:3.29.2-GA")
 
+	implementation("javax.xml.bind:jaxb-api:2.3.1")
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
