@@ -2,12 +2,13 @@ package de.rehatech.smartHomeBackend.services
 
 import datamodel.device
 import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Things
-import de.rehatech.smartHomeBackend.controller.backend.responsesClass.hilfsclass.Device
+import de.rehatech.smartHomeBackend.entities.Homee
 import de.rehatech.smartHomeBackend.entities.OpenHab
 import de.rehatech.smartHomeBackend.repositories.HomeeRepository
 import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import kotlin.jvm.optionals.getOrNull
 
 @Service
 class DeviceService @Autowired constructor(
@@ -57,27 +58,82 @@ class DeviceService @Autowired constructor(
         openHabRepository.save(newDevice)
     }
 
-    //TODO: implementation of getDeviceIdList()
     //TODO: adjust class diagram (getDevices() -> getDeviceIDList())
     /**
-     * @return returns a list of deviceIds as List of DeviceIds (Strings)
+     * @return returns a list of all deviceIds as List of DeviceIds (Strings)
      */
     fun getDeviceIdList(): List<String>{
-        return emptyList()
+        val tmplist = mutableListOf<String>()
+        val listOH = openHabRepository.findAll().toList()
+        for (item in listOH){
+            tmplist.add(item.getOpenHabID())
+        }
+        val listHomee = homeeRepository.findAll().toList()
+        for (item in listHomee){
+            tmplist.add(item.getHomeeID())
+        }
+        return tmplist
     }
 
-    //TODO: implementation of getDevice(deviceId: String) + Device not nullable
     //TODO:  edit class diagram
     /**
      * @param deviceId selects which Device gets returned
      * @return returns info over a specific device as Device-object
      */
-    fun getDevice(deviceId: String): Device?
+    fun getDevice(deviceId: String): device?
     {
-        var devi = Device("nameh","aidi", intArrayOf(1,2,3,4,5))
+        val tmp = deviceId.split(":")
 
-        return devi
+        when(tmp.get(0)){
+            "OH:" -> return getDeviceOH(tmp.get(1))
+            "HM:" -> return getDeviceHM(tmp.get(1))
+            else -> return null //ungültige id wurde übergeben
+        }
+
     }
+
+    //Hilfsmethode
+    private fun getDeviceOH(id: String): device? {
+        var OH: OpenHab? = null
+        try{
+            id.toLong()
+            OH = openHabRepository.findById(id.toLong()).get()
+        }catch(Exception: NumberFormatException){
+
+        }
+
+        if(OH == null){
+            return null
+        }
+        val funcIds = ArrayList<Long>()
+        for (item in OH.functionValuesIDS){
+            item.id?.let { funcIds.add(it.toLong()) }
+        }
+
+        return device(OH.name, OH.getOpenHabID(), funcIds)
+    }
+
+    //Hilfsmethode
+    private fun getDeviceHM(id: String): device? {
+        var HM: Homee? = null
+        try{
+            id.toLong()
+            HM = homeeRepository.findById(id.toLong()).get()
+        }catch(Exception: NumberFormatException){
+
+        }
+
+        if(HM == null){
+            return null
+        }
+        val funcIds = ArrayList<Long>()
+        for (item in HM.functionValuesIDS){
+            item.id?.let { funcIds.add(it.toLong()) }
+        }
+
+        return device(HM.name, HM.getHomeeID(), funcIds)
+    }
+
 
     //TODO: implementation of updatedDevices()
     //TODO: edit class diagram

@@ -1,6 +1,7 @@
 package de.rehatech.smartHomeBackend.services
 
 import com.google.gson.Gson
+import de.rehatech.smartHomeBackend.controller.backend.BackendController
 import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Things
 import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
 import org.junit.jupiter.api.Test
@@ -15,6 +16,9 @@ import kotlin.collections.ArrayList
 
 @SpringBootTest
 class DeviceServiceTest {
+
+    @Autowired
+    lateinit var backendController: BackendController
 
     @Autowired
     lateinit var deviceService: DeviceService
@@ -41,6 +45,34 @@ class DeviceServiceTest {
         assertEquals(3,openHabRepository.count())
         deviceService.updateDevicesOpenHab(arrayList)
         assertEquals(3,openHabRepository.count())
+
+    }
+
+    @Test //TODO
+    fun getDeviceIdList() {
+        backendController.updateDevices()
+        val tmp = deviceService.getDeviceIdList()
+        assertEquals("OH:1", tmp[0])
+        //println(tmp)
+    }
+
+    @Test //TODO
+    fun getDevice(deviceId: String) {
+
+    }
+
+    @Test //TODO
+    fun  updatedDevices(){
+
+    }
+
+    @Test //TODO
+    fun getDeviceOH(id: String) {
+
+    }
+
+    @Test //TODO
+    fun getDeviceHM(id: String) {
 
     }
 }

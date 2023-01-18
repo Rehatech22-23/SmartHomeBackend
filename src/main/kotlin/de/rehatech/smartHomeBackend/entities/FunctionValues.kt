@@ -3,7 +3,7 @@ package de.rehatech.smartHomeBackend.entities
 import de.rehatech.smartHomeBackend.Enum.FunctionType
 import jakarta.persistence.*
 
-@Entity(name = "functions")
+@Entity
 data class FunctionValues(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
