@@ -2,21 +2,22 @@ package de.rehatech.smartHomeBackend.services
 
 import de.rehatech.smartHomeBackend.entities.Routine
 import de.rehatech.smartHomeBackend.repositories.RoutineRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class RoutineService @Autowired constructor(private val routineRepository: RoutineRepository) {
+class RoutineService(private val routineRepository: RoutineRepository, private val routine: Routine) {
 
-    val getAllDeviceIds: ResponseEntity<List<Long>>
+    val allDeviceIds: ResponseEntity<List<Long>>
         get() {
             val result: MutableList<Long> = ArrayList()
             val it: Iterator<Routine> = routineRepository.findAll().iterator()
             it.forEachRemaining { r: Routine ->
-                result.add(
-                    r.id
-                )
+                r.id?.let { it1 ->
+                    result.add(
+                        it1.toLong()
+                    )
+                }
             }
             return ResponseEntity.ok(result)
         }
@@ -40,5 +41,4 @@ class RoutineService @Autowired constructor(private val routineRepository: Routi
         routineRepository.deleteById(routineId)
         return ResponseEntity.ok("Entity deleted")
     }
-
 }
