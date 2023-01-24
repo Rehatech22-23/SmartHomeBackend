@@ -58,24 +58,22 @@ class DeviceService @Autowired constructor(
         openHabRepository.save(newDevice)
     }
 
-    //TODO: adjust class diagram (getDevices() -> getDeviceIDList())
     /**
      * @return returns a list of all deviceIds as List of DeviceIds (Strings)
      */
     fun getDeviceIdList(): List<String>{
-        val tmplist = mutableListOf<String>()
+        val result = mutableListOf<String>()
         val listOH = openHabRepository.findAll().toList()
         for (item in listOH){
-            tmplist.add(item.getOpenHabID())
+            result.add(item.getOpenHabID())
         }
         val listHomee = homeeRepository.findAll().toList()
         for (item in listHomee){
-            tmplist.add(item.getHomeeID())
+            result.add(item.getHomeeID())
         }
-        return tmplist
+        return result
     }
 
-    //TODO:  edit class diagram
     /**
      * @param deviceId selects which Device gets returned
      * @return returns info over a specific device as Device-object
@@ -87,7 +85,7 @@ class DeviceService @Autowired constructor(
         when(tmp.get(0)){
             "OH:" -> return getDeviceOH(tmp.get(1))
             "HM:" -> return getDeviceHM(tmp.get(1))
-            else -> return null //ungültige id wurde übergeben
+            else -> throw NullPointerException()
         }
 
     }
@@ -112,6 +110,7 @@ class DeviceService @Autowired constructor(
 
         return device(OH.name, OH.getOpenHabID(), funcIds)
     }
+
 
     //Hilfsmethode
     private fun getDeviceHM(id: String): device? {
