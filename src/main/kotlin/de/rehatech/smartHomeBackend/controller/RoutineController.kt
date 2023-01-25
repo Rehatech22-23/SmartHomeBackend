@@ -15,22 +15,22 @@ class RoutineController(@field:Autowired private val routineService: RoutineServ
         get() = routineService.allDeviceIds
 
     @GetMapping("routine/{routineId}")
-    fun getRoutine(@PathVariable routineId: Long?): ResponseEntity<Routine> {
-        return routineService.getRoutine(routineId)
+    fun getRoutine(@PathVariable routineId: Long?): ResponseEntity<Routine>? {
+        return routineId?.let { routineService.getRoutine(it) }
     }
 
     @PostMapping("routine/trigger")
-    fun triggerRoutineById(routineId: Long?): ResponseEntity<Routine> {
+    fun triggerRoutineById(routineId: Long?): ResponseEntity<Routine>? {
         return routineService.triggerRoutineById(routineId)
     }
 
     @PostMapping("routine/create")
-    fun createRoutine(@RequestParam routine: Routine?): ResponseEntity<Routine> {
-        return routineService.createRoutine(routine)
+    fun createRoutine(@RequestParam routine: Routine?): ResponseEntity<Routine>? {
+        return routine?.let { routineService.createRoutine(it) }
     }
 
     @DeleteMapping("routine/delete/{routineId}")
-    fun deleteRoutine(@PathVariable routineId: Long?): ResponseEntity<String> {
-        return routineService.deleteRoutine(routineId)
+    fun deleteRoutine(@PathVariable routineId: Long?): ResponseEntity<String>? {
+        return routineId?.let { routineService.deleteRoutine(it) }
     }
 }

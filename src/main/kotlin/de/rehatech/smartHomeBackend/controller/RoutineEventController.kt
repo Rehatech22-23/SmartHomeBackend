@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.*
 class RoutineEventController(@field:Autowired private val routineEventService: RoutineEventService) {
 
     @get:GetMapping(value = ["get/routineEvents"])
-    val allRoutineEvents: List<RoutineEvent>
+    val allRoutineEvents: List<RoutineEvent?>
         get() = routineEventService.allRoutines
 
     @GetMapping(value = ["get/routineEvent/{id}"])
-    fun getRoutineEventById(@PathVariable id: Long?): RoutineEvent {
-        return routineEventService.getRoutineById(id)
+    fun getRoutineEventById(@PathVariable id: Long?): RoutineEvent? {
+        return id?.let { routineEventService.getRoutineById(it) }
     }
 
     @PostMapping(value = ["post/routineEvent"])
-    fun postRoutineEvents(@RequestParam routineEvent: RoutineEvent?): RoutineEvent {
-        return routineEventService.postRoutineEvent(routineEvent)
+    fun postRoutineEvents(@RequestParam routineEvent: RoutineEvent?): RoutineEvent? {
+        return routineEvent?.let { routineEventService.postRoutineEvent(it) }
     }
 
     @DeleteMapping(value = ["delete/routineEvents"])
@@ -30,7 +30,7 @@ class RoutineEventController(@field:Autowired private val routineEventService: R
     }
 
     @DeleteMapping(value = ["delete/routineEvents/{id}"])
-    fun deleteRoutineEventById(@PathVariable id: Long?): ResponseEntity<Void> {
-        return routineEventService.deleteRoutineEventsById(id)
+    fun deleteRoutineEventById(@PathVariable id: Long?): ResponseEntity<Void>? {
+        return id?.let { routineEventService.deleteRoutineEventsById(it) }
     }
 }

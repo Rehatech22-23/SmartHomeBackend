@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class RoutineService(private val routineRepository: RoutineRepository, private val routine: Routine) {
+class RoutineService(private val routineRepository: RoutineRepository) {
 
     val allDeviceIds: ResponseEntity<List<Long>>
         get() {
@@ -30,6 +30,7 @@ class RoutineService(private val routineRepository: RoutineRepository, private v
     }
 
     fun triggerRoutineById(routineId: Long?): ResponseEntity<Routine>? {
+        val routine = routineId?.let { getRoutine(it) };
         return null //Todo: Specify implementation
     }
 

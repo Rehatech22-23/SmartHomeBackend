@@ -3,7 +3,7 @@ package de.rehatech.smartHomeBackend.entities
 import jakarta.persistence.*
 import org.springframework.context.annotation.Bean
 
-@Entity
+@Entity(name = "routine")
 class Routine {
     @get:Bean
     @Id

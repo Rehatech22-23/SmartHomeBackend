@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.*
 class TriggerByDeviceController(@field:Autowired private val triggerByDeviceService: TriggerByDeviceService) {
 
     @get:GetMapping(value = ["get/triggerByDevices"])
-    val allTriggerByDevices: List<TriggerByDevice>
+    val allTriggerByDevices: List<TriggerByDevice?>
         get() = triggerByDeviceService.allTriggerByDevice
 
     @GetMapping(value = ["get/triggerbydevice/{id}"])
-    fun getTriggerByDeviceById(@PathVariable id: Long?): TriggerByDevice {
-        return triggerByDeviceService.getTriggerByDeviceById(id)
+    fun getTriggerByDeviceById(@PathVariable id: Long?): TriggerByDevice? {
+        return id?.let { triggerByDeviceService.getTriggerByDeviceById(it) }
     }
 
     @PostMapping(value = ["post/triggerbydevice"])
-    fun postTriggerByDevices(@RequestParam triggerByDevice: TriggerByDevice?): TriggerByDevice {
-        return triggerByDeviceService.postTriggerByDevice(triggerByDevice)
+    fun postTriggerByDevices(@RequestParam triggerByDevice: TriggerByDevice?): TriggerByDevice? {
+        return triggerByDevice?.let { triggerByDeviceService.postTriggerByDevice(it) }
     }
 
     @DeleteMapping(value = ["delete/triggerbydevices"])
@@ -30,7 +30,7 @@ class TriggerByDeviceController(@field:Autowired private val triggerByDeviceServ
     }
 
     @DeleteMapping(value = ["delete/triggerbydevices/{id}"])
-    fun deleteTriggerByDeviceById(@PathVariable id: Long?): ResponseEntity<Void> {
-        return triggerByDeviceService.deleteTriggerByDevicesById(id)
+    fun deleteTriggerByDeviceById(@PathVariable id: Long?): ResponseEntity<Void>? {
+        return id?.let { triggerByDeviceService.deleteTriggerByDevicesById(it) }
     }
 }

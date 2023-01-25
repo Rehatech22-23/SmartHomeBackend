@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.*
 class TriggerTimeController(@field:Autowired private val triggerTimeService: TriggerTimeService) {
 
     @get:GetMapping(value = ["get/trigger-times"])
-    val allTriggerTimes: List<TriggerTime>
+    val allTriggerTimes: List<TriggerTime?>
         get() = triggerTimeService.allTriggerTimes
 
     @GetMapping(value = ["get/trigger-time/{id}"])
-    fun getTriggerTimeById(@PathVariable id: Long?): TriggerTime {
-        return triggerTimeService.getTriggerTimeById(id)
+    fun getTriggerTimeById(@PathVariable id: Long?): TriggerTime? {
+        return id?.let { triggerTimeService.getTriggerTimeById(it) }
     }
 
     @PostMapping(value = ["post/trigger-time"])
-    fun postTriggerTimes(@RequestParam triggerTime: TriggerTime?): TriggerTime {
-        return triggerTimeService.postTriggerTime(triggerTime)
+    fun postTriggerTimes(@RequestParam triggerTime: TriggerTime?): TriggerTime? {
+        return triggerTime?.let { triggerTimeService.postTriggerTime(it) }
     }
 
     @DeleteMapping(value = ["delete/trigger-times"])
@@ -30,7 +30,7 @@ class TriggerTimeController(@field:Autowired private val triggerTimeService: Tri
     }
 
     @DeleteMapping(value = ["delete/trigger-time/{id}"])
-    fun deleteTriggerTimeById(@PathVariable id: Long?): ResponseEntity<Void> {
-        return triggerTimeService.deleteTriggerTimesById(id)
+    fun deleteTriggerTimeById(@PathVariable id: Long?): ResponseEntity<Void>? {
+        return id?.let { triggerTimeService.deleteTriggerTimesById(it) }
     }
 }
