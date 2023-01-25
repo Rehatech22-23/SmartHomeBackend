@@ -26,7 +26,7 @@ class RoutineService(private val routineRepository: RoutineRepository) {
         val optionalRoutine = routineRepository.findById(routineId)
         return if (optionalRoutine.isPresent) {
             ResponseEntity.ok(optionalRoutine.get())
-        } else ResponseEntity.ok(null)
+        } else ResponseEntity.notFound().build();
     }
 
     fun triggerRoutineById(routineId: Long?): ResponseEntity<Routine>? {
@@ -35,7 +35,12 @@ class RoutineService(private val routineRepository: RoutineRepository) {
     }
 
     fun createRoutine(routine: Routine): ResponseEntity<Routine> {
-        return ResponseEntity.ok(routineRepository.save(routine))
+        return try {
+            ResponseEntity.ok(routineRepository.save(routine))
+        }catch (e: Exception){
+            ResponseEntity.internalServerError().build();
+        }
+
     }
 
     fun deleteRoutine(routineId: Long): ResponseEntity<String> {
