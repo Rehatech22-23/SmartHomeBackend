@@ -62,7 +62,7 @@ class DeviceServiceTest {
     }
 
     @Test
-    fun getDeviceIdList() {
+    fun getDeviceIdListTest() {
         val ohList: List<OpenHab> = listOf(OpenHab(1,"name1", "uid1"), OpenHab(2, "name2", "uid2"))
         Mockito.`when`(openHabRepository.findAll().toList()).thenReturn(ohList)
         val hmList: List<Homee> = listOf(Homee(1,"name1"), Homee(2, "name2"))
@@ -81,7 +81,7 @@ class DeviceServiceTest {
     }
 
     @Test //TODO
-    fun getDevice(deviceId: String) {
+    fun getDevice() {
 /*
         Mockito.`when`(getDeviceOH(tmp.get(1))).thenReturn(oh)
         Mockito.`when`(deviceId.split(":")).thenReturn(listOf("OH","1"))
@@ -90,13 +90,15 @@ class DeviceServiceTest {
 
     }
 
-    @Test //TODO
-    fun  updatedDevices(){
-
+    @Test
+    fun updateDevices() {
+        deviceService.updateDevices()
+        val l1 = openHabRepository.findAll().toList()
+        //val count = functionRepository.count()
     }
 
     @Test //TODO
-    fun getDeviceOH(id: String) {
+    fun getDeviceOH() {
     /*
         val oh = OpenHab(1,"name1","uid1")
         Mockito.`when`(openHabRepository.findById(id.toLong()).get()).thenReturn(oh)
@@ -110,7 +112,7 @@ class DeviceServiceTest {
     }
 
     @Test //TODO
-    fun getDeviceHM(id: String) {
+    fun getDeviceHM() {
 
     }
 }

@@ -21,34 +21,6 @@ class BackendController @Autowired constructor(
 
 ) {
 
-
-    @Scheduled(cron="0 1 1 * * *")
-    fun updateDevices()
-    {
-        val allOpenHabDevice = openHabController.getDevices()
-        if(allOpenHabDevice != null)
-        {
-            deviceService.updateDevicesOpenHab(allOpenHabDevice)
-            for (device in allOpenHabDevice)
-            {
-                val channels= device.channels
-                for(channel in channels)
-                {
-                    for(itemname in channel.linkedItems)
-                    {
-                        val item = openHabController.getItemByName(itemname)
-                        if (item != null)
-                        {
-                            functionService.saveFunctionOpenHab(device.UID,item)
-                        }
-                    }
-                }
-            }
-        }
-
-
-    }
-
     fun sendCommand(deviceID: String,functionValues: FunctionValues, command:String):Boolean
     {
         if(deviceID.contains("OH:"))

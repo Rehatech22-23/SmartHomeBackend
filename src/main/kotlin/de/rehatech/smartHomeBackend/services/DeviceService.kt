@@ -1,12 +1,15 @@
 package de.rehatech.smartHomeBackend.services
 
 import datamodel.device
+import de.rehatech.smartHomeBackend.controller.backend.BackendController
+import de.rehatech.smartHomeBackend.controller.backend.OpenHabController
 import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Things
 import de.rehatech.smartHomeBackend.entities.Homee
 import de.rehatech.smartHomeBackend.entities.OpenHab
 import de.rehatech.smartHomeBackend.repositories.HomeeRepository
 import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -16,6 +19,7 @@ class DeviceService @Autowired constructor(
    val openHabRepository: OpenHabRepository,
    val homeeRepository: HomeeRepository,
    val functionService: FunctionService,
+   val openHabController: OpenHabController
 )
 {
 
@@ -49,7 +53,31 @@ class DeviceService @Autowired constructor(
                 }
             }
         }
+    }
 
+    @Scheduled(cron="0 1 1 * * *")
+    fun updateDevices()
+    {
+        val allOpenHabDevice = openHabController.getDevices()
+        if(allOpenHabDevice != null)
+        {
+            updateDevicesOpenHab(allOpenHabDevice)
+            for (device in allOpenHabDevice)
+            {
+                val channels= device.channels
+                for(channel in channels)
+                {
+                    for(itemname in channel.linkedItems)
+                    {
+                        val item = openHabController.getItemByName(itemname)
+                        if (item != null)
+                        {
+                            functionService.saveFunctionOpenHab(device.UID,item)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private  fun trangsformThingAndSave(things: Things)
@@ -58,10 +86,12 @@ class DeviceService @Autowired constructor(
         openHabRepository.save(newDevice)
     }
 
+
     /**
      * @return returns a list of all deviceIds as List of DeviceIds (Strings)
      */
     fun getDeviceIdList(): List<String>{
+        updateDevices()
         val result = mutableListOf<String>()
         val listOH = openHabRepository.findAll().toList()
         for (item in listOH){
@@ -83,8 +113,8 @@ class DeviceService @Autowired constructor(
         val tmp = deviceId.split(":")
 
         when(tmp.get(0)){
-            "OH:" -> return getDeviceOH(tmp.get(1))
-            "HM:" -> return getDeviceHM(tmp.get(1))
+            "OH" -> return getDeviceOH(tmp.get(1))
+            "HM" -> return getDeviceHM(tmp.get(1))
             else -> throw NullPointerException()
         }
 
@@ -94,8 +124,9 @@ class DeviceService @Autowired constructor(
     private fun getDeviceOH(id: String): device? {
         var OH: OpenHab? = null
         try{
-            id.toLong()
-            OH = openHabRepository.findById(id.toLong()).get()
+            val i = id.toLong()
+            val OHL = openHabRepository.findById(i)
+            OH = OHL.get()
         }catch(Exception: NumberFormatException){
 
         }

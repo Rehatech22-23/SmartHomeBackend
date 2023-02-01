@@ -18,14 +18,5 @@ class BackendControllerTest {
 
     @Autowired
     lateinit var functionRepository: FunctionRepository
-    @Test
-    fun updateDevices() {
 
-        backendController.updateDevices()
-        val l1 = openHabRepository.findAll().toList()
-        val count = functionRepository.count()
-        
-
-
-    }
 }
