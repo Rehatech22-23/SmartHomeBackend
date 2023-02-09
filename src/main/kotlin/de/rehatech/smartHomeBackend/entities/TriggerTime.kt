@@ -1,6 +1,7 @@
 package de.rehatech.smartHomeBackend.entities
 
 import jakarta.persistence.*
+import java.time.LocalDateTime
 import java.util.*
 
 @Entity
@@ -9,7 +10,7 @@ class TriggerTime {
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null
     var routineId: Long? = null
-    var localTime: Date? = null
+    var localTime: LocalDateTime? = null
     var repeat: Boolean? = null
 
     @OneToOne
