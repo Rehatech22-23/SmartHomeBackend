@@ -3,18 +3,16 @@ package de.rehatech.smartHomeBackend.entities
 import jakarta.persistence.*
 
 @Entity
-class RoutineEvent {
+class TriggerEventByDevice {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null
 
-    var routineId: Long? = null
+    val routineID: Long? = null
     var deviceId: String? = null
-    var functionId: Long? = null
-    var functionValue: Float? = null
 
-    @ManyToOne
-    @JoinColumn(name="routine_id")
-    var routine: Routine?=null
-
+   /* @OneToOne
+    @MapsId
+    @JoinColumn(name = "routine_id")
+    val functionExpectation: Function*/
 }

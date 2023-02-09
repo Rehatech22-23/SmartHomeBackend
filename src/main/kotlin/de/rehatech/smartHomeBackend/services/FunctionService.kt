@@ -1,6 +1,6 @@
 package de.rehatech.smartHomeBackend.services
 
-import datamodel.function
+import de.rehatech2223.datamodel.Function
 import de.rehatech.smartHomeBackend.Enum.FunctionType
 import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Item
 import de.rehatech.smartHomeBackend.repositories.FunctionRepository
@@ -54,7 +54,7 @@ class FunctionService  @Autowired constructor(
 
     }
 
-    fun getFunctionFromItem(item: Item, functionValue: FunctionValues):function?
+    fun getFunctionFromItem(item: Item, functionValue: FunctionValues):Function?
     {
         val functionType = functionsTypeOpenHab(item) ?: return null
         when(functionType){
@@ -64,7 +64,7 @@ class FunctionService  @Autowired constructor(
                 {
                     on = true
                 }
-                return  function(functionName = functionValue.name, functionId = functionValue.id!!, onOff = on, outputValue = item.state )
+                return  Function(functionName = functionValue.name, functionId = functionValue.id!!, onOff = on, outputValue = item.state )
             }
             // ToDo return null durch die richtige umwandkung ersetzen
             FunctionType.Color -> return null
@@ -75,10 +75,10 @@ class FunctionService  @Autowired constructor(
             FunctionType.Group -> return null
             FunctionType.Image -> return null
             FunctionType.Location -> return null
-            FunctionType.Number -> return  function(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
+            FunctionType.Number -> return  Function(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
             FunctionType.Player -> return null
             FunctionType.Rollershutter -> return null
-            FunctionType.StringType -> return  function(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
+            FunctionType.StringType -> return  Function(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
         }
 
     }

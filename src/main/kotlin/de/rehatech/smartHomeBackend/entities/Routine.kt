@@ -10,17 +10,17 @@ class Routine {
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null
     var routineName: String? = null
-    var triggerType: Long? = null
+    var triggerType: Int? = null
 
-    @OneToMany
-    @JoinColumn(name = "triggerByDevice_id")
-    var triggerEventByDevice: ArrayList<TriggerByDevice>? = null
+    @OneToOne(mappedBy = "routine")
+    @PrimaryKeyJoinColumn
+    var triggerEventByDevice: TriggerEventByDevice? = null
 
-    @OneToMany
-    @JoinColumn(name = "routineEvent_id")
+    @OneToOne(mappedBy = "routine")
+    @PrimaryKeyJoinColumn
+    var triggerTime: TriggerTime? = null
+
+
+    @OneToMany(mappedBy = "routine")
     var routineEvent: ArrayList<RoutineEvent>? = null
-
-    @OneToMany
-    @JoinColumn(name = "triggerTime_id")
-    var triggerTime: ArrayList<TriggerTime>? = null
 }

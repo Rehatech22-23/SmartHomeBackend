@@ -15,7 +15,7 @@ class RoutineController(@field:Autowired private val routineService: RoutineServ
         get() = routineService.allDeviceIds
 
     @GetMapping("routine/{routineId}")
-    fun getRoutine(@PathVariable routineId: Long?): ResponseEntity<Routine>? {
+    fun getRoutine(@PathVariable routineId: Long?): ResponseEntity<Routine>? { // return string, Routine as JSON mit shared lib seris
         return routineId?.let { routineService.getRoutine(it) }
     }
 

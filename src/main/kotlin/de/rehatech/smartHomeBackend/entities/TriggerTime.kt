@@ -8,13 +8,12 @@ class TriggerTime {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null
+    var routineId: Long? = null
     var localTime: Date? = null
     var repeat: Boolean? = null
 
-    @ElementCollection
-    var routineIds: ArrayList<Long>? = null
-
-    @ManyToOne
-    @JoinColumn(name = "triggerTime_id")
-    private val routine: Routine? = null
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "routine_id")
+    var routine: Routine?=null
 }

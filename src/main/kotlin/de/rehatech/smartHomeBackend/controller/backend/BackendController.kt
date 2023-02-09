@@ -1,13 +1,11 @@
 package de.rehatech.smartHomeBackend.controller.backend
 
-
-import datamodel.function
+import de.rehatech2223.datamodel.Function
 import de.rehatech.smartHomeBackend.entities.FunctionValues
 import de.rehatech.smartHomeBackend.repositories.FunctionRepository
 import de.rehatech.smartHomeBackend.services.DeviceService
 import de.rehatech.smartHomeBackend.services.FunctionService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Controller
 
 @Controller
@@ -39,7 +37,7 @@ class BackendController @Autowired constructor(
     }
 
 
-    fun getFunctionState(deviceID: String,functionValues: FunctionValues):function?
+    fun getFunctionState(deviceID: String,functionValues: FunctionValues):Function?
     {
         if(deviceID.contains("OH:"))
         {

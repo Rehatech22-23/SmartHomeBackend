@@ -1,7 +1,6 @@
 package de.rehatech.smartHomeBackend.services
 
-import datamodel.device
-import de.rehatech.smartHomeBackend.controller.backend.BackendController
+import de.rehatech2223.datamodel.Device
 import de.rehatech.smartHomeBackend.controller.backend.OpenHabController
 import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Things
 import de.rehatech.smartHomeBackend.entities.Homee
@@ -11,7 +10,6 @@ import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
-import kotlin.jvm.optionals.getOrNull
 
 @Service
 class DeviceService @Autowired constructor(
@@ -108,7 +106,7 @@ class DeviceService @Autowired constructor(
      * @param deviceId selects which Device gets returned
      * @return returns info over a specific device as Device-object
      */
-    fun getDevice(deviceId: String): device?
+    fun getDevice(deviceId: String): Device?
     {
         val tmp = deviceId.split(":")
 
@@ -121,7 +119,7 @@ class DeviceService @Autowired constructor(
     }
 
     //Hilfsmethode
-    private fun getDeviceOH(id: String): device? {
+    private fun getDeviceOH(id: String): Device? {
         var OH: OpenHab? = null
         try{
             val i = id.toLong()
@@ -139,12 +137,12 @@ class DeviceService @Autowired constructor(
             item.id?.let { funcIds.add(it.toLong()) }
         }
 
-        return device(OH.name, OH.getOpenHabID(), funcIds)
+        return Device(OH.name, OH.getOpenHabID(), funcIds)
     }
 
 
     //Hilfsmethode
-    private fun getDeviceHM(id: String): device? {
+    private fun getDeviceHM(id: String): Device? {
         var HM: Homee? = null
         try{
             id.toLong()
@@ -161,7 +159,7 @@ class DeviceService @Autowired constructor(
             item.id?.let { funcIds.add(it.toLong()) }
         }
 
-        return device(HM.name, HM.getHomeeID(), funcIds)
+        return Device(HM.name, HM.getHomeeID(), funcIds)
     }
 
 
