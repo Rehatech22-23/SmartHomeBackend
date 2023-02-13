@@ -15,6 +15,6 @@ class TriggerTime {
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "routine_id")
-    var routine: Routine?=null
+    @JoinColumn(name = "triggerTime")
+    var triggerTime: Routine?=null
 }

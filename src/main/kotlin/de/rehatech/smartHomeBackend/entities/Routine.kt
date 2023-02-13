@@ -12,15 +12,13 @@ class Routine {
     var routineName: String? = null
     var triggerType: Int? = null
 
-    @OneToOne(mappedBy = "routine")
-    @PrimaryKeyJoinColumn
+    @OneToOne(mappedBy = "triggerEventByDevice")
     var triggerEventByDevice: TriggerEventByDevice? = null
 
-    @OneToOne(mappedBy = "routine")
-    @PrimaryKeyJoinColumn
+    @OneToOne(mappedBy = "triggerTime")
     var triggerTime: TriggerTime? = null
 
 
-    @OneToMany(mappedBy = "routine")
+    @OneToMany(mappedBy = "routineEvent")
     var routineEvent: ArrayList<RoutineEvent>? = null
 }

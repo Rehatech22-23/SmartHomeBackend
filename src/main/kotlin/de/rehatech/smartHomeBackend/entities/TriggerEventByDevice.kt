@@ -11,8 +11,7 @@ class TriggerEventByDevice {
     val routineID: Long? = null
     var deviceId: String? = null
 
-   /* @OneToOne
-    @MapsId
-    @JoinColumn(name = "routine_id")
-    val functionExpectation: Function*/
+    @OneToOne
+    @JoinColumn(name = "triggerEventByDevice")
+    val triggerEventByDevice: Routine?=null
 }
