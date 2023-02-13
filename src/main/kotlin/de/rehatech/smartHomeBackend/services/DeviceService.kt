@@ -53,6 +53,10 @@ class DeviceService @Autowired constructor(
         }
     }
 
+
+    /**
+     * updates Devices
+     */
     @Scheduled(cron="0 1 1 * * *")
     fun updateDevices()
     {
