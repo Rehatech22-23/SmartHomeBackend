@@ -18,7 +18,12 @@ class BackendController @Autowired constructor(
 
 
 ) {
-
+    /**
+     * @param deviceID
+     * @param functionValues
+     * @param command
+     * @return Boolean
+     */
     fun sendCommand(deviceID: String,functionValues: FunctionValues, command:String):Boolean
     {
         if(deviceID.contains("OH:"))
@@ -36,7 +41,11 @@ class BackendController @Autowired constructor(
         }
     }
 
-
+    /**
+     * @param deviceID
+     * @param functionValues
+     * @return function?
+     */
     fun getFunctionState(deviceID: String,functionValues: FunctionValues):Function?
     {
         if(deviceID.contains("OH:"))
@@ -54,8 +63,5 @@ class BackendController @Autowired constructor(
             return null
         }
     }
-
-
-
 
 }

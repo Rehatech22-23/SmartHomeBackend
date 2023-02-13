@@ -5,18 +5,20 @@ import de.rehatech2223.datamodel.Device
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 
 
 @RestController
+@RequestMapping("/device")
 class DeviceController @Autowired constructor(val deviceService: DeviceService) {
 
-    @GetMapping("/device/list")
+    @GetMapping("/list")
     fun getDeviceIdList(): List<String> = deviceService.getDeviceIdList()
 
-    @GetMapping("/device")
+    @GetMapping()
     fun getDevice(@RequestParam deviceID: String): Device {
         try {
             val tmp = deviceService.getDevice(deviceID)
@@ -26,7 +28,7 @@ class DeviceController @Autowired constructor(val deviceService: DeviceService) 
         }
     }
 
-    @GetMapping("/device/updatedDevices")
+    @GetMapping("/updatedDevices")
     fun getUpdatedDevices(): List<String> = deviceService.updatedDevices()
 
 }

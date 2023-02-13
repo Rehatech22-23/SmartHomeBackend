@@ -74,7 +74,7 @@ class OpenHabController @Autowired constructor (
     }
 
     /**
-     * return It will return an ArrayList of the type Things
+     * @return It will return an ArrayList of the type Things
      */
     fun getDevices():ArrayList<Things>?
     {
