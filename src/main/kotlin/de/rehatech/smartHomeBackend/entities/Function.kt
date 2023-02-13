@@ -1,6 +1,5 @@
 package de.rehatech.smartHomeBackend.entities
 
-import de.rehatech2223.datamodel.util.Range
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType

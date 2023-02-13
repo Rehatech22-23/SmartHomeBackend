@@ -8,6 +8,7 @@ data class FunctionValues(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null,
+    var homeeattrID: Int? = null,
     var name: String,
     var type: FunctionType,
     var label: String,

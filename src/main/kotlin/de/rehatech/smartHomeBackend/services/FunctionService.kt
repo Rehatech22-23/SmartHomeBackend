@@ -1,5 +1,6 @@
 package de.rehatech.smartHomeBackend.services
 
+import de.rehatech.homeekt.model.attributes
 import de.rehatech2223.datamodel.Function
 import de.rehatech.smartHomeBackend.Enum.FunctionType
 import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Item
@@ -7,6 +8,7 @@ import de.rehatech.smartHomeBackend.repositories.FunctionRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import de.rehatech.smartHomeBackend.entities.FunctionValues
+import de.rehatech.smartHomeBackend.repositories.HomeeRepository
 import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
 
 
@@ -14,12 +16,14 @@ import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
 class FunctionService  @Autowired constructor(
     val functionRepository: FunctionRepository,
     val openHabRepository: OpenHabRepository,
+    val homeeRepository: HomeeRepository,
+    val functionTypService: FunctionTypService
 ) {
 
     fun saveFunctionOpenHab(uid:String, item: Item)
     {
         val openhab = openHabRepository.findOpenHabByUid(uid)
-        val functType = functionsTypeOpenHab(item)
+        val functType = functionTypService.functionsTypeOpenHab(item)
         if(functType != null)
         {
             val newFunctionValues = FunctionValues(label = item.label, name = item.name, type = functType , deviceOpenHab = openhab )
@@ -28,58 +32,20 @@ class FunctionService  @Autowired constructor(
 
     }
 
-    private fun functionsTypeOpenHab(item: Item): FunctionType?
+    fun saveFunctionHomee(attribute: attributes)
     {
-        var itemstring = item.type
-
-        if (itemstring.contains(":"))
+        val homeeNode = homeeRepository.findHomeeByHomeeID(attribute.node_id)
+        val functType = functionTypService.functionsTypeHomee(attribute)
+        if(functType != null)
         {
-            val erg= itemstring.split(":")
-            itemstring = erg[0]
+            val newFunctionValues = FunctionValues(label = attribute.name, name = attribute.name, homeeattrID = attribute.id,  type = functType , deviceHomee = homeeNode )
+            functionRepository.save(newFunctionValues)
         }
-        if(itemstring.contains("String"))
-        {
-            itemstring = "StringType"
-        }
-        try {
-            val test =FunctionType.valueOf(itemstring)
-            return test
-        }
-        catch (  e:IllegalArgumentException      )
-        {
-            return null
-        }
-
-
-
     }
 
-    fun getFunctionFromItem(item: Item, functionValue: FunctionValues):Function?
-    {
-        val functionType = functionsTypeOpenHab(item) ?: return null
-        when(functionType){
-            FunctionType.Switch -> {
-                var on = false
-                if(item.state == "ON")
-                {
-                    on = true
-                }
-                return  Function(functionName = functionValue.name, functionId = functionValue.id!!, onOff = on, outputValue = item.state )
-            }
-            // ToDo return null durch die richtige umwandkung ersetzen
-            FunctionType.Color -> return null
-            FunctionType.Call -> return null
-            FunctionType.Contact -> return null
-            FunctionType.Datetime -> return null
-            FunctionType.Dimmer -> return null
-            FunctionType.Group -> return null
-            FunctionType.Image -> return null
-            FunctionType.Location -> return null
-            FunctionType.Number -> return  Function(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
-            FunctionType.Player -> return null
-            FunctionType.Rollershutter -> return null
-            FunctionType.StringType -> return  Function(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
-        }
 
-    }
+
+
+
+
 }

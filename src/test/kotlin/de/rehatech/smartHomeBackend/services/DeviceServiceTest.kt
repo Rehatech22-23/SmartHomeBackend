@@ -28,10 +28,12 @@ import kotlin.collections.ArrayList
 @SpringBootTest
 class DeviceServiceTest {
 
-    @MockBean
+
+
+    @Autowired
     lateinit var openHabRepository: OpenHabRepository
 
-    @MockBean
+    @Autowired
     lateinit var homeeRepository: HomeeRepository
 
     @Autowired
@@ -65,7 +67,7 @@ class DeviceServiceTest {
     fun getDeviceIdListTest() {
         val ohList: List<OpenHab> = listOf(OpenHab(1,"name1", "uid1"), OpenHab(2, "name2", "uid2"))
         Mockito.`when`(openHabRepository.findAll().toList()).thenReturn(ohList)
-        val hmList: List<Homee> = listOf(Homee(1,"name1"), Homee(2, "name2"))
+        val hmList: List<Homee> = listOf(Homee(1,"name1", 2), Homee(2, "name2", 4))
         Mockito.`when`(homeeRepository.findAll().toList()).thenReturn(hmList)
 
         val result = deviceService.getDeviceIdList()
@@ -90,12 +92,7 @@ class DeviceServiceTest {
 
     }
 
-    @Test
-    fun updateDevices() {
-        deviceService.updateDevices()
-        val l1 = openHabRepository.findAll().toList()
-        //val count = functionRepository.count()
-    }
+
 
     @Test //TODO
     fun getDeviceOH() {

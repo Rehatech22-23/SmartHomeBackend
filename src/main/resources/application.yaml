@@ -2,3 +2,6 @@
 api:
     openhabUrl: "http://raspberrypi:8080"
     openhabToken: "oh.token.cUvc6WRKkvo7B7OM4HrbISQm1X0qJ1VaLtTjTiVoSH54Oow73i9W1ywjhUFkPebf6SiA0zKDsClBwtJJg"
+    homeeUrl: "192.168.83.199"
+    homeeUser: "rehatech"
+    homeePassword: "rehatech07"

@@ -1,5 +1,8 @@
 package de.rehatech.smartHomeBackend.services
 
+
+import de.rehatech.homeekt.model.nodes
+import de.rehatech.smartHomeBackend.controller.backend.HomeeController
 import de.rehatech2223.datamodel.Device
 import de.rehatech.smartHomeBackend.controller.backend.OpenHabController
 import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Things
@@ -17,7 +20,8 @@ class DeviceService @Autowired constructor(
    val openHabRepository: OpenHabRepository,
    val homeeRepository: HomeeRepository,
    val functionService: FunctionService,
-   val openHabController: OpenHabController
+   val openHabController: OpenHabController,
+   val homeeController: HomeeController
 )
 {
 
@@ -80,8 +84,57 @@ class DeviceService @Autowired constructor(
                 }
             }
         }
+        val allHomeeNodes = homeeController.getNodes()
+        if(allHomeeNodes != null)
+        {
+            updateNodeHomee(allHomeeNodes)
+            for (node in allHomeeNodes)
+            {
+                for (att in node.attributes)
+                {
+                    functionService.saveFunctionHomee(att)
+                }
+            }
+        }
     }
 
+    private fun updateNodeHomee(nodes:ArrayList<nodes>)
+    {
+        val listnodes = homeeRepository.findAll().toList()
+        if(listnodes.isEmpty())
+        {
+            for(node in nodes)
+            {
+                trangsformNodeAndSave(node)
+            }
+        }
+        else
+        {
+            val nodesIt = nodes.iterator()
+            while(nodesIt.hasNext())
+            {
+                val node = nodesIt.next()
+                var found = false
+                for( data in listnodes)
+                {
+                    if(data.homeeID == node.id)
+                    {
+                        found = true
+                    }
+                }
+                if(!found)
+                {
+                    trangsformNodeAndSave(node)
+                }
+            }
+        }
+    }
+
+    private fun trangsformNodeAndSave(node: nodes)
+    {
+        val newDevice = Homee(name = node.name, homeeID = node.id)
+        homeeRepository.save(newDevice)
+    }
     private  fun trangsformThingAndSave(things: Things)
     {
         val newDevice = OpenHab(name = things.label, uid = things.UID )
