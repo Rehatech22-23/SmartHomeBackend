@@ -12,9 +12,10 @@ class TriggerTime {
     var routineId: Long? = null
     var localTime: LocalDateTime? = null
     var repeat: Boolean? = null
+    var repeatExecuted: Boolean = false //verfällt beim mappen
 
     @OneToOne
     @MapsId
     @JoinColumn(name = "triggerTime")
-    var triggerTime: Routine?=null
+    var routine: Routine?=null
 }

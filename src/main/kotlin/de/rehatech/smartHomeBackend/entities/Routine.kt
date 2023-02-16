@@ -9,7 +9,7 @@ class Routine {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null
-    var routineName: String? = null
+    lateinit var routineName: String
     var triggerType: Int? = null
 
     @OneToOne(mappedBy = "triggerEventByDevice")
@@ -20,5 +20,5 @@ class Routine {
 
 
     @OneToMany(mappedBy = "routineEvent")
-    var routineEvent: ArrayList<RoutineEvent>? = null
+    lateinit var routineEvent: ArrayList<RoutineEvent>
 }

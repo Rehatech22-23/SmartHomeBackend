@@ -1,10 +1,6 @@
 package de.rehatech.smartHomeBackend.entities
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.OneToOne
+import jakarta.persistence.*
 
 @Entity(name = "function")
 class Function {
@@ -12,10 +8,14 @@ class Function {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Long? = null
-    val functionName: String? = null
-    val range: String? = null // Serialized Range Object
-    val onOff : Boolean? = null
-    val outputValue: String? = null
-    val outputTrigger: Boolean? = null
+    var id: Long? = null
+    lateinit var functionName: String
+
+    @OneToOne(mappedBy = "range")
+    var range: Range? = null
+
+
+    var onOff : Boolean? = null
+    var outputValue: String? = null
+    var outputTrigger: Boolean? = null
 }

@@ -19,7 +19,7 @@ class RoutineController(@field:Autowired private val routineService: RoutineServ
         return routineId?.let { routineService.getRoutine(it) }
     }
 
-    @PostMapping("routine/trigger")
+    @GetMapping("routine/trigger")
     fun triggerRoutineById(routineId: Long?): ResponseEntity<Routine>? {
         return routineService.triggerRoutineById(routineId)
     }
