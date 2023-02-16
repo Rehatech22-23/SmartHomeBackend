@@ -14,5 +14,5 @@ class Range {
     @OneToOne
     @MapsId
     @JoinColumn(name = "range")
-    var function: Function?=null
+    var range: Function?=null
 }
