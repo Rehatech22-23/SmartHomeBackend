@@ -18,6 +18,8 @@ class Function {
     @OneToOne(mappedBy = "function")
     var triggerEventByDevice: TriggerEventByDevice?= null
 
+    var functionValueId: Long?=null
+
     var onOff : Boolean? = null
     var outputValue: String? = null
     var outputTrigger: Boolean? = null
