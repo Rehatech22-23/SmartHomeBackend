@@ -1,7 +1,7 @@
 package de.rehatech.smartHomeBackend.entities
 
 import jakarta.persistence.*
-@Entity
+@Entity(name ="range")
 class Range {
 
     @Id
@@ -13,6 +13,6 @@ class Range {
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "range")
-    var range: Function?=null
+    @JoinColumn(name = "function")
+    var function: Function?=null
 }

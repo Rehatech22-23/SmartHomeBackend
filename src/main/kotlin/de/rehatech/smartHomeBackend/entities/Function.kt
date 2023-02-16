@@ -12,9 +12,11 @@ class Function {
     var id: Long? = null
     lateinit var functionName: String
 
-    @OneToOne(mappedBy = "range")
-    var range: RangeDTO? = null
+    @OneToOne(mappedBy = "function")
+    var range: Range? = null
 
+    @OneToOne(mappedBy = "function")
+    var triggerEventByDevice: TriggerEventByDevice?= null
 
     var onOff : Boolean? = null
     var outputValue: String? = null

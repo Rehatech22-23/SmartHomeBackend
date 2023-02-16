@@ -1,9 +1,7 @@
 package de.rehatech.smartHomeBackend.controller.frontend
 
-import de.rehatech.smartHomeBackend.entities.Function
-import de.rehatech.smartHomeBackend.services.DeviceService
-import de.rehatech.smartHomeBackend.services.FunctionService
 import de.rehatech2223.datamodel.FunctionDTO
+import de.rehatech.smartHomeBackend.services.FunctionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -21,7 +19,6 @@ class FunctionController @Autowired constructor(val functionService: FunctionSer
             } catch (ex: NullPointerException){
                     throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.localizedMessage, ex)
             }
-
         }
 
         //"triggers a function"
