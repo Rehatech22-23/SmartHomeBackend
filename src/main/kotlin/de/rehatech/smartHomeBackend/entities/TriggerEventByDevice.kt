@@ -9,9 +9,9 @@ class TriggerEventByDevice {
     var id: Long? = null
 
     val routineID: Long? = null
-    var deviceId: String? = null
+    lateinit var deviceId: String
 
     @OneToOne
     @JoinColumn(name = "triggerEventByDevice")
-    val triggerEventByDevice: Routine?=null
+    lateinit var triggerEventByDevice: Routine
 }
