@@ -1,5 +1,6 @@
 package de.rehatech.smartHomeBackend.entities
 
+import de.rehatech2223.datamodel.util.RangeDTO
 import jakarta.persistence.*
 
 @Entity(name = "function")
@@ -12,7 +13,7 @@ class Function {
     lateinit var functionName: String
 
     @OneToOne(mappedBy = "range")
-    var range: Range? = null
+    var range: RangeDTO? = null
 
 
     var onOff : Boolean? = null
