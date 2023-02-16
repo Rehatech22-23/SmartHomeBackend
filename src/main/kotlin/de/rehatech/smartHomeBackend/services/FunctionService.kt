@@ -15,7 +15,6 @@ import de.rehatech2223.datamodel.FunctionDTO
 
 @Service
 class FunctionService  @Autowired constructor(
-    val deviceService: DeviceService,
     val backendController: BackendController,
     val functionRepository: FunctionRepository,
     val openHabRepository: OpenHabRepository,
@@ -56,8 +55,6 @@ class FunctionService  @Autowired constructor(
      * @param body
      */
     fun triggerFunc(deviceId: String, functionId: Long, body: Float){
-
-        val device = deviceService.getDevice(deviceId)
         val funcVal = functionRepository.findById(functionId).get()
         lateinit var command: String
         //einmal für homee und einmal für oh
