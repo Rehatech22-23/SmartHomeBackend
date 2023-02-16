@@ -14,7 +14,7 @@ class RoutineEvent {
     var voldemort: Float? = null // functionValue
 
     @ManyToOne
-    @JoinColumn(name="routineEvent")
-    var routineEvent: Routine?=null
+    @JoinColumn(name="routine")
+    var routine: Routine?=null
 
 }

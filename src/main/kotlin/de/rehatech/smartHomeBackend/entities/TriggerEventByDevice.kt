@@ -12,6 +12,6 @@ class TriggerEventByDevice {
     lateinit var deviceId: String
 
     @OneToOne
-    @JoinColumn(name = "triggerEventByDevice")
-    lateinit var triggerEventByDevice: Routine
+    @JoinColumn(name = "routine")
+    lateinit var routine: Routine
 }
