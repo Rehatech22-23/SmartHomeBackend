@@ -3,13 +3,13 @@ package de.rehatech.smartHomeBackend.services
 
 import de.rehatech.homeekt.model.nodes
 import de.rehatech.smartHomeBackend.controller.backend.HomeeController
-import de.rehatech2223.datamodel.Device
 import de.rehatech.smartHomeBackend.controller.backend.OpenHabController
 import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Things
 import de.rehatech.smartHomeBackend.entities.Homee
 import de.rehatech.smartHomeBackend.entities.OpenHab
 import de.rehatech.smartHomeBackend.repositories.HomeeRepository
 import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
+import de.rehatech2223.datamodel.DeviceDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
@@ -163,20 +163,20 @@ class DeviceService @Autowired constructor(
      * @param deviceId selects which Device gets returned
      * @return returns info over a specific device as Device-object
      */
-    fun getDevice(deviceId: String): Device?
+    fun getDevice(deviceId: String): DeviceDTO?
     {
         val tmp = deviceId.split(":")
 
-        when(tmp.get(0)){
-            "OH" -> return getDeviceOH(tmp.get(1))
-            "HM" -> return getDeviceHM(tmp.get(1))
+        when(tmp[0]){
+            "OH" -> return getDeviceOH(tmp[1])
+            "HM" -> return getDeviceHM(tmp[1])
             else -> throw NullPointerException()
         }
 
     }
 
     //Hilfsmethode
-    private fun getDeviceOH(id: String): Device? {
+    private fun getDeviceOH(id: String): DeviceDTO? {
         var OH: OpenHab? = null
         try{
             val i = id.toLong()
@@ -194,12 +194,12 @@ class DeviceService @Autowired constructor(
             item.id?.let { funcIds.add(it.toLong()) }
         }
 
-        return Device(OH.name, OH.getOpenHabID(), funcIds)
+        return DeviceDTO(OH.name, OH.getOpenHabID(), funcIds)
     }
 
 
     //Hilfsmethode
-    private fun getDeviceHM(id: String): Device? {
+    private fun getDeviceHM(id: String): DeviceDTO? {
         var HM: Homee? = null
         try{
             id.toLong()
@@ -216,7 +216,7 @@ class DeviceService @Autowired constructor(
             item.id?.let { funcIds.add(it.toLong()) }
         }
 
-        return Device(HM.name, HM.getHomeeID(), funcIds)
+        return DeviceDTO(HM.name, HM.getHomeeID(), funcIds)
     }
 
 

@@ -3,13 +3,13 @@ package de.rehatech.smartHomeBackend.controller.backend
 import de.rehatech.homeekt.model.attributes
 import de.rehatech.smartHomeBackend.Enum.FunctionType
 import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Item
-import de.rehatech2223.datamodel.Function
 import de.rehatech.smartHomeBackend.entities.FunctionValues
 import de.rehatech.smartHomeBackend.repositories.FunctionRepository
 import de.rehatech.smartHomeBackend.repositories.HomeeRepository
 import de.rehatech.smartHomeBackend.services.DeviceService
 import de.rehatech.smartHomeBackend.services.FunctionService
 import de.rehatech.smartHomeBackend.services.FunctionTypService
+import de.rehatech2223.datamodel.FunctionDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 
@@ -64,7 +64,7 @@ class BackendController @Autowired constructor(
      * @param functionValues
      * @return function?
      */
-    fun getFunctionState(deviceID: String,functionValues: FunctionValues):Function?
+    fun getFunctionState(deviceID: String,functionValues: FunctionValues): FunctionDTO?
     {
         if(deviceID.contains("OH:"))
         {
@@ -97,7 +97,7 @@ class BackendController @Autowired constructor(
 
     }
 
-    fun getFunctionFromNode(functionValue: FunctionValues,attribute: attributes):Function?
+    fun getFunctionFromNode(functionValue: FunctionValues,attribute: attributes):FunctionDTO?
     {
         return when(functionValue.type) {
             FunctionType.Switch -> {
@@ -106,15 +106,15 @@ class BackendController @Autowired constructor(
                 {
                     on = true
                 }
-                Function(functionName = functionValue.name, functionId = functionValue.id!!, onOff = on, outputValue = attribute.state.toString() )
+                FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, onOff = on, outputValue = attribute.state.toString() )
             }
-            FunctionType.Dimmer -> {Function(functionName = functionValue.name, functionId = functionValue.id!!,  outputValue = attribute.state.toString() )}
+            FunctionType.Dimmer -> {FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!,  outputValue = attribute.state.toString() )}
             else -> {
                 null
             }
         }
     }
-    fun getFunctionFromItem(item: Item, functionValue: FunctionValues):Function?
+    fun getFunctionFromItem(item: Item, functionValue: FunctionValues):FunctionDTO?
     {
         val functionType = functionTypService.functionsTypeOpenHab(item) ?: return null
         when(functionType){
@@ -124,7 +124,7 @@ class BackendController @Autowired constructor(
                 {
                     on = true
                 }
-                return  Function(functionName = functionValue.name, functionId = functionValue.id!!, onOff = on, outputValue = item.state )
+                return  FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, onOff = on, outputValue = item.state )
             }
             // ToDo return null durch die richtige umwandkung ersetzen
             FunctionType.Color -> return null
@@ -135,10 +135,10 @@ class BackendController @Autowired constructor(
             FunctionType.Group -> return null
             FunctionType.Image -> return null
             FunctionType.Location -> return null
-            FunctionType.Number -> return  Function(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
+            FunctionType.Number -> return  FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
             FunctionType.Player -> return null
             FunctionType.Rollershutter -> return null
-            FunctionType.StringType -> return  Function(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
+            FunctionType.StringType -> return  FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
         }
 
     }
