@@ -8,7 +8,7 @@ class FunctionController {
 
         //returns a function with same FunctionId as the parameter
         @GetMapping()
-        fun functionByFunctionId(@RequestParam functionId: Long?): de.rehatech2223.datamodel.Function? {
+        fun functionByFunctionId(@RequestParam functionId: Long?): de.rehatech2223.datamodel.FunctionDTO? {
             return null
         }
 

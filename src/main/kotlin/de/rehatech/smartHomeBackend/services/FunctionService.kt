@@ -1,7 +1,6 @@
 package de.rehatech.smartHomeBackend.services
 
 import de.rehatech.homeekt.model.attributes
-import de.rehatech2223.datamodel.Function
 import de.rehatech.smartHomeBackend.Enum.FunctionType
 import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Item
 import de.rehatech.smartHomeBackend.repositories.FunctionRepository

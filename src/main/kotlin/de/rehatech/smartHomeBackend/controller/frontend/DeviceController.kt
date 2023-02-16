@@ -1,7 +1,7 @@
 package de.rehatech.smartHomeBackend.controller.frontend
 
 import de.rehatech.smartHomeBackend.services.DeviceService
-import de.rehatech2223.datamodel.Device
+import de.rehatech2223.datamodel.DeviceDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,7 +19,7 @@ class DeviceController @Autowired constructor(val deviceService: DeviceService) 
     fun getDeviceIdList(): List<String> = deviceService.getDeviceIdList()
 
     @GetMapping()
-    fun getDevice(@RequestParam deviceID: String): Device {
+    fun getDevice(@RequestParam deviceID: String): DeviceDTO {
         try {
             val tmp = deviceService.getDevice(deviceID)
                 return tmp!!

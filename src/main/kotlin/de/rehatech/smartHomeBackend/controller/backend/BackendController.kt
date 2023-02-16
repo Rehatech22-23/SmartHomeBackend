@@ -10,6 +10,7 @@ import de.rehatech.smartHomeBackend.services.DeviceService
 import de.rehatech.smartHomeBackend.services.FunctionService
 import de.rehatech.smartHomeBackend.services.FunctionTypService
 import de.rehatech2223.datamodel.FunctionDTO
+import de.rehatech2223.datamodel.util.RangeDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 
@@ -17,10 +18,7 @@ import org.springframework.stereotype.Controller
 class BackendController @Autowired constructor(
 
     val openHabController: OpenHabController,
-    val deviceService: DeviceService,
     val homeeRepository: HomeeRepository,
-    val functionService: FunctionService,
-    val functionRepository: FunctionRepository,
     val homeeController: HomeeController,
     val functionTypService: FunctionTypService
 
@@ -108,7 +106,9 @@ class BackendController @Autowired constructor(
                 }
                 FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, onOff = on, outputValue = attribute.state.toString() )
             }
-            FunctionType.Dimmer -> {FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!,  outputValue = attribute.state.toString() )}
+            FunctionType.Dimmer -> {FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!,  outputValue = attribute.state.toString(), rangeDTO = RangeDTO(
+                attribute.minimum.toDouble(), attribute.maximum.toDouble(), attribute.state.toDouble()
+            ) )}
             else -> {
                 null
             }
@@ -129,15 +129,15 @@ class BackendController @Autowired constructor(
             // ToDo return null durch die richtige umwandkung ersetzen
             FunctionType.Color -> return null
             FunctionType.Call -> return null
-            FunctionType.Contact -> return null
+            FunctionType.Contact -> return FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
             FunctionType.Datetime -> return null
-            FunctionType.Dimmer -> return null
+            FunctionType.Dimmer -> return FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state, rangeDTO = RangeDTO(item.stateDescription.minimum, item.stateDescription.maximum, item.state.toDouble()) )
             FunctionType.Group -> return null
             FunctionType.Image -> return null
             FunctionType.Location -> return null
             FunctionType.Number -> return  FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
             FunctionType.Player -> return null
-            FunctionType.Rollershutter -> return null
+            FunctionType.Rollershutter -> return FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state, rangeDTO = RangeDTO(item.stateDescription.minimum, item.stateDescription.maximum, item.state.toDouble()) )
             FunctionType.StringType -> return  FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
         }
 
