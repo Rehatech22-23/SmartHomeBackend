@@ -19,9 +19,9 @@ class DeviceController @Autowired constructor(val deviceService: DeviceService) 
     fun getDeviceIdList(): List<String> = deviceService.getDeviceIdList()
 
     @GetMapping()
-    fun getDevice(@RequestParam deviceID: String): DeviceDTO {
+    fun getDevice(@RequestParam deviceId: String): DeviceDTO {
         try {
-            val tmp = deviceService.getDevice(deviceID)
+            val tmp = deviceService.getDevice(deviceId)
                 return tmp!!
         } catch (ex: NullPointerException) {
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, ex.localizedMessage, ex)
