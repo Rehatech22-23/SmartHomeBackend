@@ -20,22 +20,22 @@ class RoutineController(@field:Autowired private val routineService: RoutineServ
         get() = routineService.allDeviceIds
 
     @GetMapping("routine/{routineId}")
-    fun getRoutine(@PathVariable routineId: Long?): ResponseEntity<String> { // return string, Routine as JSON mit shared lib seris
-        return ResponseEntity(Json.encodeToString<RoutineDTO>((RoutineMapper.mapToDTO(routineService.getRoutine(routineId!!)!!))), null, HttpStatus.OK)
+    fun getRoutine(@PathVariable routineId: Long): ResponseEntity<String> {
+        return routineService.getRoutine(routineId)
     }
 
     @GetMapping("routine/trigger")
-    fun triggerRoutineById(routineId: Long?): ResponseEntity<String> {
-        return ResponseEntity(Json.encodeToString<RoutineDTO>((RoutineMapper.mapToDTO(routineService.triggerRoutineById(routineId)!!))), null, HttpStatus.OK)
+    fun triggerRoutineById(routineId: Long): ResponseEntity<String> {
+        return routineService.triggerRoutineById(routineId)
     }
 
     @PostMapping("routine/create")
-    fun createRoutine(@RequestParam routine: Routine?): ResponseEntity<String>? {
-        return ResponseEntity(Json.encodeToString<RoutineDTO>((RoutineMapper.mapToDTO(routineService.createRoutine(routine!!)))), null, HttpStatus.OK)
+    fun createRoutine(@RequestParam routine: Routine): ResponseEntity<String>? {
+        return routineService.createRoutine(routine)
     }
 
     @DeleteMapping("routine/delete/{routineId}")
-    fun deleteRoutine(@PathVariable routineId: Long?): ResponseEntity<String>? {
-        return routineId?.let { routineService.deleteRoutine(it) }
+    fun deleteRoutine(@PathVariable routineId: Long): ResponseEntity<String>? {
+        return routineService.deleteRoutine(routineId)
     }
 }

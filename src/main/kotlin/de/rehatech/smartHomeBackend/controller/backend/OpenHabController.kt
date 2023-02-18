@@ -2,8 +2,8 @@ package de.rehatech.smartHomeBackend.controller.backend
 
 import com.google.gson.Gson
 import de.rehatech.smartHomeBackend.config.ApiConfiguration
-import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Item
-import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Things
+import de.rehatech.smartHomeBackend.response.Item
+import de.rehatech.smartHomeBackend.response.Things
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -102,7 +102,7 @@ class OpenHabController @Autowired constructor (
      * @param uid
      * @return
      */
-    fun getDevice(uid:String):Things?
+    fun getDevice(uid:String): Things?
     {
         val request = Request.Builder()
             .url("${url}/rest/things/${uid}")

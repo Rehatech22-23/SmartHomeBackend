@@ -1,6 +1,7 @@
 package de.rehatech.smartHomeBackend.controller.backend.responsesClass
 
 import com.google.gson.Gson
+import de.rehatech.smartHomeBackend.response.Things
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.nio.file.Files

@@ -4,7 +4,7 @@ package de.rehatech.smartHomeBackend.services
 import de.rehatech.homeekt.model.nodes
 import de.rehatech.smartHomeBackend.controller.backend.HomeeController
 import de.rehatech.smartHomeBackend.controller.backend.OpenHabController
-import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Things
+import de.rehatech.smartHomeBackend.response.Things
 import de.rehatech.smartHomeBackend.entities.Homee
 import de.rehatech.smartHomeBackend.entities.OpenHab
 import de.rehatech.smartHomeBackend.repositories.HomeeRepository

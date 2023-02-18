@@ -1,8 +1,8 @@
 package de.rehatech.smartHomeBackend.services
 
 import de.rehatech.homeekt.model.attributes
-import de.rehatech.smartHomeBackend.Enum.FunctionType
-import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Item
+import de.rehatech.smartHomeBackend.enum.FunctionType
+import de.rehatech.smartHomeBackend.response.Item
 import org.springframework.stereotype.Service
 
 @Service

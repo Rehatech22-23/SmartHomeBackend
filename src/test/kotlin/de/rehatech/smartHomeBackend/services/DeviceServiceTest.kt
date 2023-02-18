@@ -1,8 +1,7 @@
 package de.rehatech.smartHomeBackend.services
 
 import com.google.gson.Gson
-import de.rehatech.smartHomeBackend.controller.backend.BackendController
-import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Things
+import de.rehatech.smartHomeBackend.response.Things
 import de.rehatech.smartHomeBackend.entities.Homee
 import de.rehatech.smartHomeBackend.entities.OpenHab
 import de.rehatech.smartHomeBackend.repositories.HomeeRepository
@@ -10,15 +9,11 @@ import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
-import org.mockito.InjectMocks
-import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.test.context.ContextConfiguration
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*

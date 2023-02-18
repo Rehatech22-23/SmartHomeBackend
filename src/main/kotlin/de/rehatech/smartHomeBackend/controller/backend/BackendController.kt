@@ -1,13 +1,10 @@
 package de.rehatech.smartHomeBackend.controller.backend
 
 import de.rehatech.homeekt.model.attributes
-import de.rehatech.smartHomeBackend.Enum.FunctionType
-import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Item
+import de.rehatech.smartHomeBackend.enum.FunctionType
+import de.rehatech.smartHomeBackend.response.Item
 import de.rehatech.smartHomeBackend.entities.FunctionValues
-import de.rehatech.smartHomeBackend.repositories.FunctionRepository
 import de.rehatech.smartHomeBackend.repositories.HomeeRepository
-import de.rehatech.smartHomeBackend.services.DeviceService
-import de.rehatech.smartHomeBackend.services.FunctionService
 import de.rehatech.smartHomeBackend.services.FunctionTypService
 import de.rehatech2223.datamodel.FunctionDTO
 import de.rehatech2223.datamodel.util.RangeDTO
@@ -31,29 +28,21 @@ class BackendController @Autowired constructor(
      * @param command
      * @return Boolean
      */
-    fun sendCommand(deviceID: String,functionValues: FunctionValues, command:String):Boolean
-    {
-        if(deviceID.contains("OH:"))
-        {
+    fun sendCommand(deviceID: String, functionValues: FunctionValues, command: String): Boolean {
+        if (deviceID.contains("OH:")) {
 
-            return openHabController.sendcommand(functionValues.name,command)
-        }
-        else if(deviceID.contains("HM:"))
-        {
-            try{
+            return openHabController.sendcommand(functionValues.name, command)
+        } else if (deviceID.contains("HM:")) {
+            try {
                 val id = deviceID.split(":")
                 val homeenode = homeeRepository.findById(id[1].toLong()).get()
                 homeeController.sendcommand(homeenode.homeeID, functionValues.homeeattrID!!, command.toDouble())
 
-            }
-            catch (e:Exception)
-            {
+            } catch (e: Exception) {
                 return false
             }
             return true
-        }
-        else
-        {
+        } else {
             return false
         }
     }
@@ -64,28 +53,21 @@ class BackendController @Autowired constructor(
      * @param functionValues
      * @return FunctionDTO?
      */
-    fun getFunctionState(deviceID: String,functionValues: FunctionValues): FunctionDTO?
-    {
-        if(deviceID.contains("OH:"))
-        {
+    fun getFunctionState(deviceID: String, functionValues: FunctionValues): FunctionDTO? {
+        if (deviceID.contains("OH:")) {
 
             val item = openHabController.getItemByName(functionValues.name) ?: return null
             return getFunctionFromItem(item, functionValues)
-        }
-        else if(deviceID.contains("HM:"))
-        {
+        } else if (deviceID.contains("HM:")) {
             val nodes = homeeController.getNodes()
             if (nodes != null) {
                 for (node in nodes) {
-                    if (node.id == functionValues.deviceHomee!!.homeeID )
-                    {
+                    if (node.id == functionValues.deviceHomee!!.homeeID) {
                         val atts = node.attributes
-                        for (att in atts)
-                        {
-                            if(att.id == functionValues.homeeattrID)
-                            {
+                        for (att in atts) {
+                            if (att.id == functionValues.homeeattrID) {
                                 return getFunctionFromNode(functionValues, att)
-                                
+
                             }
                         }
                     }
@@ -103,20 +85,32 @@ class BackendController @Autowired constructor(
      * @param attribute
      * @return FunctionDTO?
      */
-    fun getFunctionFromNode(functionValue: FunctionValues,attribute: attributes):FunctionDTO?
-    {
-        return when(functionValue.type) {
+    fun getFunctionFromNode(functionValue: FunctionValues, attribute: attributes): FunctionDTO? {
+        return when (functionValue.type) {
             FunctionType.Switch -> {
                 var on = false
-                if(attribute.state == 1)
-                {
+                if (attribute.state == 1) {
                     on = true
                 }
-                FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, onOff = on, outputValue = attribute.state.toString() )
+                FunctionDTO(
+                    functionName = functionValue.name,
+                    functionId = functionValue.id!!,
+                    onOff = on,
+                    outputValue = attribute.state.toString()
+                )
             }
-            FunctionType.Dimmer -> {FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!,  outputValue = attribute.state.toString(), rangeDTO = RangeDTO(
-                attribute.minimum.toDouble(), attribute.maximum.toDouble(), attribute.state.toDouble()
-            ) )}
+
+            FunctionType.Dimmer -> {
+                FunctionDTO(
+                    functionName = functionValue.name,
+                    functionId = functionValue.id!!,
+                    outputValue = attribute.state.toString(),
+                    rangeDTO = RangeDTO(
+                        attribute.minimum.toDouble(), attribute.maximum.toDouble(), attribute.state.toDouble()
+                    )
+                )
+            }
+
             else -> {
                 null
             }
@@ -129,31 +123,60 @@ class BackendController @Autowired constructor(
      * @param functionValue
      * @return FunctionDTO?
      */
-    fun getFunctionFromItem(item: Item, functionValue: FunctionValues):FunctionDTO?
-    {
+    fun getFunctionFromItem(item: Item, functionValue: FunctionValues): FunctionDTO? {
         val functionType = functionTypService.functionsTypeOpenHab(item) ?: return null
-        when(functionType){
+        when (functionType) {
             FunctionType.Switch -> {
                 var on = false
-                if(item.state == "ON")
-                {
+                if (item.state == "ON") {
                     on = true
                 }
-                return  FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, onOff = on, outputValue = item.state )
+                return FunctionDTO(
+                    functionName = functionValue.name,
+                    functionId = functionValue.id!!,
+                    onOff = on,
+                    outputValue = item.state
+                )
             }
             // ToDo return null durch die richtige umwandkung ersetzen
             FunctionType.Color -> return null
             FunctionType.Call -> return null
-            FunctionType.Contact -> return FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
+            FunctionType.Contact -> return FunctionDTO(
+                functionName = functionValue.name,
+                functionId = functionValue.id!!,
+                outputValue = item.state
+            )
+
             FunctionType.Datetime -> return null
-            FunctionType.Dimmer -> return FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state, rangeDTO = RangeDTO(item.stateDescription.minimum, item.stateDescription.maximum, item.state.toDouble()) )
+            FunctionType.Dimmer -> return FunctionDTO(
+                functionName = functionValue.name,
+                functionId = functionValue.id!!,
+                outputValue = item.state,
+                rangeDTO = RangeDTO(item.stateDescription.minimum, item.stateDescription.maximum, item.state.toDouble())
+            )
+
             FunctionType.Group -> return null
             FunctionType.Image -> return null
             FunctionType.Location -> return null
-            FunctionType.Number -> return  FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
+            FunctionType.Number -> return FunctionDTO(
+                functionName = functionValue.name,
+                functionId = functionValue.id!!,
+                outputValue = item.state
+            )
+
             FunctionType.Player -> return null
-            FunctionType.Rollershutter -> return FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state, rangeDTO = RangeDTO(item.stateDescription.minimum, item.stateDescription.maximum, item.state.toDouble()) )
-            FunctionType.StringType -> return  FunctionDTO(functionName = functionValue.name, functionId = functionValue.id!!, outputValue = item.state )
+            FunctionType.Rollershutter -> return FunctionDTO(
+                functionName = functionValue.name,
+                functionId = functionValue.id!!,
+                outputValue = item.state,
+                rangeDTO = RangeDTO(item.stateDescription.minimum, item.stateDescription.maximum, item.state.toDouble())
+            )
+
+            FunctionType.StringType -> return FunctionDTO(
+                functionName = functionValue.name,
+                functionId = functionValue.id!!,
+                outputValue = item.state
+            )
         }
 
     }
