@@ -25,6 +25,7 @@ class BackendController @Autowired constructor(
 
 ) {
     /**
+     * //TODO: Docs, refactor deviceID -> deviceId
      * @param deviceID
      * @param functionValues
      * @param command
@@ -58,9 +59,10 @@ class BackendController @Autowired constructor(
     }
 
     /**
+     * //TODO: Docs, refactor deviceID -> deviceId
      * @param deviceID
      * @param functionValues
-     * @return function?
+     * @return FunctionDTO?
      */
     fun getFunctionState(deviceID: String,functionValues: FunctionValues): FunctionDTO?
     {
@@ -95,6 +97,12 @@ class BackendController @Autowired constructor(
 
     }
 
+    /**
+     * //TODO: Docs
+     * @param functionValue
+     * @param attribute
+     * @return FunctionDTO?
+     */
     fun getFunctionFromNode(functionValue: FunctionValues,attribute: attributes):FunctionDTO?
     {
         return when(functionValue.type) {
@@ -114,6 +122,13 @@ class BackendController @Autowired constructor(
             }
         }
     }
+
+    /**
+     * //TODO: Docs
+     * @param item
+     * @param functionValue
+     * @return FunctionDTO?
+     */
     fun getFunctionFromItem(item: Item, functionValue: FunctionValues):FunctionDTO?
     {
         val functionType = functionTypService.functionsTypeOpenHab(item) ?: return null
