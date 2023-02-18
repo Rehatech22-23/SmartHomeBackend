@@ -3,6 +3,7 @@ package de.rehatech.smartHomeBackend.services
 import de.rehatech.smartHomeBackend.entities.Routine
 import de.rehatech.smartHomeBackend.mapper.RoutineMapper
 import de.rehatech.smartHomeBackend.repositories.RoutineRepository
+import de.rehatech2223.datamodel.RoutineDTO
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.springframework.http.HttpStatus
@@ -38,8 +39,8 @@ class RoutineService(private val routineRepository: RoutineRepository) {
         return  ResponseEntity("Es konnte keine Routine mit der angegebenen Id gefunden werden!", null, HttpStatus.NOT_FOUND)
     }
 
-    fun createRoutine(routine: Routine): ResponseEntity<String> {
-        return ResponseEntity(Json.encodeToString((RoutineMapper.mapToDTO(routineRepository.save(routine)))), null, HttpStatus.OK)
+    fun createRoutine(routineDTO: RoutineDTO): ResponseEntity<String> {
+        return ResponseEntity(Json.encodeToString((RoutineMapper.mapToDTO(routineRepository.save(RoutineMapper.mapToEntity(routineDTO))))), null, HttpStatus.OK)
     }
 
     fun deleteRoutine(routineId: Long): ResponseEntity<String> {
