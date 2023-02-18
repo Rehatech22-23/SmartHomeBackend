@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.*
 @Controller
 class RoutineController(@field:Autowired private val routineService: RoutineService) {
 
-    @get:GetMapping("routine/list")
-    val allDeviceIds: ResponseEntity<List<Long>>
-        get() = routineService.allDeviceIds
+    @GetMapping("routine/list")
+    fun getAllRoutineIds(): ResponseEntity<List<Long>> {
+        return routineService.getAllRoutineIds()
+    }
+
 
     @GetMapping("routine/{routineId}")
     fun getRoutine(@PathVariable routineId: Long): ResponseEntity<String> {

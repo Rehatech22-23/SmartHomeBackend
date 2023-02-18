@@ -12,25 +12,14 @@ import org.springframework.stereotype.Service
 @Service
 class RoutineService(private val routineRepository: RoutineRepository) {
 
-    val allDeviceIds: ResponseEntity<List<Long>>
-        get() {
-            val result: MutableList<Long> = ArrayList()
-            val it: Iterator<Routine> = routineRepository.findAll().iterator()
-            it.forEachRemaining { r: Routine ->
-                r.id?.let { it1 ->
-                    result.add(
-                        it1.toLong()
-                    )
-                }
-            }
-            return ResponseEntity.ok(result)
+    fun getAllRoutineIds(): ResponseEntity<List<Long>> {
+        val ids: ArrayList<Long> = ArrayList()
+        routineRepository.findAll().iterator().forEachRemaining {
+            ids.add(it.id!!)
         }
+        return ResponseEntity(ids, null, HttpStatus.OK)
+    }
 
-    /**
-     * //TODO: Docs
-     * @param routineId
-     * @return Routine?
-     */
     fun getRoutine(routineId: Long): ResponseEntity<String> {
         val optionalRoutine = routineRepository.findById(routineId)
         if(optionalRoutine.isPresent) {
@@ -38,12 +27,6 @@ class RoutineService(private val routineRepository: RoutineRepository) {
         }
         return ResponseEntity("Es konnte keine Routine mit der angegebenen Id gefunden werden!", null, HttpStatus.NOT_FOUND)
     }
-
-    /**
-     * //TODO: Docs
-     * @param routineId
-     * @return Routine?
-     */
 
     fun triggerRoutineById(routineId: Long): ResponseEntity<String> {
         val optionalRoutine = routineRepository.findById(routineId)
@@ -55,20 +38,10 @@ class RoutineService(private val routineRepository: RoutineRepository) {
         return  ResponseEntity("Es konnte keine Routine mit der angegebenen Id gefunden werden!", null, HttpStatus.NOT_FOUND)
     }
 
-    /**
-     * //TODO: Docs
-     * @param routine
-     * @return Routine
-     */
     fun createRoutine(routine: Routine): ResponseEntity<String> {
         return ResponseEntity(Json.encodeToString((RoutineMapper.mapToDTO(routineRepository.save(routine)))), null, HttpStatus.OK)
     }
 
-    /**
-     * //TODO: Docs
-     * @param routineId
-     * @return ResponseEntity<String>
-     */
     fun deleteRoutine(routineId: Long): ResponseEntity<String> {
         return try {
             routineRepository.deleteById(routineId)

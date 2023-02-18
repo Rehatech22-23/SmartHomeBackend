@@ -1,7 +1,6 @@
 package de.rehatech.smartHomeBackend.enum
 
 enum class FunctionType(val typ: String) {
-    // TODO: CHANGE ENUM FIELD NAMES TO CAPS
     Switch("Switch"),
     Call("Call"),
     Color("Color"),
