@@ -25,6 +25,7 @@ class FunctionService  @Autowired constructor(
 
     //TODO: Docs
     /**
+     *
      * @param functionId
      * @return FunctionDTO
      */
@@ -50,6 +51,7 @@ class FunctionService  @Autowired constructor(
 
     //TODO: Docs
     /**
+     *
      * @param deviceId
      * @param functionId
      * @param body
@@ -80,6 +82,7 @@ class FunctionService  @Autowired constructor(
 
     //TODO: Docs
     /**
+     *
      * @param uid
      * @param item
      */
@@ -95,8 +98,9 @@ class FunctionService  @Autowired constructor(
 
     }
 
-    //TODO: Docs
+    //TODO: Docs, attributes class -> Attributes class (Classes start with Capital Letters)
     /**
+     *
      * @param attribute
      */
     fun saveFunctionHomee(attribute: attributes)

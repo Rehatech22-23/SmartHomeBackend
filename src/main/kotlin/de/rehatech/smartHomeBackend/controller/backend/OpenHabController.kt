@@ -28,6 +28,7 @@ class OpenHabController @Autowired constructor (
 
 
     /**
+     * //TODO: Docs, refactor sendcommand -> sendCommand, itemname -> itemName
      * @param itemname This parameter contains the item name for OpenHab
      * @param command This parameter contains the command for the OpenHab item
      * @return
@@ -52,7 +53,9 @@ class OpenHabController @Autowired constructor (
     }
 
     /**
+     * //TODO Docs, refactor itemname -> itemName
      * @param itemname This parameter contains the item name for OpenHab
+     * @return
      */
     fun getItemByName(itemname: String): Item?
     {
@@ -98,7 +101,7 @@ class OpenHabController @Autowired constructor (
         return null
     }
 
-    /**
+    /** //TODO Docs
      * @param uid
      * @return
      */

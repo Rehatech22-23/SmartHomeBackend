@@ -25,6 +25,10 @@ class DeviceService @Autowired constructor(
 )
 {
 
+    /**
+     * //TODO: Docs
+     * @param devices
+     */
     fun updateDevicesOpenHab(devices: ArrayList<Things>)
     {
         val listrepo = openHabRepository.findAll().toList()
@@ -98,6 +102,10 @@ class DeviceService @Autowired constructor(
         }
     }
 
+    /**
+     * //TODO: Docs, refactor: nodes class -> Nodes class (classes start with Capital Letters)
+     * @param nodes
+     */
     private fun updateNodeHomee(nodes:ArrayList<nodes>)
     {
         val listnodes = homeeRepository.findAll().toList()
@@ -130,11 +138,21 @@ class DeviceService @Autowired constructor(
         }
     }
 
+    /**
+     * //TODO: Docs, refactor trangsformNodeAndSave -> transformNodeAndSave, nodes class -> Nodes class (classes start with Capital Letters)
+     * @param node
+     */
     private fun trangsformNodeAndSave(node: nodes)
     {
         val newDevice = Homee(name = node.name, homeeID = node.id)
         homeeRepository.save(newDevice)
     }
+
+
+    /**
+     * //TODO: Docs, refactor trangsformThingAndSave -> transformThingAndSave
+     * @param things
+     */
     private  fun trangsformThingAndSave(things: Things)
     {
         val newDevice = OpenHab(name = things.label, uid = things.UID )
@@ -161,7 +179,7 @@ class DeviceService @Autowired constructor(
 
     /**
      * @param deviceId selects which Device gets returned
-     * @return returns info over a specific device as Device-object
+     * @return returns info over a specific device as DeviceDTO-object
      */
     fun getDevice(deviceId: String): DeviceDTO?
     {
@@ -221,7 +239,10 @@ class DeviceService @Autowired constructor(
 
 
     //TODO: implementation of updatedDevices()
-    //TODO: edit class diagram
+    /**
+     * //TODO: Docs
+     * @return List<String>
+     */
     /**
      * @return returns all ids from updated devices since last update call as List of DeviceIds (Strings)
      */
