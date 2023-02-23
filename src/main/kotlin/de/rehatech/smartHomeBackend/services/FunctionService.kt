@@ -11,6 +11,7 @@ import de.rehatech.smartHomeBackend.response.Item
 import de.rehatech2223.datamodel.FunctionDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import de.rehatech.smartHomeBackend.entities.Function
 
 
 @Service
@@ -121,5 +122,7 @@ class FunctionService @Autowired constructor(
         }
     }
 
-
+    fun equals(functionDTO: FunctionDTO, function: Function): Boolean {
+        return true;
+    }
 }
