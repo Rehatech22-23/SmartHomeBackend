@@ -1,4 +1,4 @@
-package de.rehatech.smartHomeBackend.controller.backend.responsesClass.hilfsclass
+package de.rehatech.smartHomeBackend.response.util
 
 data class Channels(
     var uid: String,

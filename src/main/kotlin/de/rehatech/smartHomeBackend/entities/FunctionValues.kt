@@ -1,6 +1,6 @@
 package de.rehatech.smartHomeBackend.entities
 
-import de.rehatech.smartHomeBackend.Enum.FunctionType
+import de.rehatech.smartHomeBackend.enum.FunctionType
 import jakarta.persistence.*
 
 @Entity
@@ -19,4 +19,4 @@ data class FunctionValues(
     @JoinColumn(name = "deviceHomee", nullable=true)
     var deviceHomee: Homee? = null,
 
-)
+    )

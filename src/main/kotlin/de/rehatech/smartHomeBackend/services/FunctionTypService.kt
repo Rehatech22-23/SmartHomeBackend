@@ -1,13 +1,18 @@
 package de.rehatech.smartHomeBackend.services
 
 import de.rehatech.homeekt.model.attributes
-import de.rehatech.smartHomeBackend.Enum.FunctionType
-import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Item
+import de.rehatech.smartHomeBackend.enum.FunctionType
+import de.rehatech.smartHomeBackend.response.Item
 import org.springframework.stereotype.Service
 
 @Service
-class FunctionTypService {
+class FunctionTypService { //TODO refactor FunctionTypService -> FunctionTypeService
 
+    /**
+     * //TODO: Docs
+     * @param attribute
+     * @return FunctionType?
+     */
     fun functionsTypeHomee(attribute: attributes): FunctionType?
     {
         when(attribute.type){
@@ -33,6 +38,11 @@ class FunctionTypService {
 
     }
 
+    /**
+     * //TODO: Docs
+     * @param item
+     * @return FunctionType?
+     */
     fun functionsTypeOpenHab(item: Item): FunctionType?
     {
         var itemstring = item.type

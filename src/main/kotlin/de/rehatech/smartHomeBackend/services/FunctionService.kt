@@ -1,9 +1,9 @@
 package de.rehatech.smartHomeBackend.services
 
 import de.rehatech.homeekt.model.attributes
-import de.rehatech.smartHomeBackend.Enum.FunctionType
+import de.rehatech.smartHomeBackend.enum.FunctionType
 import de.rehatech.smartHomeBackend.controller.backend.BackendController
-import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Item
+import de.rehatech.smartHomeBackend.response.Item
 import de.rehatech.smartHomeBackend.repositories.FunctionRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -25,6 +25,7 @@ class FunctionService  @Autowired constructor(
 
     //TODO: Docs
     /**
+     *
      * @param functionId
      * @return FunctionDTO
      */
@@ -50,6 +51,7 @@ class FunctionService  @Autowired constructor(
 
     //TODO: Docs
     /**
+     *
      * @param deviceId
      * @param functionId
      * @param body
@@ -80,6 +82,7 @@ class FunctionService  @Autowired constructor(
 
     //TODO: Docs
     /**
+     *
      * @param uid
      * @param item
      */
@@ -95,8 +98,9 @@ class FunctionService  @Autowired constructor(
 
     }
 
-    //TODO: Docs
+    //TODO: Docs, attributes class -> Attributes class (Classes start with Capital Letters)
     /**
+     *
      * @param attribute
      */
     fun saveFunctionHomee(attribute: attributes)

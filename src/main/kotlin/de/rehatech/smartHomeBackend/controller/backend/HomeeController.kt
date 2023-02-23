@@ -18,19 +18,31 @@ class HomeeController@Autowired constructor (
 
 
 
-
+    /**
+     * //TODO: Docs
+     */
     fun updateNodes()
     {
         homee.getallNodes()
         Thread.sleep(2000L)
 
     }
+    /**
+     * //TODO: Docs
+     * @return ArrayList<nodes>?
+     */
     fun getNodes():ArrayList<nodes>?
     {
         updateNodes()
         return homee.nodeslist
     }
 
+    /**
+     * //TODO: Docs, refactor sendcommand -> sendCommand
+     * @param node
+     * @param attribute
+     * @param value
+     */
     fun sendcommand(node:Int, attribute:Int, value:Double )
     {
         homee.sendNodeBefehl(node, attribute, value)

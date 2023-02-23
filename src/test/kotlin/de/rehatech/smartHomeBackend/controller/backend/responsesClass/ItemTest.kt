@@ -1,10 +1,9 @@
 package de.rehatech.smartHomeBackend.controller.backend.responsesClass
 
-import com.fasterxml.jackson.core.JsonParser
 import com.google.gson.Gson
+import de.rehatech.smartHomeBackend.response.Item
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import java.io.FileReader
 import java.nio.file.Files
 import java.nio.file.Paths
 

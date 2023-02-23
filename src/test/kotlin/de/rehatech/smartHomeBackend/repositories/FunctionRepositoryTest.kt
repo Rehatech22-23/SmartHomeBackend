@@ -1,6 +1,6 @@
 package de.rehatech.smartHomeBackend.repositories
 
-import de.rehatech.smartHomeBackend.Enum.FunctionType
+import de.rehatech.smartHomeBackend.enum.FunctionType
 import de.rehatech.smartHomeBackend.entities.FunctionValues
 import de.rehatech.smartHomeBackend.entities.OpenHab
 import org.junit.jupiter.api.Test

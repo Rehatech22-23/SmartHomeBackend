@@ -1,7 +1,7 @@
-package de.rehatech.smartHomeBackend.controller.backend.responsesClass
+package de.rehatech.smartHomeBackend.response
 
-import de.rehatech.smartHomeBackend.controller.backend.responsesClass.hilfsclass.CommandDescription
-import de.rehatech.smartHomeBackend.controller.backend.responsesClass.hilfsclass.StateDescription
+import de.rehatech.smartHomeBackend.response.util.CommandDescription
+import de.rehatech.smartHomeBackend.response.util.StateDescription
 
 data class Item(
     var type: String,
