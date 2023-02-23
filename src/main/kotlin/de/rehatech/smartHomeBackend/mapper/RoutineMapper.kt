@@ -6,7 +6,7 @@ import de.rehatech2223.datamodel.RoutineDTO
 class RoutineMapper {
 
     companion object {
-        fun mapToEntity(routineDTO: RoutineDTO): Routine{
+        fun mapToEntity(routineDTO: RoutineDTO): Routine {
             var result = Routine()
             result.id = routineDTO.routineId
             result.routineName = routineDTO.routineName
@@ -18,14 +18,32 @@ class RoutineMapper {
         }
 
         fun mapToDTO(routine: Routine): RoutineDTO {
-            return RoutineDTO(
-                routine.routineName,
-                routine.id!!,
-                routine.triggerType!!,
-                TriggerTimeMapper.mapToDTO(routine.triggerTime!!),
-                TriggerEventByDeviceMapper.mapToDTO(routine.triggerEventByDevice!!),
-                RoutineEventMapper.mapToDTOArrayList(routine.routineEvent)
-            );
+            if (routine.triggerEventByDevice == null) {
+                return RoutineDTO.Builder(
+                    routine.routineName,
+                    routine.triggerType!!,
+                    RoutineEventMapper.mapToDTOArrayList(routine.routineEvent),
+                    null,
+                    null,
+                    null
+                ).routineId(routine.id!!)
+                    .triggerTime(
+                        TriggerTimeMapper
+                            .mapToDTO(routine.triggerTime!!)
+                    )
+                    .build()
+            } else {
+                return RoutineDTO.Builder(
+                    routine.routineName,
+                    routine.triggerType!!,
+                    RoutineEventMapper.mapToDTOArrayList(routine.routineEvent),
+                    null,
+                    null,
+                    null
+                ).routineId(routine.id!!)
+                    .triggerEventByDeviceDTO(TriggerEventByDeviceMapper.mapToDTO(routine.triggerEventByDevice!!))
+                    .build()
+            }
         }
     }
 }
