@@ -94,23 +94,23 @@ class BackendController @Autowired constructor(
                 if (attribute.state == 1) {
                     on = true
                 }
-                FunctionDTO(
+                FunctionDTO.Builder(
                     functionName = functionValue.name,
                     functionId = functionValue.id!!,
                     onOff = on,
                     outputValue = attribute.state.toString()
-                )
+                ).build()
             }
 
             FunctionType.Dimmer -> {
-                FunctionDTO(
+                FunctionDTO.Builder(
                     functionName = functionValue.name,
                     functionId = functionValue.id!!,
                     outputValue = attribute.state.toString(),
                     rangeDTO = RangeDTO(
                         attribute.minimum.toDouble(), attribute.maximum.toDouble(), attribute.state.toDouble()
                     )
-                )
+                ).build()
             }
 
             else -> {
@@ -133,52 +133,52 @@ class BackendController @Autowired constructor(
                 if (item.state == "ON") {
                     on = true
                 }
-                return FunctionDTO(
+                return FunctionDTO.Builder(
                     functionName = functionValue.name,
                     functionId = functionValue.id!!,
                     onOff = on,
                     outputValue = item.state
-                )
+                ).build()
             }
             // ToDo return null durch die richtige umwandkung ersetzen
             FunctionType.Color -> return null
             FunctionType.Call -> return null
-            FunctionType.Contact -> return FunctionDTO(
+            FunctionType.Contact -> return FunctionDTO.Builder(
                 functionName = functionValue.name,
                 functionId = functionValue.id!!,
                 outputValue = item.state
-            )
+            ).build()
 
             FunctionType.Datetime -> return null
-            FunctionType.Dimmer -> return FunctionDTO(
+            FunctionType.Dimmer -> return FunctionDTO.Builder(
                 functionName = functionValue.name,
                 functionId = functionValue.id!!,
                 outputValue = item.state,
                 rangeDTO = RangeDTO(item.stateDescription.minimum, item.stateDescription.maximum, item.state.toDouble())
-            )
+            ).build()
 
             FunctionType.Group -> return null
             FunctionType.Image -> return null
             FunctionType.Location -> return null
-            FunctionType.Number -> return FunctionDTO(
+            FunctionType.Number -> return FunctionDTO.Builder(
                 functionName = functionValue.name,
                 functionId = functionValue.id!!,
                 outputValue = item.state
-            )
+            ).build()
 
             FunctionType.Player -> return null
-            FunctionType.Rollershutter -> return FunctionDTO(
+            FunctionType.Rollershutter -> return FunctionDTO.Builder(
                 functionName = functionValue.name,
                 functionId = functionValue.id!!,
                 outputValue = item.state,
                 rangeDTO = RangeDTO(item.stateDescription.minimum, item.stateDescription.maximum, item.state.toDouble())
-            )
+            ).build()
 
-            FunctionType.StringType -> return FunctionDTO(
+            FunctionType.StringType -> return FunctionDTO.Builder(
                 functionName = functionValue.name,
                 functionId = functionValue.id!!,
                 outputValue = item.state
-            )
+            ).build()
         }
 
     }
