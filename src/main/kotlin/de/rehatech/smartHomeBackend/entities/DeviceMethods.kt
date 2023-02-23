@@ -15,9 +15,9 @@ data class DeviceMethods(
 
     @ManyToOne
     @JoinColumn(name = "deviceOpenHab", nullable=true)
-    var deviceOpenHabDevice: OpenHabDevice? = null,
+    var deviceOpenHab: OpenHabDevice? = null,
     @ManyToOne
     @JoinColumn(name = "deviceHomee", nullable=true)
-    var deviceHomeeDevice: HomeeDevice? = null,
+    var deviceHomee: HomeeDevice? = null,
 
     )

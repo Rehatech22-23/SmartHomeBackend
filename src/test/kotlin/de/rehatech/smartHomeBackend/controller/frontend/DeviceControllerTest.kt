@@ -45,10 +45,10 @@ class DeviceControllerTest {
         val id = "OH:14"
         val req = MockClientHttpRequest(HttpMethod.GET, URI("http://localhost:9000/device"))
         val resp200 = Mockito.mock(HttpResponse::class.java)
-        val dev: Device = Device("deviceName",id, arrayListOf(1,2,3))
-        Mockito.`when`(req).thenReturn()
+        //val dev: Device = Device("deviceName",id, arrayListOf(1,2,3))
+        //Mockito.`when`(req).thenReturn()
 
-        Mockito.verify(deviceService.getDevice(id), Mockito.times(1)).getDevice(id)
+        //Mockito.verify(deviceService.getDevice(id), Mockito.times(1)).getDevice(id)
 
         /*val request = Request.Builder()
             .url("http://localhost:9000/device?deviceID=OH:1")

@@ -16,7 +16,7 @@ data class OpenHabDevice(
     @OneToMany(
         cascade = [(CascadeType.ALL)],
         fetch = FetchType.EAGER,
-        mappedBy = "deviceOpenHabDevice",
+        mappedBy = "deviceOpenHab",
         orphanRemoval = false
     )
     var deviceMethodsIDS = mutableListOf<DeviceMethods>()

@@ -22,7 +22,7 @@ class DeviceMethodsRepositoryTest {
         val test = OpenHabDevice(name="hallo", uid="by")
         openHabDeviceRepository.save(test)
         val t = openHabDeviceRepository.findById(1).get()
-        val newFun = DeviceMethods(name = "test", label= "test", type = FunctionType.Switch, deviceOpenHabDevice = t)
+        val newFun = DeviceMethods(name = "test", label= "test", type = FunctionType.Switch, deviceOpenHab = t)
         deviceMethodsRepository.save(newFun)
 
 
