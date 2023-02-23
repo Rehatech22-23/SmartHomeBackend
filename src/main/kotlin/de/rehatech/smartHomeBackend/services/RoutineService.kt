@@ -2,8 +2,14 @@ package de.rehatech.smartHomeBackend.services
 
 import de.rehatech.smartHomeBackend.entities.Routine
 import de.rehatech.smartHomeBackend.mapper.RoutineMapper
+import de.rehatech.smartHomeBackend.repositories.RoutineEventRepository
 import de.rehatech.smartHomeBackend.repositories.RoutineRepository
+import de.rehatech.smartHomeBackend.repositories.TriggerEventByDeviceRepository
+import de.rehatech.smartHomeBackend.repositories.TriggerTimeRepository
 import de.rehatech2223.datamodel.RoutineDTO
+import de.rehatech2223.datamodel.util.RoutineEventDTO
+import de.rehatech2223.datamodel.util.TriggerEventByDeviceDTO
+import de.rehatech2223.datamodel.util.TriggerTimeDTO
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.springframework.http.HttpStatus
@@ -11,7 +17,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
-class RoutineService(private val routineRepository: RoutineRepository) {
+class RoutineService(private val routineRepository: RoutineRepository, private val triggerTimeRepository: TriggerTimeRepository, private val triggerEventByDeviceRepository: TriggerEventByDeviceRepository, private val routineEventRepository: RoutineEventRepository) {
 
     fun getAllRoutineIds(): ResponseEntity<List<Long>> {
         val ids: ArrayList<Long> = ArrayList()
@@ -40,7 +46,8 @@ class RoutineService(private val routineRepository: RoutineRepository) {
     }
 
     fun createRoutine(routineDTO: RoutineDTO): ResponseEntity<String> {
-        return ResponseEntity(Json.encodeToString((RoutineMapper.mapToDTO(routineRepository.save(RoutineMapper.mapToEntity(routineDTO))))), null, HttpStatus.OK)
+        var routine = RoutineMapper.mapToEntity(routineDTO)
+        return ResponseEntity(Json.encodeToString((RoutineMapper.mapToDTO(routineRepository.save(routine)))), null, HttpStatus.OK)
     }
 
     fun deleteRoutine(routineId: Long): ResponseEntity<String> {

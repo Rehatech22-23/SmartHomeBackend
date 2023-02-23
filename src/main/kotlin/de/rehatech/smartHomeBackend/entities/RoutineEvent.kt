@@ -13,7 +13,7 @@ class RoutineEvent {
     var voldemort: Float? = null // deviceMethods
 
     @ManyToOne
-    @JoinColumn(name="routine_id", nullable=false)
+    @JoinColumn(name="routine_id")
     var routine: Routine?=null
 
 }
