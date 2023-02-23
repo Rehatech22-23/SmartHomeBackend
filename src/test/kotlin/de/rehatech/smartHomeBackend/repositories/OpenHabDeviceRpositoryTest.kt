@@ -11,22 +11,22 @@ import org.junit.jupiter.api.Assertions.*
 class OpenHabDeviceRpositoryTest  {
 
     @Autowired
-    lateinit var openHabRepository: OpenHabRepository
+    lateinit var openHabDeviceRepository: OpenHabDeviceRepository
 
     @Test
     fun testrepo()
     {
 
-        val test = OpenHabDevice(name="hallo", uid="by");
-        val test2 = OpenHabDevice(name="hao",uid="by1");
-        openHabRepository.save(test)
+        val test = OpenHabDevice(name="hallo", uid="by")
+        val test2 = OpenHabDevice(name="hao",uid="by1")
+        openHabDeviceRepository.save(test)
 
-        println(openHabRepository.count())
-        val li = openHabRepository.findAll()
-        openHabRepository.save(test2)
-        val li2 = openHabRepository.findAll().toList()
+        println(openHabDeviceRepository.count())
+        val li = openHabDeviceRepository.findAll()
+        openHabDeviceRepository.save(test2)
+        val li2 = openHabDeviceRepository.findAll().toList()
         assertEquals(2, li2.size)
-        val t = openHabRepository.findById(2).get();
+        val t = openHabDeviceRepository.findById(2).get()
         assertEquals("hao", t.name)
         assertEquals("OH:2",t.getOpenHabID())
 
@@ -36,8 +36,8 @@ class OpenHabDeviceRpositoryTest  {
     fun testFindbyUid()
     {
         val test = OpenHabDevice(name="hallo", uid="by");
-        openHabRepository.save(test)
-        val found = openHabRepository.findOpenHabByUid("by")
+        openHabDeviceRepository.save(test)
+        val found = openHabDeviceRepository.findOpenHabByUid("by")
         println(found.name)
     }
 

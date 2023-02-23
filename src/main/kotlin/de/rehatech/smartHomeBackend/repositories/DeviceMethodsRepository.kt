@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository
 import de.rehatech.smartHomeBackend.entities.DeviceMethods
 
 @Repository
-interface FunctionRepository : CrudRepository<DeviceMethods, Long> {
+interface DeviceMethodsRepository : CrudRepository<DeviceMethods, Long> {
 
 }

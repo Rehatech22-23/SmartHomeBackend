@@ -4,7 +4,7 @@ import de.rehatech.homeekt.model.attributes
 import de.rehatech.smartHomeBackend.enums.FunctionType
 import de.rehatech.smartHomeBackend.response.Item
 import de.rehatech.smartHomeBackend.entities.DeviceMethods
-import de.rehatech.smartHomeBackend.repositories.HomeeRepository
+import de.rehatech.smartHomeBackend.repositories.HomeeDeviceRepository
 import de.rehatech.smartHomeBackend.services.FunctionTypService
 import de.rehatech2223.datamodel.FunctionDTO
 import de.rehatech2223.datamodel.util.RangeDTO
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Controller
 class BackendController @Autowired constructor(
 
     val openHabController: OpenHabController,
-    val homeeRepository: HomeeRepository,
+    val homeeDeviceRepository: HomeeDeviceRepository,
     val homeeController: HomeeController,
     val functionTypService: FunctionTypService
 
@@ -36,7 +36,7 @@ class BackendController @Autowired constructor(
         else if(deviceID.contains("HM:")){
             try{
                 val id = deviceID.split(":")
-                val homeenode = homeeRepository.findById(id[1].toLong()).get()
+                val homeenode = homeeDeviceRepository.findById(id[1].toLong()).get()
                 homeeController.sendcommand(homeenode.homeeID, deviceMethods.homeeattrID!!, command.toDouble())
             }
             catch (e:Exception){

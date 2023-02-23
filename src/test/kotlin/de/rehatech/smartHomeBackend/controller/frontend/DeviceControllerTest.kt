@@ -1,8 +1,7 @@
 package de.rehatech.smartHomeBackend.controller.frontend;
 
-import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
+import de.rehatech.smartHomeBackend.repositories.OpenHabDeviceRepository
 import de.rehatech.smartHomeBackend.services.DeviceService
-import de.rehatech2223.datamodel.DeviceDTO
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ class DeviceControllerTest {
     lateinit var deviceController: DeviceController
 
     @Autowired
-    lateinit var openHabRepository: OpenHabRepository
+    lateinit var openHabDeviceRepository: OpenHabDeviceRepository
 
     @Test //TODO
     fun getDeviceIdList() {

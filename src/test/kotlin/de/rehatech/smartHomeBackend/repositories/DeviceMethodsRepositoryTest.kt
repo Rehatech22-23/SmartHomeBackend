@@ -8,25 +8,25 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class FunctionRepositoryTest {
+class DeviceMethodsRepositoryTest {
 
     @Autowired
-    lateinit var openHabRepository: OpenHabRepository
+    lateinit var openHabDeviceRepository: OpenHabDeviceRepository
 
     @Autowired
-    lateinit var functionRepository: FunctionRepository
+    lateinit var deviceMethodsRepository: DeviceMethodsRepository
 
     @Test
     fun testJoin()
     {
         val test = OpenHabDevice(name="hallo", uid="by")
-        openHabRepository.save(test)
-        val t = openHabRepository.findById(1).get()
+        openHabDeviceRepository.save(test)
+        val t = openHabDeviceRepository.findById(1).get()
         val newFun = DeviceMethods(name = "test", label= "test", type = FunctionType.Switch, deviceOpenHabDevice = t)
-        functionRepository.save(newFun)
+        deviceMethodsRepository.save(newFun)
 
 
-        val t3 = openHabRepository.findById(1).get()
+        val t3 = openHabDeviceRepository.findById(1).get()
         println( t3.deviceMethodsIDS.size)
     }
 }

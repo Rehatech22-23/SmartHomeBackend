@@ -7,23 +7,21 @@ import de.rehatech.smartHomeBackend.controller.backend.OpenHabController
 import de.rehatech.smartHomeBackend.response.Things
 import de.rehatech.smartHomeBackend.entities.HomeeDevice
 import de.rehatech.smartHomeBackend.entities.OpenHabDevice
-import de.rehatech.smartHomeBackend.repositories.HomeeRepository
-import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
+import de.rehatech.smartHomeBackend.repositories.HomeeDeviceRepository
+import de.rehatech.smartHomeBackend.repositories.OpenHabDeviceRepository
 import de.rehatech2223.datamodel.DeviceDTO
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
-import org.springframework.web.server.ResponseStatusException
 
 @Service
 class DeviceService @Autowired constructor(
 
-   val openHabRepository: OpenHabRepository,
-   val homeeRepository: HomeeRepository,
-   val functionService: FunctionService,
-   val openHabController: OpenHabController,
-   val homeeController: HomeeController
+    val openHabDeviceRepository: OpenHabDeviceRepository,
+    val homeeDeviceRepository: HomeeDeviceRepository,
+    val functionService: FunctionService,
+    val openHabController: OpenHabController,
+    val homeeController: HomeeController
 )
 {
 
@@ -33,7 +31,7 @@ class DeviceService @Autowired constructor(
      */
     fun updateDevicesOpenHab(devices: ArrayList<Things>)
     {
-        val listrepo = openHabRepository.findAll().toList()
+        val listrepo = openHabDeviceRepository.findAll().toList()
         if(listrepo.isEmpty())
         {
             for(device in devices)
@@ -110,7 +108,7 @@ class DeviceService @Autowired constructor(
      */
     private fun updateNodeHomee(nodes:ArrayList<nodes>)
     {
-        val listnodes = homeeRepository.findAll().toList()
+        val listnodes = homeeDeviceRepository.findAll().toList()
         if(listnodes.isEmpty())
         {
             for(node in nodes)
@@ -147,7 +145,7 @@ class DeviceService @Autowired constructor(
     private fun trangsformNodeAndSave(node: nodes)
     {
         val newDevice = HomeeDevice(name = node.name, homeeID = node.id)
-        homeeRepository.save(newDevice)
+        homeeDeviceRepository.save(newDevice)
     }
 
 
@@ -158,7 +156,7 @@ class DeviceService @Autowired constructor(
     private  fun trangsformThingAndSave(things: Things)
     {
         val newDevice = OpenHabDevice(name = things.label, uid = things.UID )
-        openHabRepository.save(newDevice)
+        openHabDeviceRepository.save(newDevice)
     }
 
 
@@ -168,11 +166,11 @@ class DeviceService @Autowired constructor(
     fun getDeviceIdList(): List<String>{
         updateDevices()
         val result = mutableListOf<String>()
-        val listOH = openHabRepository.findAll().toList()
+        val listOH = openHabDeviceRepository.findAll().toList()
         for (item in listOH){
             result.add(item.getOpenHabID())
         }
-        val listHomee = homeeRepository.findAll().toList()
+        val listHomee = homeeDeviceRepository.findAll().toList()
         for (item in listHomee){
             result.add(item.getHomeeID())
         }
@@ -200,7 +198,7 @@ class DeviceService @Autowired constructor(
         var OH: OpenHabDevice? = null
         try{
             val i = id.toLong()
-            val OHL = openHabRepository.findById(i)
+            val OHL = openHabDeviceRepository.findById(i)
             OH = OHL.get()
         }catch(Exception: NumberFormatException){
             // Todo: Do nothing
@@ -223,7 +221,7 @@ class DeviceService @Autowired constructor(
         var HM: HomeeDevice? = null
         try{
             id.toLong()
-            HM = homeeRepository.findById(id.toLong()).get()
+            HM = homeeDeviceRepository.findById(id.toLong()).get()
         }catch(Exception: NumberFormatException){
 
         }

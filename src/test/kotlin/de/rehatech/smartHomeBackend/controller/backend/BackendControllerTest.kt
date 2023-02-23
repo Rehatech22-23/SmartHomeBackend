@@ -1,8 +1,8 @@
 package de.rehatech.smartHomeBackend.controller.backend
 
-import de.rehatech.smartHomeBackend.repositories.FunctionRepository
-import de.rehatech.smartHomeBackend.repositories.HomeeRepository
-import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
+import de.rehatech.smartHomeBackend.repositories.DeviceMethodsRepository
+import de.rehatech.smartHomeBackend.repositories.HomeeDeviceRepository
+import de.rehatech.smartHomeBackend.repositories.OpenHabDeviceRepository
 import de.rehatech.smartHomeBackend.services.DeviceService
 import org.junit.jupiter.api.Test
 
@@ -16,14 +16,14 @@ class BackendControllerTest {
     lateinit var backendController: BackendController
 
     @Autowired
-    lateinit var openHabRepository: OpenHabRepository
+    lateinit var openHabDeviceRepository: OpenHabDeviceRepository
 
     @Autowired
-    lateinit var functionRepository: FunctionRepository
+    lateinit var deviceMethodsRepository: DeviceMethodsRepository
 
 
     @Autowired
-    lateinit var homeeRepository: HomeeRepository
+    lateinit var homeeDeviceRepository: HomeeDeviceRepository
 
     @Autowired
     lateinit var deviceService: DeviceService
@@ -32,9 +32,9 @@ class BackendControllerTest {
     fun getFunctionStateTest()
     {
         deviceService.updateDevices()
-        val l1 = openHabRepository.findAll().toList()
-        //val count = functionRepository.count()
-        val l2 = homeeRepository.findAll().toList()
+        val l1 = openHabDeviceRepository.findAll().toList()
+        //val count = deviceMethodsRepository.count()
+        val l2 = homeeDeviceRepository.findAll().toList()
 
         val opstage = backendController.getMethodStatus("OH:11", l1.get(11).deviceMethodsIDS[0])
         val hmstage = backendController.getMethodStatus("HM:11", l2.get(2).deviceMethodsIDS[0])
