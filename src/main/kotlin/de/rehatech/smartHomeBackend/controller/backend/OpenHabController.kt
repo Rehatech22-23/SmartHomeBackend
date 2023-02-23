@@ -36,7 +36,7 @@ class OpenHabController @Autowired constructor (
     fun sendcommand(itemname: String, command: String): Boolean{
         val request = Request.Builder()
             .url("${url}/rest/items/${itemname}")
-            .addHeader("Authorization","Bearer " + token)
+            .addHeader("Authorization","Bearer " + token) //seek seek lest
             .addHeader("Content-Type", " text/plain")
             .post(command.toRequestBody())
             .build()

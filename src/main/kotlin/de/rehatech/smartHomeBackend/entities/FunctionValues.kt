@@ -14,9 +14,9 @@ data class FunctionValues(
     var label: String,
     @ManyToOne
     @JoinColumn(name = "deviceOpenHab", nullable=true)
-    var deviceOpenHab: OpenHab? = null,
+    var deviceOpenHabDevice: OpenHabDevice? = null,
     @ManyToOne
     @JoinColumn(name = "deviceHomee", nullable=true)
-    var deviceHomee: Homee? = null,
+    var deviceHomeeDevice: HomeeDevice? = null,
 
     )

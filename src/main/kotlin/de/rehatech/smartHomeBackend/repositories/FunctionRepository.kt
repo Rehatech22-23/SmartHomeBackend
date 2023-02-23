@@ -6,4 +6,5 @@ import de.rehatech.smartHomeBackend.entities.FunctionValues
 
 @Repository
 interface FunctionRepository : CrudRepository<FunctionValues, Long> {
+
 }

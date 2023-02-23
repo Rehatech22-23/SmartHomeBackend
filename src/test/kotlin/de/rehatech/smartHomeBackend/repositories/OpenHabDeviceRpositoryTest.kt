@@ -1,6 +1,6 @@
 package de.rehatech.smartHomeBackend.repositories
 
-import de.rehatech.smartHomeBackend.entities.OpenHab
+import de.rehatech.smartHomeBackend.entities.OpenHabDevice
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions.*
 
 
 @SpringBootTest
-class OpenHabRpositoryTest  {
+class OpenHabDeviceRpositoryTest  {
 
     @Autowired
     lateinit var openHabRepository: OpenHabRepository
@@ -17,8 +17,8 @@ class OpenHabRpositoryTest  {
     fun testrepo()
     {
 
-        val test = OpenHab(name="hallo", uid="by");
-        val test2 = OpenHab(name="hao",uid="by1");
+        val test = OpenHabDevice(name="hallo", uid="by");
+        val test2 = OpenHabDevice(name="hao",uid="by1");
         openHabRepository.save(test)
 
         println(openHabRepository.count())
@@ -35,7 +35,7 @@ class OpenHabRpositoryTest  {
     @Test
     fun testFindbyUid()
     {
-        val test = OpenHab(name="hallo", uid="by");
+        val test = OpenHabDevice(name="hallo", uid="by");
         openHabRepository.save(test)
         val found = openHabRepository.findOpenHabByUid("by")
         println(found.name)
