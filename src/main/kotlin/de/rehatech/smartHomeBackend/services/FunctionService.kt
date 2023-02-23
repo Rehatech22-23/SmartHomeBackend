@@ -66,23 +66,57 @@ class FunctionService @Autowired constructor(
         lateinit var command: String
         //einmal für homee und einmal für oh
         when (funcVal.type) { //OH
+
+            FunctionType.Contact -> command = openClosed(body)
+            FunctionType.Dimmer -> command = percent(body)
+            FunctionType.Rollershutter -> command = percent(body)
+            FunctionType.Switch -> command = onOff(body)
+
+
+
+
+            //Fehler
             FunctionType.Color -> command = "HSB" //nochmal drüberschaun
             FunctionType.Call -> command = ""
-            FunctionType.Contact -> command = "OpenClosed"
+
             FunctionType.Datetime -> command = "DateTime"
-            FunctionType.Dimmer -> command = "Percent"
+
             FunctionType.Group -> command = ""
             FunctionType.Image -> command = ""
             FunctionType.Location -> command = "Point"
             FunctionType.Number -> command = "Decimal"
             FunctionType.Player -> command = "PlayPause"
-            FunctionType.Rollershutter -> command = "Percent" // UpDown?
+             // UpDown?
             FunctionType.StringType -> command = "String"
-            FunctionType.Switch -> command = "OnOff"
+
         }
         backendController.sendCommand(deviceId, funcVal, command)
 
 
+    }
+
+    private fun openClosed(body: Float): String{
+        if(body == 0F){
+            return "OPEN"
+        }else if (body == 1F){
+            return "CLOSED"
+        }
+        return ""       //falscher wert im body
+    }
+
+    private fun percent(body: Float): String{
+        if(body in 0F..100F){
+            return body.toString()
+        }
+        return ""       //falscher wert im body
+    }
+    private fun onOff(body: Float): String{
+        if(body == 0F){
+            return "ON"
+        }else if (body == 1F){
+            return "OFF"
+        }
+        return ""       //falscher wert im body
     }
 
 
@@ -125,6 +159,6 @@ class FunctionService @Autowired constructor(
     }
 
     fun equals(functionDTO: FunctionDTO, function: Function): Boolean {
-        return true;
+        return true
     }
 }
