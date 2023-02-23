@@ -1,6 +1,6 @@
 package de.rehatech.smartHomeBackend.entities
 
-import de.rehatech.smartHomeBackend.enum.FunctionType
+import de.rehatech.smartHomeBackend.enums.FunctionType
 import jakarta.persistence.*
 
 @Entity

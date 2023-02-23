@@ -3,7 +3,7 @@ package de.rehatech.smartHomeBackend.services
 import de.rehatech.homeekt.model.attributes
 import de.rehatech.smartHomeBackend.controller.backend.BackendController
 import de.rehatech.smartHomeBackend.entities.DeviceMethods
-import de.rehatech.smartHomeBackend.enum.FunctionType
+import de.rehatech.smartHomeBackend.enums.FunctionType
 import de.rehatech.smartHomeBackend.repositories.FunctionRepository
 import de.rehatech.smartHomeBackend.repositories.HomeeRepository
 import de.rehatech.smartHomeBackend.repositories.OpenHabRepository

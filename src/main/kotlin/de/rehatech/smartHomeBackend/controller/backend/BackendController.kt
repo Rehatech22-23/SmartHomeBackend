@@ -1,7 +1,7 @@
 package de.rehatech.smartHomeBackend.controller.backend
 
 import de.rehatech.homeekt.model.attributes
-import de.rehatech.smartHomeBackend.enum.FunctionType
+import de.rehatech.smartHomeBackend.enums.FunctionType
 import de.rehatech.smartHomeBackend.response.Item
 import de.rehatech.smartHomeBackend.entities.DeviceMethods
 import de.rehatech.smartHomeBackend.repositories.HomeeRepository
