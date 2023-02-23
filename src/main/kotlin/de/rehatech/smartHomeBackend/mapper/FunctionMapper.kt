@@ -18,14 +18,14 @@ class FunctionMapper {
         }
 
         fun mapToDTO(function: Function): FunctionDTO {
-            return FunctionDTO(
+            return FunctionDTO.Builder(
                 function.functionName,
                 function.id!!,
-                RangeMapper.mapToDTO(function.range!!),
-                function.onOff,
-                function.outputValue,
-                function.outputTrigger
-            )
+                ).rangeDTO(RangeMapper.mapToDTO(function.range!!))
+                .onOff(function.onOff!!)
+                .outputValue(function.outputValue!!)
+                .outputTrigger(function.outputTrigger!!)
+                .build()
         }
     }
 }
