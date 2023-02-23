@@ -32,7 +32,8 @@ class RoutineController(@field:Autowired private val routineService: RoutineServ
     }
 
     @PostMapping("routine/create")
-    fun createRoutine(@RequestParam routineDTO: RoutineDTO): ResponseEntity<String>? {
+    fun createRoutine(@RequestBody routineDTO: RoutineDTO): ResponseEntity<String>? {
+        println("routineDTO: "+routineDTO)
         return routineService.createRoutine(routineDTO)
     }
 

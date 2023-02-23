@@ -2,19 +2,18 @@ package de.rehatech.smartHomeBackend.entities
 
 import jakarta.persistence.*
 
-@Entity
+@Entity(name = "routineEvent")
 class RoutineEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null
 
-    var routineId: Long? = null
     lateinit var deviceId: String
     var functionId: Long? = null
     var voldemort: Float? = null // deviceMethods
 
     @ManyToOne
-    @JoinColumn(name="routine")
+    @JoinColumn(name="routine_id", nullable=false)
     var routine: Routine?=null
 
 }

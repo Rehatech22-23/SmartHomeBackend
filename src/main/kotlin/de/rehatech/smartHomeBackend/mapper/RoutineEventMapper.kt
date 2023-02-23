@@ -9,7 +9,7 @@ class RoutineEventMapper {
         fun mapToEntity(routineEventDTO: RoutineEventDTO): RoutineEvent {
             val result = RoutineEvent()
             result.id = routineEventDTO.routineEventId
-            result.routineId = routineEventDTO.routineId
+            //result.routineId = routineEventDTO.routineId
             result.deviceId = routineEventDTO.deviceId
             result.functionId = routineEventDTO.functionId
             result.voldemort = routineEventDTO.functionValue
@@ -21,7 +21,7 @@ class RoutineEventMapper {
                 routineEvent.deviceId,
                 routineEvent.functionId!!,
                 routineEvent.voldemort!!,
-                routineEvent.routineId,
+                //routineEvent.routineId,
                 routineEvent.id
             )
         }

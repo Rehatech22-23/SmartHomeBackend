@@ -10,7 +10,7 @@ class FunctionMapper {
             val result = Function()
             result.id = functionDTO.functionId
             result.functionName = functionDTO.functionName
-            result.range = RangeMapper.mapToEntity(functionDTO.rangeDTO!!)
+            if(functionDTO.rangeDTO != null) result.range = RangeMapper.mapToEntity(functionDTO.rangeDTO!!)
             result.onOff = functionDTO.onOff
             result.outputValue = functionDTO.outputValue
             result.outputTrigger = functionDTO.outputTrigger

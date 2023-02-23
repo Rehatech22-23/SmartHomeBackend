@@ -8,12 +8,19 @@ class RoutineMapper {
     companion object {
         fun mapToEntity(routineDTO: RoutineDTO): Routine {
             var result = Routine()
-            result.id = routineDTO.routineId
-            result.routineName = routineDTO.routineName
-            result.triggerType = routineDTO.triggerType
-            result.triggerTime = TriggerTimeMapper.mapToEntity(routineDTO.triggerTime!!)
-            result.triggerEventByDevice = TriggerEventByDeviceMapper.mapToEntity(routineDTO.triggerEventByDeviceDTO!!)
-            result.routineEvent = RoutineEventMapper.mapToEntityArrayList(routineDTO.routineEventDTO)
+            if (routineDTO.triggerEventByDeviceDTO == null) {
+                result.id = routineDTO.routineId
+                result.routineName = routineDTO.routineName
+                result.triggerType = routineDTO.triggerType
+                result.triggerTime = TriggerTimeMapper.mapToEntity(routineDTO.triggerTime!!)
+                result.routineEvent = RoutineEventMapper.mapToEntityArrayList(routineDTO.routineEventDTO)
+            }else { // routineDTO.triggerTimeDTO == null
+                result.id = routineDTO.routineId
+                result.routineName = routineDTO.routineName
+                result.triggerType = routineDTO.triggerType
+                result.triggerEventByDevice = TriggerEventByDeviceMapper.mapToEntity(routineDTO.triggerEventByDeviceDTO!!)
+                result.routineEvent = RoutineEventMapper.mapToEntityArrayList(routineDTO.routineEventDTO)
+            }
             return result
         }
 

@@ -12,10 +12,12 @@ class Routine {
     lateinit var routineName: String
     var triggerType: Int? = null
 
-    @OneToOne(mappedBy = "routine")
+    @OneToOne
+    @JoinColumn(name = "triggerEventByDevice", nullable = true)
     var triggerEventByDevice: TriggerEventByDevice? = null
 
-    @OneToOne(mappedBy = "routine")
+    @OneToOne
+    @JoinColumn(name = "triggerTime", nullable = true)
     var triggerTime: TriggerTime? = null
 
 

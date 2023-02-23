@@ -11,11 +11,9 @@ class TriggerEventByDevice {
     var routineID: Long? = null
     lateinit var deviceId: String
 
-    @OneToOne
-    @JoinColumn(name = "routine")
+    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "triggerEventByDevice", orphanRemoval = false)
     lateinit var routine: Routine
 
-    @OneToOne
-    @JoinColumn(name = "function")
+    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "triggerEventByDevice", orphanRemoval = false)
     lateinit var function: Function
 }

@@ -12,6 +12,7 @@ data class DeviceMethods(
     var name: String,
     var type: FunctionType,
     var label: String,
+
     @ManyToOne
     @JoinColumn(name = "deviceOpenHab", nullable=true)
     var deviceOpenHabDevice: OpenHabDevice? = null,
