@@ -11,7 +11,7 @@ class RoutineEvent {
     var routineId: Long? = null
     lateinit var deviceId: String
     var functionId: Long? = null
-    var voldemort: Float? = null // functionValue
+    var voldemort: Float? = null // deviceMethods
 
     @ManyToOne
     @JoinColumn(name="routine")

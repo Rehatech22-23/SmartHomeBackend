@@ -36,8 +36,8 @@ class BackendControllerTest {
         //val count = functionRepository.count()
         val l2 = homeeRepository.findAll().toList()
 
-        val opstage = backendController.getFunctionState("OH:11", l1.get(11).functionValuesIDS[0])
-        val hmstage = backendController.getFunctionState("HM:11", l2.get(2).functionValuesIDS[0])
+        val opstage = backendController.getMethodStatus("OH:11", l1.get(11).deviceMethodsIDS[0])
+        val hmstage = backendController.getMethodStatus("HM:11", l2.get(2).deviceMethodsIDS[0])
 
         println(hmstage)
 

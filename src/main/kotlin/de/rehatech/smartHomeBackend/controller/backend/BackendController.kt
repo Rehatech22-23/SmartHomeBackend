@@ -3,7 +3,7 @@ package de.rehatech.smartHomeBackend.controller.backend
 import de.rehatech.homeekt.model.attributes
 import de.rehatech.smartHomeBackend.enum.FunctionType
 import de.rehatech.smartHomeBackend.response.Item
-import de.rehatech.smartHomeBackend.entities.FunctionValues
+import de.rehatech.smartHomeBackend.entities.DeviceMethods
 import de.rehatech.smartHomeBackend.repositories.HomeeRepository
 import de.rehatech.smartHomeBackend.services.FunctionTypService
 import de.rehatech2223.datamodel.FunctionDTO
@@ -25,19 +25,19 @@ class BackendController @Autowired constructor(
      * decides from deviceID if its a homee or a OpenHab Device and calls the sendCommand-Function from the
      * corresponding Controller Class (either HomeeController or OpenHabController)
      * @param deviceID String starting either with "OH:" or "HM:" to indicate if its a OpenHab or a Homee Device, after the ":" follows the Id (Long)
-     * @param functionValues
+     * @param deviceMethods
      * @param command
      * @return Boolean
      */
-    fun sendCommand(deviceID: String,functionValues: FunctionValues, command:String):Boolean{
+    fun sendCommand(deviceID: String, deviceMethods: DeviceMethods, command:String):Boolean{
         if(deviceID.contains("OH:")){
-            return openHabController.sendcommand(functionValues.name,command)
+            return openHabController.sendcommand(deviceMethods.name,command)
         }
         else if(deviceID.contains("HM:")){
             try{
                 val id = deviceID.split(":")
                 val homeenode = homeeRepository.findById(id[1].toLong()).get()
-                homeeController.sendcommand(homeenode.homeeID, functionValues.homeeattrID!!, command.toDouble())
+                homeeController.sendcommand(homeenode.homeeID, deviceMethods.homeeattrID!!, command.toDouble())
             }
             catch (e:Exception){
                 return false
@@ -52,23 +52,23 @@ class BackendController @Autowired constructor(
     /**
      * //TODO: Docs, refactor deviceID -> deviceId
      * @param deviceID
-     * @param functionValues
+     * @param deviceMethods
      * @return FunctionDTO?
      */
-    fun getFunctionState(deviceID: String, functionValues: FunctionValues): FunctionDTO? {
+    fun getMethodStatus(deviceID: String, deviceMethods: DeviceMethods): FunctionDTO? { //Für Homee Und Openhab Methoden
         if (deviceID.contains("OH:")) {
 
-            val item = openHabController.getItemByName(functionValues.name) ?: return null
-            return getFunctionFromItem(item, functionValues)
+            val item = openHabController.getItemByName(deviceMethods.name) ?: return null
+            return getFunctionFromItem(item, deviceMethods)
         } else if (deviceID.contains("HM:")) {
             val nodes = homeeController.getNodes()
             if (nodes != null) {
                 for (node in nodes) {
-                    if (node.id == functionValues.deviceHomee!!.homeeID) {
+                    if (node.id == deviceMethods.deviceHomeeDevice!!.homeeID) {
                         val atts = node.attributes
                         for (att in atts) {
-                            if (att.id == functionValues.homeeattrID) {
-                                return getFunctionFromNode(functionValues, att)
+                            if (att.id == deviceMethods.homeeattrID) {
+                                return getFunctionFromNode(deviceMethods, att)
 
                             }
                         }
@@ -87,7 +87,7 @@ class BackendController @Autowired constructor(
      * @param attribute
      * @return FunctionDTO?
      */
-    fun getFunctionFromNode(functionValue: FunctionValues, attribute: attributes): FunctionDTO? {
+    fun getFunctionFromNode(functionValue: DeviceMethods, attribute: attributes): FunctionDTO? {
         return when (functionValue.type) {
             FunctionType.Switch -> {
                 var on = false
@@ -125,7 +125,7 @@ class BackendController @Autowired constructor(
      * @param functionValue
      * @return FunctionDTO?
      */
-    fun getFunctionFromItem(item: Item, functionValue: FunctionValues): FunctionDTO? {
+    fun getFunctionFromItem(item: Item, functionValue: DeviceMethods): FunctionDTO? {
         val functionType = functionTypService.functionsTypeOpenHab(item) ?: return null
         when (functionType) {
             FunctionType.Switch -> {

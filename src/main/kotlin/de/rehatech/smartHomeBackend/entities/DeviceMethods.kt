@@ -4,11 +4,11 @@ import de.rehatech.smartHomeBackend.enum.FunctionType
 import jakarta.persistence.*
 
 @Entity
-data class FunctionValues(
+data class DeviceMethods(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null,
-    var homeeattrID: Int? = null,
+    var homeeattrID: Int? = null, // only for homee
     var name: String,
     var type: FunctionType,
     var label: String,

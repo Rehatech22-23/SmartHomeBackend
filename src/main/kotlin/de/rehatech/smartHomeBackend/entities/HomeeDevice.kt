@@ -12,7 +12,7 @@ data class HomeeDevice(
 )
 {
     @OneToMany(cascade = [(CascadeType.ALL)], fetch= FetchType.EAGER, mappedBy = "deviceHomeeDevice", orphanRemoval = false)
-    var functionValuesIDS = mutableListOf<FunctionValues>()
+    var deviceMethodsIDS = mutableListOf<DeviceMethods>()
 
     fun getHomeeID():String
     {

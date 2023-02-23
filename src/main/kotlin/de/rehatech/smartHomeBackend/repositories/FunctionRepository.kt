@@ -2,9 +2,9 @@ package de.rehatech.smartHomeBackend.repositories
 
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
-import de.rehatech.smartHomeBackend.entities.FunctionValues
+import de.rehatech.smartHomeBackend.entities.DeviceMethods
 
 @Repository
-interface FunctionRepository : CrudRepository<FunctionValues, Long> {
+interface FunctionRepository : CrudRepository<DeviceMethods, Long> {
 
 }

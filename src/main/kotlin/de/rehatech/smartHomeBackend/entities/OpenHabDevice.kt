@@ -19,7 +19,7 @@ data class OpenHabDevice(
         mappedBy = "deviceOpenHabDevice",
         orphanRemoval = false
     )
-    var functionValuesIDS = mutableListOf<FunctionValues>()
+    var deviceMethodsIDS = mutableListOf<DeviceMethods>()
 
     fun getOpenHabID(): String {
         return "OH:${id}"

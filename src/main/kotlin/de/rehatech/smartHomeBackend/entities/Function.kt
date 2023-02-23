@@ -1,6 +1,5 @@
 package de.rehatech.smartHomeBackend.entities
 
-import de.rehatech2223.datamodel.util.RangeDTO
 import jakarta.persistence.*
 
 @Entity(name = "function")
@@ -16,11 +15,11 @@ class Function {
     var range: Range? = null
 
     @OneToOne(mappedBy = "function")
-    var triggerEventByDevice: TriggerEventByDevice?= null
+    var triggerEventByDevice: TriggerEventByDevice? = null
 
-    var functionValueId: Long?=null
+    var deviceMethodsId: Long? = null
 
-    var onOff : Boolean? = null
+    var onOff: Boolean? = null
     var outputValue: String? = null
     var outputTrigger: Boolean? = null
 }

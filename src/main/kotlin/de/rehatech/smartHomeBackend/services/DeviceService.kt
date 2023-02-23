@@ -11,8 +11,10 @@ import de.rehatech.smartHomeBackend.repositories.HomeeRepository
 import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
 import de.rehatech2223.datamodel.DeviceDTO
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 
 @Service
 class DeviceService @Autowired constructor(
@@ -201,14 +203,14 @@ class DeviceService @Autowired constructor(
             val OHL = openHabRepository.findById(i)
             OH = OHL.get()
         }catch(Exception: NumberFormatException){
-
+            // Todo: Do nothing
         }
 
         if(OH == null){
             return null
         }
         val funcIds = ArrayList<Long>()
-        for (item in OH.functionValuesIDS){
+        for (item in OH.deviceMethodsIDS){
             item.id?.let { funcIds.add(it.toLong()) }
         }
 
@@ -230,7 +232,7 @@ class DeviceService @Autowired constructor(
             return null
         }
         val funcIds = ArrayList<Long>()
-        for (item in HM.functionValuesIDS){
+        for (item in HM.deviceMethodsIDS){
             item.id?.let { funcIds.add(it.toLong()) }
         }
 
