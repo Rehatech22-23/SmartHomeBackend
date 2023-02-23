@@ -33,13 +33,13 @@ class FunctionService  @Autowired constructor(
 
         val funcVal = functionRepository.findById(functionId).get()
         var funcState : FunctionDTO? = null
-        if(funcVal.deviceHomee == null) {
-          funcState = backendController.getFunctionState(deviceID = funcVal.deviceOpenHab!!.getOpenHabID(), functionValues = funcVal)
+        if(funcVal.deviceHomeeDevice == null) {
+          funcState = backendController.getFunctionState(deviceID = funcVal.deviceOpenHabDevice!!.getOpenHabID(), functionValues = funcVal)
 
 
 
-        }else if (funcVal.deviceOpenHab == null){
-            funcState = backendController.getFunctionState(deviceID = funcVal.deviceHomee!!.getHomeeID(), functionValues = funcVal)        }else{
+        }else if (funcVal.deviceOpenHabDevice == null){
+            funcState = backendController.getFunctionState(deviceID = funcVal.deviceHomeeDevice!!.getHomeeID(), functionValues = funcVal)        }else{
 
         }
             if (funcState == null) throw NullPointerException()
@@ -92,7 +92,7 @@ class FunctionService  @Autowired constructor(
         val functType = functionTypService.functionsTypeOpenHab(item)
         if(functType != null)
         {
-            val newFunctionValues = FunctionValues(label = item.label, name = item.name, type = functType , deviceOpenHab = openhab )
+            val newFunctionValues = FunctionValues(label = item.label, name = item.name, type = functType , deviceOpenHabDevice = openhab )
             functionRepository.save(newFunctionValues)
         }
 
@@ -109,7 +109,7 @@ class FunctionService  @Autowired constructor(
         val functType = functionTypService.functionsTypeHomee(attribute)
         if(functType != null)
         {
-            val newFunctionValues = FunctionValues(label = attribute.name, name = attribute.name, homeeattrID = attribute.id,  type = functType , deviceHomee = homeeNode )
+            val newFunctionValues = FunctionValues(label = attribute.name, name = attribute.name, homeeattrID = attribute.id,  type = functType , deviceHomeeDevice = homeeNode )
             functionRepository.save(newFunctionValues)
         }
     }

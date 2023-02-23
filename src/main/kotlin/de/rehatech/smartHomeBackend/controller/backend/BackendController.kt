@@ -21,28 +21,30 @@ class BackendController @Autowired constructor(
 
 
 ) {
-    /**
-     * //TODO: Docs, refactor deviceID -> deviceId
-     * @param deviceID
+    /** //TODO: deviceID-> deviceId
+     * decides from deviceID if its a homee or a OpenHab Device and calls the sendCommand-Function from the
+     * corresponding Controller Class (either HomeeController or OpenHabController)
+     * @param deviceID String starting either with "OH:" or "HM:" to indicate if its a OpenHab or a Homee Device, after the ":" follows the Id (Long)
      * @param functionValues
      * @param command
      * @return Boolean
      */
-    fun sendCommand(deviceID: String, functionValues: FunctionValues, command: String): Boolean {
-        if (deviceID.contains("OH:")) {
-
-            return openHabController.sendcommand(functionValues.name, command)
-        } else if (deviceID.contains("HM:")) {
-            try {
+    fun sendCommand(deviceID: String,functionValues: FunctionValues, command:String):Boolean{
+        if(deviceID.contains("OH:")){
+            return openHabController.sendcommand(functionValues.name,command)
+        }
+        else if(deviceID.contains("HM:")){
+            try{
                 val id = deviceID.split(":")
                 val homeenode = homeeRepository.findById(id[1].toLong()).get()
                 homeeController.sendcommand(homeenode.homeeID, functionValues.homeeattrID!!, command.toDouble())
-
-            } catch (e: Exception) {
+            }
+            catch (e:Exception){
                 return false
             }
             return true
-        } else {
+        }
+        else{
             return false
         }
     }

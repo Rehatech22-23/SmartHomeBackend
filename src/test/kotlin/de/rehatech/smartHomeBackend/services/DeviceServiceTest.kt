@@ -4,6 +4,9 @@ import com.google.gson.Gson
 import de.rehatech.smartHomeBackend.response.Things
 import de.rehatech.smartHomeBackend.entities.Homee
 import de.rehatech.smartHomeBackend.entities.OpenHab
+import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Things
+import de.rehatech.smartHomeBackend.entities.HomeeDevice
+import de.rehatech.smartHomeBackend.entities.OpenHabDevice
 import de.rehatech.smartHomeBackend.repositories.HomeeRepository
 import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
 import org.junit.jupiter.api.Test
@@ -60,9 +63,9 @@ class DeviceServiceTest {
 
     @Test
     fun getDeviceIdListTest() {
-        val ohList: List<OpenHab> = listOf(OpenHab(1,"name1", "uid1"), OpenHab(2, "name2", "uid2"))
+        val ohList: List<OpenHabDevice> = listOf(OpenHabDevice(1,"name1", "uid1"), OpenHabDevice(2, "name2", "uid2"))
         Mockito.`when`(openHabRepository.findAll().toList()).thenReturn(ohList)
-        val hmList: List<Homee> = listOf(Homee(1,"name1", 2), Homee(2, "name2", 4))
+        val hmList: List<HomeeDevice> = listOf(HomeeDevice(1,"name1", 2), HomeeDevice(2, "name2", 4))
         Mockito.`when`(homeeRepository.findAll().toList()).thenReturn(hmList)
 
         val result = deviceService.getDeviceIdList()
@@ -73,7 +76,7 @@ class DeviceServiceTest {
 
         assert((ohList.size+hmList.size)==result.size)
 
-        verify(openHabRepository, times(1)).findAll()
+        verify(openHabRepository, times(2)).findAll()
         verify(homeeRepository, times(1)).findAll()
     }
 

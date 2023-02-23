@@ -5,8 +5,8 @@ import de.rehatech.homeekt.model.nodes
 import de.rehatech.smartHomeBackend.controller.backend.HomeeController
 import de.rehatech.smartHomeBackend.controller.backend.OpenHabController
 import de.rehatech.smartHomeBackend.response.Things
-import de.rehatech.smartHomeBackend.entities.Homee
-import de.rehatech.smartHomeBackend.entities.OpenHab
+import de.rehatech.smartHomeBackend.entities.HomeeDevice
+import de.rehatech.smartHomeBackend.entities.OpenHabDevice
 import de.rehatech.smartHomeBackend.repositories.HomeeRepository
 import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
 import de.rehatech2223.datamodel.DeviceDTO
@@ -144,7 +144,7 @@ class DeviceService @Autowired constructor(
      */
     private fun trangsformNodeAndSave(node: nodes)
     {
-        val newDevice = Homee(name = node.name, homeeID = node.id)
+        val newDevice = HomeeDevice(name = node.name, homeeID = node.id)
         homeeRepository.save(newDevice)
     }
 
@@ -155,7 +155,7 @@ class DeviceService @Autowired constructor(
      */
     private  fun trangsformThingAndSave(things: Things)
     {
-        val newDevice = OpenHab(name = things.label, uid = things.UID )
+        val newDevice = OpenHabDevice(name = things.label, uid = things.UID )
         openHabRepository.save(newDevice)
     }
 
@@ -195,7 +195,7 @@ class DeviceService @Autowired constructor(
 
     //Hilfsmethode
     private fun getDeviceOH(id: String): DeviceDTO? {
-        var OH: OpenHab? = null
+        var OH: OpenHabDevice? = null
         try{
             val i = id.toLong()
             val OHL = openHabRepository.findById(i)
@@ -218,7 +218,7 @@ class DeviceService @Autowired constructor(
 
     //Hilfsmethode
     private fun getDeviceHM(id: String): DeviceDTO? {
-        var HM: Homee? = null
+        var HM: HomeeDevice? = null
         try{
             id.toLong()
             HM = homeeRepository.findById(id.toLong()).get()

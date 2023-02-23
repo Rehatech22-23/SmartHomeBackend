@@ -3,8 +3,8 @@ package de.rehatech.smartHomeBackend.entities
 import jakarta.persistence.*
 
 
-@Entity(name = "openhab")
-data class OpenHab(
+@Entity(name = "openhabDevice")
+data class OpenHabDevice(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null,
@@ -16,7 +16,7 @@ data class OpenHab(
     @OneToMany(
         cascade = [(CascadeType.ALL)],
         fetch = FetchType.EAGER,
-        mappedBy = "deviceOpenHab",
+        mappedBy = "deviceOpenHabDevice",
         orphanRemoval = false
     )
     var functionValuesIDS = mutableListOf<FunctionValues>()
