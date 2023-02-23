@@ -8,19 +8,19 @@ class TriggerTimeMapper {
     companion object{
         fun mapToEntity(triggerTimeDTO: TriggerTimeDTO): TriggerTime{
         val result = TriggerTime()
-        result.id = triggerTimeDTO.triggerTimeID
+        result.id = triggerTimeDTO.triggerTimeId
         result.localTime = triggerTimeDTO.time
         result.repeat = triggerTimeDTO.repeat
-        result.routineId = triggerTimeDTO.routineID
+        result.routineId = triggerTimeDTO.routineId
         return result
     }
 
         fun mapToDTO(triggerTime: TriggerTime): TriggerTimeDTO {
             return TriggerTimeDTO(
-                triggerTime.id,
-                triggerTime.routineId,
                 triggerTime.localTime!!,
-                triggerTime.repeat!!
-            );
+                triggerTime.repeat!!,
+                triggerTime.id,
+                triggerTime.routineId
+            )
         }}
 }

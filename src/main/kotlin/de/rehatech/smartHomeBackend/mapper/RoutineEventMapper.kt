@@ -8,8 +8,8 @@ class RoutineEventMapper {
     companion object{
         fun mapToEntity(routineEventDTO: RoutineEventDTO): RoutineEvent {
             val result = RoutineEvent()
-            result.id = routineEventDTO.routineEventID
-            result.routineId = routineEventDTO.routineID
+            result.id = routineEventDTO.routineEventId
+            result.routineId = routineEventDTO.routineId
             result.deviceId = routineEventDTO.deviceId
             result.functionId = routineEventDTO.functionId
             result.voldemort = routineEventDTO.functionValue
@@ -18,18 +18,18 @@ class RoutineEventMapper {
 
         fun mapToDTO(routineEvent: RoutineEvent): RoutineEventDTO {
             return RoutineEventDTO(
-                routineEvent.id,
-                routineEvent.routineId,
                 routineEvent.deviceId,
                 routineEvent.functionId!!,
-                routineEvent.voldemort!!
+                routineEvent.voldemort!!,
+                routineEvent.routineId,
+                routineEvent.id
             )
         }
 
         fun mapToEntityArrayList(dtoList: ArrayList<RoutineEventDTO>): ArrayList<RoutineEvent> {
             val result = ArrayList<RoutineEvent>()
             for (dto in dtoList) {
-                result.add(RoutineEventMapper.mapToEntity(dto))
+                result.add(mapToEntity(dto))
             }
             return result
         }

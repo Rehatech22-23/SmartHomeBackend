@@ -9,19 +9,19 @@ class TriggerEventByDeviceMapper {
 
         fun mapToEntity(triggerEventByDeviceDTO: TriggerEventByDeviceDTO): TriggerEventByDevice {
             val result = TriggerEventByDevice()
-            result.id = triggerEventByDeviceDTO.triggerEventByDeviceID
+            result.id = triggerEventByDeviceDTO.triggerEventByDeviceId
             result.deviceId = triggerEventByDeviceDTO.deviceId
-            result.routineID = triggerEventByDeviceDTO.routineID
+            result.routineID = triggerEventByDeviceDTO.routineId
             result.function = FunctionMapper.mapToEntity(triggerEventByDeviceDTO.functionDTOExpectation)
             return result
         }
 
         fun mapToDTO(triggerEventByDevice: TriggerEventByDevice): TriggerEventByDeviceDTO {
             return TriggerEventByDeviceDTO(
-                triggerEventByDevice.id,
-                triggerEventByDevice.routineID,
                 triggerEventByDevice.deviceId,
-                FunctionMapper.mapToDTO(triggerEventByDevice.function)
+                FunctionMapper.mapToDTO(triggerEventByDevice.function),
+                triggerEventByDevice.id,
+                triggerEventByDevice.routineID
             )
         }
     }
