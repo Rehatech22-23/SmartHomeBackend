@@ -2,13 +2,10 @@ package de.rehatech.smartHomeBackend.services
 
 import com.google.gson.Gson
 import de.rehatech.smartHomeBackend.response.Things
-import de.rehatech.smartHomeBackend.entities.Homee
-import de.rehatech.smartHomeBackend.entities.OpenHab
-import de.rehatech.smartHomeBackend.controller.backend.responsesClass.Things
 import de.rehatech.smartHomeBackend.entities.HomeeDevice
 import de.rehatech.smartHomeBackend.entities.OpenHabDevice
-import de.rehatech.smartHomeBackend.repositories.HomeeRepository
-import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
+import de.rehatech.smartHomeBackend.repositories.HomeeDeviceRepository
+import de.rehatech.smartHomeBackend.repositories.OpenHabDeviceRepository
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -29,10 +26,10 @@ class DeviceServiceTest {
 
 
     @Autowired
-    lateinit var openHabRepository: OpenHabRepository
+    lateinit var openHabDeviceRepository: OpenHabDeviceRepository
 
     @Autowired
-    lateinit var homeeRepository: HomeeRepository
+    lateinit var homeeDeviceRepository: HomeeDeviceRepository
 
     @Autowired
     lateinit var deviceService: DeviceService
@@ -47,7 +44,7 @@ class DeviceServiceTest {
         val arrayList = ArrayList<Things>()
         Collections.addAll(arrayList, *things)
         deviceService.updateDevicesOpenHab(arrayList)
-        assertEquals(2,openHabRepository.count())
+        assertEquals(2,openHabDeviceRepository.count())
         val filePath2 = "src/test/kotlin/de/rehatech/smartHomeBackend/controller/backend/responsesClass/json/thing2.json"
 
         val content2 = Files.readString(Paths.get(filePath2), Charsets.UTF_8)
@@ -55,18 +52,18 @@ class DeviceServiceTest {
         val arlist = ArrayList<Things>()
         arlist.add(thing)
         deviceService.updateDevicesOpenHab(arlist)
-        assertEquals(3,openHabRepository.count())
+        assertEquals(3,openHabDeviceRepository.count())
         deviceService.updateDevicesOpenHab(arrayList)
-        assertEquals(3,openHabRepository.count())
+        assertEquals(3,openHabDeviceRepository.count())
 
     }
 
     @Test
     fun getDeviceIdListTest() {
         val ohList: List<OpenHabDevice> = listOf(OpenHabDevice(1,"name1", "uid1"), OpenHabDevice(2, "name2", "uid2"))
-        Mockito.`when`(openHabRepository.findAll().toList()).thenReturn(ohList)
+        Mockito.`when`(openHabDeviceRepository.findAll().toList()).thenReturn(ohList)
         val hmList: List<HomeeDevice> = listOf(HomeeDevice(1,"name1", 2), HomeeDevice(2, "name2", 4))
-        Mockito.`when`(homeeRepository.findAll().toList()).thenReturn(hmList)
+        Mockito.`when`(homeeDeviceRepository.findAll().toList()).thenReturn(hmList)
 
         val result = deviceService.getDeviceIdList()
         assertEquals("OH:1", result[0])
@@ -76,8 +73,8 @@ class DeviceServiceTest {
 
         assert((ohList.size+hmList.size)==result.size)
 
-        verify(openHabRepository, times(2)).findAll()
-        verify(homeeRepository, times(1)).findAll()
+        verify(openHabDeviceRepository, times(2)).findAll()
+        verify(homeeDeviceRepository, times(1)).findAll()
     }
 
     @Test //TODO
@@ -96,12 +93,12 @@ class DeviceServiceTest {
     fun getDeviceOH() {
     /*
         val oh = OpenHab(1,"name1","uid1")
-        Mockito.`when`(openHabRepository.findById(id.toLong()).get()).thenReturn(oh)
+        Mockito.`when`(openHabDeviceRepository.findById(id.toLong()).get()).thenReturn(oh)
 
         val result = deviceService.getDevice("OH:1")
 
 
-        Mockito.`when`(openHabRepository.findById(id.toLong()).get()).thenReturn(null)
+        Mockito.`when`(openHabDeviceRepository.findById(id.toLong()).get()).thenReturn(null)
 */
 
     }

@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface HomeeRepository : CrudRepository<HomeeDevice, Long> {
+interface HomeeDeviceRepository : CrudRepository<HomeeDevice, Long> {
 
     fun findHomeeByHomeeID (homeeID: Int): HomeeDevice
 }

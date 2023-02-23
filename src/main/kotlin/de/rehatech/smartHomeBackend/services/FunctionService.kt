@@ -4,9 +4,9 @@ import de.rehatech.homeekt.model.attributes
 import de.rehatech.smartHomeBackend.controller.backend.BackendController
 import de.rehatech.smartHomeBackend.entities.DeviceMethods
 import de.rehatech.smartHomeBackend.enums.FunctionType
-import de.rehatech.smartHomeBackend.repositories.FunctionRepository
-import de.rehatech.smartHomeBackend.repositories.HomeeRepository
-import de.rehatech.smartHomeBackend.repositories.OpenHabRepository
+import de.rehatech.smartHomeBackend.repositories.DeviceMethodsRepository
+import de.rehatech.smartHomeBackend.repositories.HomeeDeviceRepository
+import de.rehatech.smartHomeBackend.repositories.OpenHabDeviceRepository
 import de.rehatech.smartHomeBackend.response.Item
 import de.rehatech2223.datamodel.FunctionDTO
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,9 +17,9 @@ import de.rehatech.smartHomeBackend.entities.Function
 @Service
 class FunctionService @Autowired constructor(
     val backendController: BackendController,
-    val functionRepository: FunctionRepository,
-    val openHabRepository: OpenHabRepository,
-    val homeeRepository: HomeeRepository,
+    val deviceMethodsRepository: DeviceMethodsRepository,
+    val openHabDeviceRepository: OpenHabDeviceRepository,
+    val homeeDeviceRepository: HomeeDeviceRepository,
     val functionTypService: FunctionTypService
 ) {
 
@@ -32,7 +32,7 @@ class FunctionService @Autowired constructor(
      */
     fun getFunction(functionId: Long): FunctionDTO {
 
-        val funcVal = functionRepository.findById(functionId).get()
+        val funcVal = deviceMethodsRepository.findById(functionId).get()
         var funcState: FunctionDTO? = null
         if (funcVal.deviceHomeeDevice == null) {
             funcState = backendController.getMethodStatus(
@@ -62,7 +62,7 @@ class FunctionService @Autowired constructor(
      * @param body
      */
     fun triggerFunc(deviceId: String, functionId: Long, body: Float) {
-        val funcVal = functionRepository.findById(functionId).get()
+        val funcVal = deviceMethodsRepository.findById(functionId).get()
         lateinit var command: String
         //einmal für homee und einmal für oh
         when (funcVal.type) { //OH
@@ -85,6 +85,8 @@ class FunctionService @Autowired constructor(
 
     }
 
+
+
     //TODO: Docs
     /**
      *
@@ -92,12 +94,12 @@ class FunctionService @Autowired constructor(
      * @param item
      */
     fun saveFunctionOpenHab(uid: String, item: Item) {
-        val openhab = openHabRepository.findOpenHabByUid(uid)
+        val openhab = openHabDeviceRepository.findOpenHabByUid(uid)
         val functType = functionTypService.functionsTypeOpenHab(item)
         if (functType != null) {
             val newDeviceMethods =
                 DeviceMethods(label = item.label, name = item.name, type = functType, deviceOpenHabDevice = openhab)
-            functionRepository.save(newDeviceMethods)
+            deviceMethodsRepository.save(newDeviceMethods)
         }
 
     }
@@ -108,7 +110,7 @@ class FunctionService @Autowired constructor(
      * @param attribute
      */
     fun saveFunctionHomee(attribute: attributes) {
-        val homeeNode = homeeRepository.findHomeeByHomeeID(attribute.node_id)
+        val homeeNode = homeeDeviceRepository.findHomeeByHomeeID(attribute.node_id)
         val functType = functionTypService.functionsTypeHomee(attribute)
         if (functType != null) {
             val newDeviceMethods = DeviceMethods(
@@ -118,7 +120,7 @@ class FunctionService @Autowired constructor(
                 type = functType,
                 deviceHomeeDevice = homeeNode
             )
-            functionRepository.save(newDeviceMethods)
+            deviceMethodsRepository.save(newDeviceMethods)
         }
     }
 
