@@ -64,7 +64,7 @@ class BackendController @Autowired constructor(
             val nodes = homeeController.getNodes()
             if (nodes != null) {
                 for (node in nodes) {
-                    if (node.id == deviceMethods.deviceHomeeDevice!!.homeeID) {
+                    if (node.id == deviceMethods.deviceHomee!!.homeeID) {
                         val atts = node.attributes
                         for (att in atts) {
                             if (att.id == deviceMethods.homeeattrID) {

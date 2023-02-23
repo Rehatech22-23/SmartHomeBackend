@@ -34,16 +34,16 @@ class FunctionService @Autowired constructor(
 
         val funcVal = deviceMethodsRepository.findById(functionId).get()
         var funcState: FunctionDTO? = null
-        if (funcVal.deviceHomeeDevice == null) {
+        if (funcVal.deviceHomee == null) {
             funcState = backendController.getMethodStatus(
-                deviceID = funcVal.deviceOpenHabDevice!!.getOpenHabID(),
+                deviceID = funcVal.deviceOpenHab!!.getOpenHabID(),
                 deviceMethods = funcVal
             )
 
 
-        } else if (funcVal.deviceOpenHabDevice == null) {
+        } else if (funcVal.deviceOpenHab == null) {
             funcState = backendController.getMethodStatus(
-                deviceID = funcVal.deviceHomeeDevice!!.getHomeeID(),
+                deviceID = funcVal.deviceHomee!!.getHomeeID(),
                 deviceMethods = funcVal
             )
         }
@@ -98,7 +98,7 @@ class FunctionService @Autowired constructor(
         val functType = functionTypService.functionsTypeOpenHab(item)
         if (functType != null) {
             val newDeviceMethods =
-                DeviceMethods(label = item.label, name = item.name, type = functType, deviceOpenHabDevice = openhab)
+                DeviceMethods(label = item.label, name = item.name, type = functType, deviceOpenHab = openhab)
             deviceMethodsRepository.save(newDeviceMethods)
         }
 
@@ -118,7 +118,7 @@ class FunctionService @Autowired constructor(
                 name = attribute.name,
                 homeeattrID = attribute.id,
                 type = functType,
-                deviceHomeeDevice = homeeNode
+                deviceHomee = homeeNode
             )
             deviceMethodsRepository.save(newDeviceMethods)
         }
