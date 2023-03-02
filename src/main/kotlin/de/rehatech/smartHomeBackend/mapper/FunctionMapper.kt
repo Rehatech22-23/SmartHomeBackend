@@ -5,27 +5,28 @@ import de.rehatech2223.datamodel.FunctionDTO
 
 class FunctionMapper {
 
-    companion object{
+    companion object {
         fun mapToEntity(functionDTO: FunctionDTO): Function {
             val result = Function()
             result.id = functionDTO.functionId
             result.functionName = functionDTO.functionName
-            if(functionDTO.rangeDTO != null) result.range = RangeMapper.mapToEntity(functionDTO.rangeDTO!!)
+            if (functionDTO.rangeDTO != null) result.range = RangeMapper.mapToEntity(functionDTO.rangeDTO!!)
             result.onOff = functionDTO.onOff
             result.outputValue = functionDTO.outputValue
             result.outputTrigger = functionDTO.outputTrigger
-            return  result
+            return result
         }
 
         fun mapToDTO(function: Function): FunctionDTO {
-            return FunctionDTO.Builder(
+            var functionDTOBuilder = FunctionDTO.Builder(
                 function.functionName,
                 function.id!!,
-                ).rangeDTO(RangeMapper.mapToDTO(function.range!!))
-                .onOff(function.onOff!!)
-                .outputValue(function.outputValue!!)
-                .outputTrigger(function.outputTrigger!!)
-                .build()
+            )
+            if (function.range != null) functionDTOBuilder.rangeDTO(RangeMapper.mapToDTO(function.range!!))
+            if (function.onOff != null) functionDTOBuilder.onOff(function.onOff!!)
+            if (function.outputValue != null) functionDTOBuilder.outputValue(function.outputValue!!)
+            if (function.outputTrigger != null) functionDTOBuilder.outputTrigger(function.outputTrigger!!)
+            return functionDTOBuilder.build();
         }
     }
 }

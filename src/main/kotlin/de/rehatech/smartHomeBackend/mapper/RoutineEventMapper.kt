@@ -26,7 +26,7 @@ class RoutineEventMapper {
             )
         }
 
-        fun mapToEntityArrayList(dtoList: ArrayList<RoutineEventDTO>): ArrayList<RoutineEvent> {
+        fun mapToEntityMutableList(dtoList: ArrayList<RoutineEventDTO>): MutableList<RoutineEvent> {
             val result = ArrayList<RoutineEvent>()
             for (dto in dtoList) {
                 result.add(mapToEntity(dto))
@@ -34,7 +34,7 @@ class RoutineEventMapper {
             return result
         }
 
-        fun mapToDTOArrayList(entityList: ArrayList<RoutineEvent>): ArrayList<RoutineEventDTO> {
+        fun mapToDTOList(entityList: MutableList<RoutineEvent>):  ArrayList<RoutineEventDTO> {
             val result = ArrayList<RoutineEventDTO>()
             for (entity in entityList) {
                 result.add(mapToDTO(entity))

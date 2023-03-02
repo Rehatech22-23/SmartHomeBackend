@@ -20,5 +20,5 @@ class Routine {
 
 
     @OneToMany(fetch = FetchType.LAZY, cascade=[CascadeType.ALL], mappedBy = "routine")
-    lateinit var routineEvent: ArrayList<RoutineEvent>
+    lateinit var routineEvent: MutableList<RoutineEvent>
 }

@@ -11,7 +11,6 @@ class TriggerEventByDeviceMapper {
             val result = TriggerEventByDevice()
             result.id = triggerEventByDeviceDTO.triggerEventByDeviceId
             result.deviceId = triggerEventByDeviceDTO.deviceId
-            result.routineID = triggerEventByDeviceDTO.routineId
             result.function = FunctionMapper.mapToEntity(triggerEventByDeviceDTO.functionDTOExpectation)
             return result
         }
@@ -20,8 +19,7 @@ class TriggerEventByDeviceMapper {
             return TriggerEventByDeviceDTO(
                 triggerEventByDevice.deviceId,
                 FunctionMapper.mapToDTO(triggerEventByDevice.function),
-                triggerEventByDevice.id,
-                triggerEventByDevice.routineID
+                triggerEventByDevice.id
             )
         }
     }
