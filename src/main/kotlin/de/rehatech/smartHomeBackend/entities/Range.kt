@@ -11,6 +11,7 @@ class Range {
     var maxValue: Double?= null
     var currentValue: Double?= null
 
-    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "range", orphanRemoval = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "function_id", nullable = false)
     var function: Function?=null
 }
