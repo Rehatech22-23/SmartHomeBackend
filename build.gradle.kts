@@ -47,6 +47,7 @@ dependencies {
 	implementation("org.javassist:javassist:3.29.2-GA")
 
 	implementation("javax.xml.bind:jaxb-api:2.3.1")
+	implementation("org.postgresql:postgresql:42.5.4")
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
