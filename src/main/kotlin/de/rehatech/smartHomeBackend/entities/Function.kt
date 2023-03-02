@@ -11,12 +11,10 @@ class Function {
     var id: Long? = null
     lateinit var functionName: String
 
-    @OneToOne
-    @JoinColumn(name = "range")
+    @OneToOne(cascade = [CascadeType.ALL], mappedBy = "function")
     var range: Range? = null
 
-    @OneToOne
-    @JoinColumn(name = "triggerEventByDevice")
+    @OneToOne(cascade = [CascadeType.ALL], mappedBy = "function")
     var triggerEventByDevice: TriggerEventByDevice? = null
 
     var deviceMethodsId: Long? = null

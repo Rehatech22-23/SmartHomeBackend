@@ -11,7 +11,6 @@ class TriggerTimeMapper {
         result.id = triggerTimeDTO.triggerTimeId
         result.localTime = triggerTimeDTO.time
         result.repeat = triggerTimeDTO.repeat
-        result.routineId = triggerTimeDTO.routineId
         return result
     }
 
@@ -20,7 +19,6 @@ class TriggerTimeMapper {
                 triggerTime.localTime!!,
                 triggerTime.repeat!!,
                 triggerTime.id,
-                triggerTime.routineId
             )
         }}
 }

@@ -1,15 +1,12 @@
 package de.rehatech.smartHomeBackend.services
 
-import de.rehatech.smartHomeBackend.entities.Routine
 import de.rehatech.smartHomeBackend.mapper.RoutineMapper
 import de.rehatech.smartHomeBackend.repositories.RoutineEventRepository
 import de.rehatech.smartHomeBackend.repositories.RoutineRepository
 import de.rehatech.smartHomeBackend.repositories.TriggerEventByDeviceRepository
 import de.rehatech.smartHomeBackend.repositories.TriggerTimeRepository
 import de.rehatech2223.datamodel.RoutineDTO
-import de.rehatech2223.datamodel.util.RoutineEventDTO
-import de.rehatech2223.datamodel.util.TriggerEventByDeviceDTO
-import de.rehatech2223.datamodel.util.TriggerTimeDTO
+import jakarta.transaction.Transactional
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.springframework.http.HttpStatus
@@ -45,6 +42,7 @@ class RoutineService(private val routineRepository: RoutineRepository, private v
         return  ResponseEntity("Es konnte keine Routine mit der angegebenen Id gefunden werden!", null, HttpStatus.NOT_FOUND)
     }
 
+    @Transactional
     fun createRoutine(routineDTO: RoutineDTO): ResponseEntity<String> {
         var routine = RoutineMapper.mapToEntity(routineDTO)
         return ResponseEntity(Json.encodeToString((RoutineMapper.mapToDTO(routineRepository.save(routine)))), null, HttpStatus.OK)
