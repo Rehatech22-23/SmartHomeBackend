@@ -12,7 +12,7 @@ class RoutineEvent {
     var functionId: Long? = null
     var voldemort: Float? = null // deviceMethods
 
-    @ManyToOne
+    @ManyToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name="routine_id")
     var routine: Routine?=null
 

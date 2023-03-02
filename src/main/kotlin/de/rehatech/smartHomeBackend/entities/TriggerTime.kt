@@ -12,7 +12,7 @@ class TriggerTime {
     var repeat: Boolean? = null
     var repeatExecuted: Boolean = false //verfällt beim mappen
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "routine_id")
     var routine: Routine?=null
 }

@@ -11,10 +11,10 @@ class Function {
     var id: Long? = null
     lateinit var functionName: String
 
-    @OneToOne(cascade = [CascadeType.ALL], mappedBy = "function")
+    @OneToOne(cascade = [CascadeType.ALL], mappedBy = "function", orphanRemoval = true)
     var range: Range? = null
 
-    @OneToOne(cascade = [CascadeType.ALL], mappedBy = "function")
+    @OneToOne(cascade = [CascadeType.ALL], mappedBy = "function", orphanRemoval = true)
     var triggerEventByDevice: TriggerEventByDevice? = null
 
     var deviceMethodsId: Long? = null
