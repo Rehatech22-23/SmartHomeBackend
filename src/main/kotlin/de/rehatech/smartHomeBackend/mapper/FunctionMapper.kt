@@ -8,7 +8,7 @@ class FunctionMapper {
     companion object {
         fun mapToEntity(functionDTO: FunctionDTO): Function {
             val result = Function()
-            result.id = functionDTO.functionId
+            result.deviceMethodsId = functionDTO.functionId
             result.functionName = functionDTO.functionName
             if (functionDTO.rangeDTO != null) result.range = RangeMapper.mapToEntity(functionDTO.rangeDTO!!)
             result.onOff = functionDTO.onOff
@@ -20,7 +20,7 @@ class FunctionMapper {
         fun mapToDTO(function: Function): FunctionDTO {
             var functionDTOBuilder = FunctionDTO.Builder(
                 function.functionName,
-                function.id!!,
+                function.deviceMethodsId!!,
             )
             if (function.range != null) functionDTOBuilder.rangeDTO(RangeMapper.mapToDTO(function.range!!))
             if (function.onOff != null) functionDTOBuilder.onOff(function.onOff!!)
