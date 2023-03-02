@@ -1,4 +1,4 @@
-FROM gradle:jdk17-alpine AS build
+FROM gradle:jdk17-jammy AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
 RUN gradle bootJar --no-daemon

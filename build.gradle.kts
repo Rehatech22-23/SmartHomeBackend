@@ -47,7 +47,8 @@ dependencies {
 	implementation("org.javassist:javassist:3.29.2-GA")
 
 	implementation("javax.xml.bind:jaxb-api:2.3.1")
-	runtimeOnly("com.h2database:h2")
+	implementation("org.postgresql:postgresql:42.5.4")
+	//runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 	// Füge eigene Dritt Library hinzu. Weitere Infos unter https://developerlife.com/2021/02/06/publish-kotlin-library-as-gradle-dep/
