@@ -46,9 +46,9 @@ class RoutineService(private val routineRepository: RoutineRepository, private v
     fun createRoutine(routineDTO: RoutineDTO): ResponseEntity<String> {
         //return ResponseEntity(Json.encodeToString((RoutineMapper.mapToDTO(routineRepository.save(RoutineMapper.mapToEntity(routineDTO))))), null, HttpStatus.OK)
         var routine = RoutineMapper.mapToEntity(routineDTO)
-        val savedRoutine = routineRepository.save(routine);
+        val savedRoutine = routineRepository.save(routine)
         val savedRoutineDTO = RoutineMapper.mapToDTO(savedRoutine)
-        val s = Json.encodeToString(savedRoutineDTO);
+        val s = Json.encodeToString(savedRoutineDTO)
         return ResponseEntity(s, null, HttpStatus.OK)
     }
 
