@@ -13,13 +13,13 @@ class RoutineMapper {
                 result.routineName = routineDTO.routineName
                 result.triggerType = routineDTO.triggerType
                 result.triggerTime = TriggerTimeMapper.mapToEntity(routineDTO.triggerTime!!)
-                result.routineEvent = RoutineEventMapper.mapToEntityArrayList(routineDTO.routineEventDTO)
+                result.routineEvent = RoutineEventMapper.mapToEntityMutableList(routineDTO.routineEventDTO)
             }else { // routineDTO.triggerTimeDTO == null
                 result.id = routineDTO.routineId
                 result.routineName = routineDTO.routineName
                 result.triggerType = routineDTO.triggerType
                 result.triggerEventByDevice = TriggerEventByDeviceMapper.mapToEntity(routineDTO.triggerEventByDeviceDTO!!)
-                result.routineEvent = RoutineEventMapper.mapToEntityArrayList(routineDTO.routineEventDTO)
+                result.routineEvent = RoutineEventMapper.mapToEntityMutableList(routineDTO.routineEventDTO)
             }
             return result
         }
@@ -29,7 +29,7 @@ class RoutineMapper {
                 return RoutineDTO.Builder(
                     routine.routineName,
                     routine.triggerType!!,
-                    RoutineEventMapper.mapToDTOArrayList(routine.routineEvent),
+                    RoutineEventMapper.mapToDTOList(routine.routineEvent),
                     null,
                     null,
                     null
@@ -43,7 +43,7 @@ class RoutineMapper {
                 return RoutineDTO.Builder(
                     routine.routineName,
                     routine.triggerType!!,
-                    RoutineEventMapper.mapToDTOArrayList(routine.routineEvent),
+                    RoutineEventMapper.mapToDTOList(routine.routineEvent),
                     null,
                     null,
                     null

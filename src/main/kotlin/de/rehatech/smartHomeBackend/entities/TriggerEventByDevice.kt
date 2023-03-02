@@ -8,14 +8,13 @@ class TriggerEventByDevice {
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null
 
-    var routineID: Long? = null
     lateinit var deviceId: String
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "routine_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "routine_id")
     lateinit var routine: Routine
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "function_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "function_id")
     lateinit var function: Function
 }
