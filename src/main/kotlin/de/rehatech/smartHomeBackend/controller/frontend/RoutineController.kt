@@ -1,13 +1,8 @@
 package de.rehatech.smartHomeBackend.controller.frontend
 
-import de.rehatech.smartHomeBackend.entities.Routine
-import de.rehatech.smartHomeBackend.mapper.RoutineMapper
 import de.rehatech.smartHomeBackend.services.RoutineService
 import de.rehatech2223.datamodel.RoutineDTO
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*

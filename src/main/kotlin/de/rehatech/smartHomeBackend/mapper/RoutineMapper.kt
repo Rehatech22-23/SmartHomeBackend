@@ -7,7 +7,7 @@ class RoutineMapper {
 
     companion object {
         fun mapToEntity(routineDTO: RoutineDTO): Routine {
-            var result = Routine()
+            val result = Routine()
             if (routineDTO.triggerEventByDeviceDTO == null) {
                 result.id = routineDTO.routineId
                 result.routineName = routineDTO.routineName
