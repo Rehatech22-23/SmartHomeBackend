@@ -12,6 +12,7 @@ import de.rehatech2223.datamodel.FunctionDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import de.rehatech.smartHomeBackend.entities.Function
+import java.sql.RowId
 
 
 @Service
@@ -62,48 +63,28 @@ class FunctionService @Autowired constructor(
      * @param body
      */
     fun triggerFunc(deviceId: String, functionId: Long, body: Float) {
-        val funcVal = deviceMethodsRepository.findById(functionId).get()
-        lateinit var command: String
-        //einmal für homee und einmal für oh
-        when (funcVal.type) { //OH
 
-            FunctionType.Contact -> command = openClosed(body)
-            FunctionType.Dimmer -> command = percent(body)
-            FunctionType.Rollershutter -> command = percent(body)
-            FunctionType.Switch -> command = onOff(body)
+        val tmp = deviceId.split(":")
+        lateinit var command: String;
 
-
-
-
-            //Fehler
-            FunctionType.Color -> command = "HSB" //nochmal drüberschaun
-            FunctionType.Call -> command = ""
-
-            FunctionType.Datetime -> command = "DateTime"
-
-            FunctionType.Group -> command = ""
-            FunctionType.Image -> command = ""
-            FunctionType.Location -> command = "Point"
-            FunctionType.Number -> command = "Decimal"
-            FunctionType.Player -> command = "PlayPause"
-             // UpDown?
-            FunctionType.StringType -> command = "String"
-
+        when(tmp[0]){
+            "OH" -> command = setCommandOH(functionId, body)
+            "HM" -> command = setCommandHM(functionId, body)
+            else -> throw NullPointerException()
         }
-        backendController.sendCommand(deviceId, funcVal, command)
 
+        backendController.sendCommand(deviceId, deviceMethodsRepository.findById(functionId).get(), command)
 
     }
 
     private fun openClosed(body: Float): String{
-        if(body == 0F){
+        if(body == 1F){
             return "OPEN"
-        }else if (body == 1F){
+        }else if (body == 0F){
             return "CLOSED"
         }
         return ""       //falscher wert im body
     }
-
     private fun percent(body: Float): String{
         if(body in 0F..100F){
             return body.toString()
@@ -111,12 +92,95 @@ class FunctionService @Autowired constructor(
         return ""       //falscher wert im body
     }
     private fun onOff(body: Float): String{
-        if(body == 0F){
+        if(body == 1F){
             return "ON"
-        }else if (body == 1F){
+        }else if (body == 0F){
             return "OFF"
         }
         return ""       //falscher wert im body
+    }
+
+
+    /**
+     * called when Function from a OpenHab Device should get triggered
+     */
+    private fun setCommandOH(functionId: Long, body: Float): String{
+        val funcVal = deviceMethodsRepository.findById(functionId).get()
+        lateinit var command: String
+        when (funcVal.type) { //OH
+
+            FunctionType.Contact -> command = openClosed(body)
+            FunctionType.Dimmer -> command = percent(body)
+            FunctionType.Rollershutter -> command = percent(body)
+            FunctionType.Switch -> command = onOff(body)
+            FunctionType.Call -> command = "REFRESH"
+            FunctionType.Image -> command = "REFRESH"
+
+
+            //REFRESH
+            //Fehler: meistens nichts was getriggert wird, sondern was was bei Aufruf refreshed wird
+            FunctionType.Color -> command = "HSB"           //momentan für OpenHab-Geräte uninteressant, da wir kein Gerät haben was COLOR benutzt
+            FunctionType.Datetime -> command = "DateTime"   //stores nur DATETIME, wird also nicht getriggert
+            FunctionType.Group -> command = "-"             //nur zum item nesting, (ohne Command)
+            FunctionType.Location -> command = "Point"      //REFRESH, POINT (String of 3 decimals [altitude, longitude, altitude in m], für uns nicht von nutzen)
+            FunctionType.Number -> command = "Decimal"      //REFRESH, DECIMAL
+            FunctionType.Player -> command = "PlayPause"    //wir benutzen keine Player-Geräte
+            FunctionType.StringType -> command = "String"   //stores nur einen String -> REFRESH
+        }
+        if(command == ""){
+            //es wurde ein falscher wert im body übergeben
+        }
+        return command;
+    }
+
+    /**
+     * called when Function from a Homee Device should get triggered
+     */
+    private fun setCommandHM(functionId: Long, body: Float): String{
+        lateinit var command: String
+
+        when(functionId){
+            26L -> if(checkValueOnOff(body)){
+                command = body.toString()
+            } //else error
+            27L -> if(checkValueDimmingLevel(body)){
+                command = body.toString()
+            } //else error
+            29L -> if(checkValueColor(body)){
+                command = body.toString()
+            } //else error
+            30L -> if(checkValueColorTemperature(body)){
+                command = body.toString()
+            }//else error
+        }
+        return command;
+    }
+
+
+    private fun checkValueOnOff(body: Float): Boolean{
+        if (body == 0F || body == 1F){ //0: an, 1: aus
+            return true
+        }
+        return false
+    }
+
+    private fun checkValueDimmingLevel(body: Float): Boolean{
+        if(body >= 0.0 && body <= 100.0){ //Prozent (0: aus, 100: an)
+            return true
+        }
+        return false
+    }
+    private fun checkValueColor(body: Float): Boolean{
+        if(body >= 0F && body <= 16777215){ //HEX Farbcode als Dezimal
+            return true
+        }
+        return false
+    }
+    private fun checkValueColorTemperature(body: Float): Boolean{
+        if (body >= 2000F && body <= 6535){ //Farb Temp als Kelvin
+            return true
+        }
+        return false
     }
 
 
