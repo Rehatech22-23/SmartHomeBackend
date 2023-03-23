@@ -39,7 +39,7 @@ class AutomationService  @Autowired constructor(
             if (routine.triggerTime != null)
             {
                 val event = routine.triggerTime
-                val eventtime = event!!.localTime!!.toLocalTime()
+                val eventtime = event!!.localTime!!
                 val range = LocalTime.of(LocalTime.now().hour,LocalTime.now().minute, LocalTime.now().second-10)..
                         LocalTime.of(LocalTime.now().hour,LocalTime.now().minute, LocalTime.now().second+10)
 
