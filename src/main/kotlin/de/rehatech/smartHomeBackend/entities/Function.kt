@@ -11,7 +11,8 @@ class Function {
     var id: Long? = null
     lateinit var functionName: String
 
-    @OneToOne(cascade = [CascadeType.ALL], mappedBy = "function", orphanRemoval = true)
+    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+    @JoinColumn(name = "range_id")
     var range: Range? = null
 
     @OneToOne(cascade = [CascadeType.ALL], mappedBy = "function", orphanRemoval = true)

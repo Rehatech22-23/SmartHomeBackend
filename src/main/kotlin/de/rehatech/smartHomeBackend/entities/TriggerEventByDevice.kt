@@ -10,11 +10,8 @@ class TriggerEventByDevice {
 
     lateinit var deviceId: String
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    @JoinColumn(name = "routine_id")
-    lateinit var routine: Routine
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @OneToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinColumn(name = "function_id")
     lateinit var function: Function
 }
