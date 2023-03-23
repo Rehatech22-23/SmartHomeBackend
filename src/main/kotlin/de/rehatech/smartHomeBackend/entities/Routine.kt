@@ -12,13 +12,16 @@ class Routine {
     lateinit var routineName: String
     var triggerType: Int? = null
 
-    @OneToOne(cascade = [CascadeType.ALL], mappedBy = "routine", orphanRemoval = true)
+    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+    @JoinColumn(name = "triggerEventByDevice_id")
     var triggerEventByDevice: TriggerEventByDevice? = null
 
-    @OneToOne(cascade = [CascadeType.ALL], mappedBy = "routine", orphanRemoval = true)
+    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+    @JoinColumn(name = "triggerTime_id")
     var triggerTime: TriggerTime? = null
 
 
-    @OneToMany(fetch = FetchType.LAZY, cascade=[CascadeType.ALL], mappedBy = "routine", orphanRemoval = true)
-    lateinit var routineEvent: MutableList<RoutineEvent>
+    @OneToMany( cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+    @JoinColumn(name = "routine_id")
+    var routineEvent = mutableListOf<RoutineEvent>()
 }
