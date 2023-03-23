@@ -13,13 +13,24 @@ import de.rehatech2223.datamodel.util.TriggerEventByDeviceDTO
 import de.rehatech2223.datamodel.util.TriggerTimeDTO
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.ResponseEntity
-import java.time.LocalDateTime
+import java.time.LocalTime
 
 
 @SpringBootTest
-class RoutineServiceTest(private val routineService: RoutineService, private val routineRepository: RoutineRepository, private val triggerTimeRepository: TriggerTimeRepository, private val triggerEventByDeviceRepository: TriggerEventByDeviceRepository, private val routineEventRepository: RoutineEventRepository) {
+class RoutineServiceTest{
+    @Autowired
+    lateinit var routineService: RoutineService
+    @Autowired
+    lateinit var routineRepository: RoutineRepository
+    @Autowired
+    lateinit var triggerTimeRepository: TriggerTimeRepository
+    @Autowired
+    lateinit var triggerEventByDeviceRepository: TriggerEventByDeviceRepository
+    @Autowired
+    lateinit var routineEventRepository: RoutineEventRepository
 
     @Test
     fun testGetAllRoutineIds() {
@@ -38,7 +49,7 @@ class RoutineServiceTest(private val routineService: RoutineService, private val
         val routineEventDTO = arrayListOf<RoutineEventDTO>()
 
         val routineId = 0L
-        val time = LocalDateTime.now()
+        val time = LocalTime.now()
         val repeat = true
         val triggerTimeId = 0L
         val triggerTimeDTO = TriggerTimeDTO(time, repeat, triggerTimeId, routineId)
@@ -86,7 +97,7 @@ class RoutineServiceTest(private val routineService: RoutineService, private val
         val routineEventDTO = arrayListOf<RoutineEventDTO>()
 
         val routineId = 0L
-        val time = LocalDateTime.now()
+        val time = LocalTime.now()
         val repeat = true
         val triggerTimeId = 0L
         val triggerTimeDTO = TriggerTimeDTO(time, repeat, triggerTimeId, routineId)
@@ -129,7 +140,7 @@ class RoutineServiceTest(private val routineService: RoutineService, private val
         val routineEventDTO = arrayListOf<RoutineEventDTO>()
 
         val routineId = 0L
-        val time = LocalDateTime.now()
+        val time = LocalTime.now()
         val repeat = true
         val triggerTimeId = 0L
         val triggerTimeDTO = TriggerTimeDTO(time, repeat, triggerTimeId, routineId)
@@ -137,7 +148,7 @@ class RoutineServiceTest(private val routineService: RoutineService, private val
         val deviceId = "MyDeviceId"
 
         val functionName = "MyFunction"
-        val functionId = 0L
+        val functionId = 2L
 
         val minValue = 0.0
         val maxValue = 1.0
@@ -161,6 +172,12 @@ class RoutineServiceTest(private val routineService: RoutineService, private val
         //Call the method to test
         val result = routineService.createRoutine(mockRoutine)
 
+        val tests = routineRepository.findAll()
+        for (test in tests)
+        {
+            println(test.id)
+            println( test.routineEvent)
+        }
         //Check the returned value
         assertNotNull(result)
     }
@@ -172,7 +189,7 @@ class RoutineServiceTest(private val routineService: RoutineService, private val
         val routineEventDTO = arrayListOf<RoutineEventDTO>()
 
         val routineId = 0L
-        val time = LocalDateTime.now()
+        val time = LocalTime.now()
         val repeat = true
         val triggerTimeId = 0L
         val triggerTimeDTO = TriggerTimeDTO(time, repeat, triggerTimeId, routineId)

@@ -10,7 +10,7 @@ class Routine {
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null
     lateinit var routineName: String
-    var triggerType: Int? = null
+    var comparisonType: Int? = null
 
     @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
     @JoinColumn(name = "triggerEventByDevice_id")

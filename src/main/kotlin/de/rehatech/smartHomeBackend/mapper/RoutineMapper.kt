@@ -9,15 +9,15 @@ class RoutineMapper {
         fun mapToEntity(routineDTO: RoutineDTO): Routine {
             val result = Routine()
             if (routineDTO.triggerEventByDeviceDTO == null) {
-                result.id = routineDTO.routineId
+                result.id = null
                 result.routineName = routineDTO.routineName
-                result.triggerType = routineDTO.triggerType
+                result.comparisonType  = routineDTO.comparisonType
                 result.triggerTime = TriggerTimeMapper.mapToEntity(routineDTO.triggerTime!!)
                 result.routineEvent = RoutineEventMapper.mapToEntityMutableList(routineDTO.routineEventDTO)
             } else { // routineDTO.triggerTimeDTO == null
-                result.id = routineDTO.routineId
+                result.id = null
                 result.routineName = routineDTO.routineName
-                result.triggerType = routineDTO.triggerType
+                result.comparisonType  = routineDTO.comparisonType
                 result.triggerEventByDevice =
                     TriggerEventByDeviceMapper.mapToEntity(routineDTO.triggerEventByDeviceDTO!!)
                 result.routineEvent = RoutineEventMapper.mapToEntityMutableList(routineDTO.routineEventDTO)
@@ -29,9 +29,9 @@ class RoutineMapper {
             if (routine.triggerEventByDevice == null) {
                 return RoutineDTO.Builder(
                     routine.routineName,
-                    routine.triggerType!!,
+                    routine.comparisonType!!,
                     RoutineEventMapper.mapToDTOList(routine.routineEvent),
-                    null,
+                    routine.id!!,
                     null,
                     null
                 ).routineId(routine.id!!)
@@ -43,9 +43,9 @@ class RoutineMapper {
             } else {
                 return RoutineDTO.Builder(
                     routine.routineName,
-                    routine.triggerType!!,
+                    routine.comparisonType!!,
                     RoutineEventMapper.mapToDTOList(routine.routineEvent),
-                    null,
+                    routine.id!!,
                     null,
                     null
                 ).routineId(routine.id!!)
