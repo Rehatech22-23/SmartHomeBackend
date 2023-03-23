@@ -37,7 +37,7 @@ class BackendController @Autowired constructor(
             try{
                 val id = deviceID.split(":")
                 val homeenode = homeeDeviceRepository.findById(id[1].toLong()).get()
-                homeeController.sendcommand(homeenode.homeeID, deviceMethods.homeeattrID!!, command.toDouble())
+                homeeController.sendcommand(homeenode.homeeID, deviceMethods.homeeattrID!!, command.toFloat())
             }
             catch (e:Exception){
                 return false

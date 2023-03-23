@@ -39,6 +39,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
 	// https://mvnrepository.com/artifact/com.google.code.gson/gson
 	implementation("com.google.code.gson:gson:2.10")
@@ -53,7 +54,7 @@ dependencies {
 
 	// Füge eigene Dritt Library hinzu. Weitere Infos unter https://developerlife.com/2021/02/06/publish-kotlin-library-as-gradle-dep/
 	implementation("com.github.Rehatech22-23:smartHomeSharedLibrary:0.2.10")
-	implementation("com.github.Rehatech22-23:homeekt:0.3.0")
+	implementation("com.github.Rehatech22-23:homeekt:0.4.1")
 
 }
 

@@ -21,10 +21,10 @@ class HomeeController@Autowired constructor (
     /**
      * //TODO: Docs
      */
-    fun updateNodes()
+    fun updateNodes():Boolean
     {
-        homee.getallNodes()
-        Thread.sleep(2000L)
+        val ok = homee.getallNodes()
+        return !(ok == null || ok == false)
 
     }
     /**
@@ -33,7 +33,6 @@ class HomeeController@Autowired constructor (
      */
     fun getNodes():ArrayList<nodes>?
     {
-        updateNodes()
         return homee.nodeslist
     }
 
@@ -43,10 +42,11 @@ class HomeeController@Autowired constructor (
      * @param attribute
      * @param value
      */
-    fun sendcommand(node:Int, attribute:Int, value:Double )
+    fun sendcommand(node:Int, attribute:Int, value:Float ):Boolean
     {
-        homee.sendNodeBefehl(node, attribute, value)
-        Thread.sleep(2000L)
+
+        val ok = homee.sendNodeBefehl(node, attribute, value)
+        return !(ok == null || ok == false)
 
     }
 }

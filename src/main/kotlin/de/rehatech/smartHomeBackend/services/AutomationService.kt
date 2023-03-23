@@ -120,15 +120,14 @@ class AutomationService  @Autowired constructor(
                 }
             }
         }
-        val allHomeeNodes = homeeController.getNodes()
-        if(allHomeeNodes != null)
-        {
-            deviceService.updateNodeHomee(allHomeeNodes)
-            for (node in allHomeeNodes)
-            {
-                for (att in node.attributes)
-                {
-                    functionService.saveFunctionHomee(att)
+        if(homeeController.updateNodes()) {
+            val allHomeeNodes = homeeController.getNodes()
+            if (allHomeeNodes != null) {
+                deviceService.updateNodeHomee(allHomeeNodes)
+                for (node in allHomeeNodes) {
+                    for (att in node.attributes) {
+                        functionService.saveFunctionHomee(att)
+                    }
                 }
             }
         }
