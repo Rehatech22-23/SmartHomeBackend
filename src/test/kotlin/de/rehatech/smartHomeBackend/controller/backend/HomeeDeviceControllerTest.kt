@@ -17,4 +17,10 @@ class HomeeDeviceControllerTest
         val list = homeeController.getNodes()
         println(list)
     }
+
+    @Test
+    fun setNode2off()
+    {
+        homeeController.sendcommand(2,26,1.0)
+    }
 }

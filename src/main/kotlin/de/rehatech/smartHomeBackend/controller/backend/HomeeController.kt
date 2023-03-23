@@ -46,6 +46,7 @@ class HomeeController@Autowired constructor (
     fun sendcommand(node:Int, attribute:Int, value:Double )
     {
         homee.sendNodeBefehl(node, attribute, value)
+        Thread.sleep(2000L)
 
     }
 }
