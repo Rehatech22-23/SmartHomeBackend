@@ -8,31 +8,32 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
 @Controller
+@RequestMapping("/routine")
 class RoutineController(@field:Autowired private val routineService: RoutineService) {
 
-    @GetMapping("routine/list")
+    @GetMapping("/list")
     fun getAllRoutineIds(): ResponseEntity<List<Long>> {
         return routineService.getAllRoutineIds()
     }
 
 
-    @GetMapping("routine/{routineId}")
-    fun getRoutine(@PathVariable routineId: Long): ResponseEntity<String> {
+    @GetMapping()
+    fun getRoutine(@RequestParam routineId: Long): ResponseEntity<String> {
         return routineService.getRoutine(routineId)
     }
 
-    @GetMapping("routine/trigger")
-    fun triggerRoutineById(routineId: Long): ResponseEntity<String> {
+    @GetMapping("/trigger")
+    fun triggerRoutineById(@RequestParam routineId: Long): ResponseEntity<String> {
         return routineService.triggerRoutineById(routineId)
     }
 
-    @PostMapping("routine/create")
+    @PostMapping("/create")
     fun createRoutine(@RequestBody routineDTO: RoutineDTO): ResponseEntity<String>? {
         return routineService.createRoutine(routineDTO)
     }
 
-    @DeleteMapping("routine/delete/{routineId}")
-    fun deleteRoutine(@PathVariable routineId: Long): ResponseEntity<String>? {
+    @DeleteMapping("/delete")
+    fun deleteRoutine(@RequestParam routineId: Long): ResponseEntity<String>? {
         return routineService.deleteRoutine(routineId)
     }
 }
