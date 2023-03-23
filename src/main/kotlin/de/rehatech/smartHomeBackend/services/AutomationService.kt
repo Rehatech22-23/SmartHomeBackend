@@ -1,6 +1,8 @@
 package de.rehatech.smartHomeBackend.services
 
 import de.rehatech.smartHomeBackend.controller.backend.BackendController
+import de.rehatech.smartHomeBackend.controller.backend.HomeeController
+import de.rehatech.smartHomeBackend.controller.backend.OpenHabController
 import de.rehatech.smartHomeBackend.repositories.*
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
@@ -21,7 +23,10 @@ class AutomationService  @Autowired constructor(
     val functionService: FunctionService,
     val backendController: BackendController,
     val triggerTimeRepository: TriggerTimeRepository,
-    val deviceMethodsRepository: DeviceMethodsRepository
+    val deviceMethodsRepository: DeviceMethodsRepository,
+    val openHabController: OpenHabController,
+    val homeeController: HomeeController,
+    val deviceService: DeviceService
 
 ){
 
@@ -86,5 +91,46 @@ class AutomationService  @Autowired constructor(
 
         }
 
+    }
+
+
+    /**
+     * updates Devices
+     */
+    @Scheduled(fixedRate = 1440000)
+    fun updateDevices()
+    {
+        val allOpenHabDevice = openHabController.getDevices()
+        if(allOpenHabDevice != null)
+        {
+            deviceService.updateDevicesOpenHab(allOpenHabDevice)
+            for (device in allOpenHabDevice)
+            {
+                val channels= device.channels
+                for(channel in channels)
+                {
+                    for(itemname in channel.linkedItems)
+                    {
+                        val item = openHabController.getItemByName(itemname)
+                        if (item != null)
+                        {
+                            functionService.saveFunctionOpenHab(device.UID,item)
+                        }
+                    }
+                }
+            }
+        }
+        val allHomeeNodes = homeeController.getNodes()
+        if(allHomeeNodes != null)
+        {
+            deviceService.updateNodeHomee(allHomeeNodes)
+            for (node in allHomeeNodes)
+            {
+                for (att in node.attributes)
+                {
+                    functionService.saveFunctionHomee(att)
+                }
+            }
+        }
     }
 }

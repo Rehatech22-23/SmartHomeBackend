@@ -62,51 +62,13 @@ class DeviceService @Autowired constructor(
     }
 
 
-    /**
-     * updates Devices
-     */
-    @Scheduled(cron="0 1 1 * * *")
-    fun updateDevices()
-    {
-        val allOpenHabDevice = openHabController.getDevices()
-        if(allOpenHabDevice != null)
-        {
-            updateDevicesOpenHab(allOpenHabDevice)
-            for (device in allOpenHabDevice)
-            {
-                val channels= device.channels
-                for(channel in channels)
-                {
-                    for(itemname in channel.linkedItems)
-                    {
-                        val item = openHabController.getItemByName(itemname)
-                        if (item != null)
-                        {
-                            functionService.saveFunctionOpenHab(device.UID,item)
-                        }
-                    }
-                }
-            }
-        }
-        val allHomeeNodes = homeeController.getNodes()
-        if(allHomeeNodes != null)
-        {
-            updateNodeHomee(allHomeeNodes)
-            for (node in allHomeeNodes)
-            {
-                for (att in node.attributes)
-                {
-                    functionService.saveFunctionHomee(att)
-                }
-            }
-        }
-    }
+
 
     /**
      * //TODO: Docs, refactor: nodes class -> Nodes class (classes start with Capital Letters)
      * @param nodes
      */
-    private fun updateNodeHomee(nodes:ArrayList<nodes>)
+    fun updateNodeHomee(nodes:ArrayList<nodes>)
     {
         val listnodes = homeeDeviceRepository.findAll().toList()
         if(listnodes.isEmpty())
@@ -164,7 +126,6 @@ class DeviceService @Autowired constructor(
      * @return returns a list of all deviceIds as List of DeviceIds (Strings)
      */
     fun getDeviceIdList(): List<String>{
-        updateDevices()
         val result = mutableListOf<String>()
         val listOH = openHabDeviceRepository.findAll().toList()
         for (item in listOH){
