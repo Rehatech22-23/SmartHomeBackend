@@ -28,7 +28,7 @@ class HomeeController@Autowired constructor (
 
     }
     /**
-     * //TODO: Docs
+     * The Methode return a List of nodes
      * @return ArrayList<nodes>?
      */
     fun getNodes():ArrayList<nodes>?
@@ -37,14 +37,16 @@ class HomeeController@Autowired constructor (
     }
 
     /**
+     * The Methode send a command to the Homee
      * @param node
      * @param attribute
      * @param value
+     * @return
      */
-    fun sendCommand(node:Int, attribute:Int, value:Float ): Boolean
+    fun sendCommand(nodeId:Int, attributeId:Int, value:Float ):Boolean
     {
 
-        val ok = homee.sendNodeBefehl(node, attribute, value)
+        val ok = homee.sendNodeBefehl(nodeId, attributeId, value)
         return !(ok == null || ok == false)
 
     }
