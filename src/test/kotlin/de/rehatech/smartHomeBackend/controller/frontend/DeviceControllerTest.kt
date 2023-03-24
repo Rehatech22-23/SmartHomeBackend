@@ -1,6 +1,7 @@
 package de.rehatech.smartHomeBackend.controller.frontend;
 
 import de.rehatech.smartHomeBackend.repositories.OpenHabDeviceRepository
+import de.rehatech.smartHomeBackend.services.AutomationService
 import de.rehatech.smartHomeBackend.services.DeviceService
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito
@@ -16,6 +17,9 @@ import java.net.http.HttpResponse
 @SpringBootTest
 @WebMvcTest
 class DeviceControllerTest {
+
+    @Autowired
+    private lateinit var automationService: AutomationService
 
     @MockBean
     lateinit var deviceService: DeviceService
@@ -35,7 +39,7 @@ class DeviceControllerTest {
 
     @Test //TODO
     fun getDevice() {
-        deviceService.updateDevices()
+        automationService.updateDevices()
             //responsecode 200
             //responsetype == applicaiton/json & UTF-8 (?)
             //verify service.findAll() aufgerufen once

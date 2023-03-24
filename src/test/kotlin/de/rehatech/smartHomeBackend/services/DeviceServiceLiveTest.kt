@@ -18,10 +18,13 @@ class DeviceServiceLiveTest {
     @Autowired
     lateinit var deviceService: DeviceService
 
+    @Autowired
+    lateinit var  automationService: AutomationService
+
 
     @Test
     fun updateDevices() {
-        deviceService.updateDevices()
+        automationService.updateDevices()
         val l1 = openHabDeviceRepository.findAll().toList()
         //val count = deviceMethodsRepository.count()
         val l2 = homeeDeviceRepository.findAll().toList()
