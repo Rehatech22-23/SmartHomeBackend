@@ -3,6 +3,7 @@ package de.rehatech.smartHomeBackend.controller.backend
 import de.rehatech.smartHomeBackend.repositories.DeviceMethodsRepository
 import de.rehatech.smartHomeBackend.repositories.HomeeDeviceRepository
 import de.rehatech.smartHomeBackend.repositories.OpenHabDeviceRepository
+import de.rehatech.smartHomeBackend.services.AutomationService
 import de.rehatech.smartHomeBackend.services.DeviceService
 import org.junit.jupiter.api.Test
 
@@ -11,6 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
 class BackendControllerTest {
+
+    @Autowired
+    private lateinit var automationService: AutomationService
 
     @Autowired
     lateinit var backendController: BackendController
@@ -31,7 +35,7 @@ class BackendControllerTest {
     @Test
     fun getFunctionStateTest()
     {
-        deviceService.updateDevices()
+        automationService.updateDevices()
         val l1 = openHabDeviceRepository.findAll().toList()
         //val count = deviceMethodsRepository.count()
         val l2 = homeeDeviceRepository.findAll().toList()

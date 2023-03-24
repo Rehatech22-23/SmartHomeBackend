@@ -3,15 +3,17 @@ package de.rehatech.smartHomeBackend.services
 import de.rehatech.smartHomeBackend.controller.backend.BackendController
 import de.rehatech.smartHomeBackend.controller.backend.HomeeController
 import de.rehatech.smartHomeBackend.controller.backend.OpenHabController
+import de.rehatech.smartHomeBackend.entities.TriggerEventByDevice
+import de.rehatech.smartHomeBackend.enums.FunctionType
 import de.rehatech.smartHomeBackend.repositories.*
+import de.rehatech2223.datamodel.FunctionDTO
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.*
 
@@ -43,21 +45,21 @@ class AutomationService  @Autowired constructor(
         {
             if (routine.triggerTime != null)
             {
-                val event = routine.triggerTime
-                val eventtime = event!!.localTime!!
-                val range = LocalTime.of(LocalTime.now().hour,LocalTime.now().minute, LocalTime.now().second-10)..
-                        LocalTime.of(LocalTime.now().hour,LocalTime.now().minute, LocalTime.now().second+10)
+                val triggerTime = routine.triggerTime
+                val eventtime = triggerTime!!.localTime!!
+                val range = LocalTime.now().minusSeconds(5)..
+                        LocalTime.now().plusSeconds(5)
 
                 if(eventtime in range)
                 {
-                    if (event!!.repeat == true)
+                    if (triggerTime!!.repeat == true)
                     {
                         log.info("Time Event getriggert")
                     }
-                    else if (event.repeatExecuted == false)
+                    else if (!triggerTime.repeatExecuted)
                     {
-                        event.repeatExecuted = true
-                        triggerTimeRepository.save(event)
+                        triggerTime.repeatExecuted = true
+                        triggerTimeRepository.save(triggerTime)
                         log.info("Ein einmaliges Time Event wurde ausgeführt")
 
                     }
@@ -73,15 +75,32 @@ class AutomationService  @Autowired constructor(
 
             if( routine.triggerEventByDevice != null)
             {
-                val event = routine.triggerEventByDevice
-                val statusDevice = backendController.getMethodStatus(event!!.deviceId, deviceMethodsRepository.findById(event.function.deviceMethodsId!!).get() )
-                if (functionService.equals(statusDevice!!, event.function))
+                val triggerEventByDevice = routine.triggerEventByDevice
+                val deviceMethodsVal = deviceMethodsRepository.findById(triggerEventByDevice!!.function.deviceMethodsId!!).get()
+                val statusDevice = backendController.getMethodStatus(triggerEventByDevice!!.deviceId,deviceMethodsVal )
+                var triggerfunc = false
+                when(deviceMethodsVal.type)
                 {
+                    FunctionType.Switch -> triggerfunc = onOffRoutine(triggerEventByDevice, statusDevice!!)
+                    FunctionType.Color -> triggerfunc = rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!! )
+                    FunctionType.Contact -> triggerfunc = onOffRoutine(triggerEventByDevice,statusDevice!!)
+                    FunctionType.Dimmer -> triggerfunc = rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!! )
+                    FunctionType.Player -> triggerfunc = false
+                    FunctionType.Rollershutter -> triggerfunc = rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!! )
+                    FunctionType.Number -> triggerfunc = rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!! )
+                    else -> {log.error("Eine fehlerhafte Routine ")}
+                }
+
+
+                if (triggerfunc) {
                     log.info("Ein trigger by Device wurde gefunden")
-                    val routineEvents= routine.routineEvent
-                    for (routineEvent in routineEvents)
-                    {
-                        functionService.triggerFunc(routineEvent.deviceId, routineEvent.functionId!!, routineEvent.voldemort!!)
+                    val routineEvents = routine.routineEvent
+                    for (routineEvent in routineEvents) {
+                        functionService.triggerFunc(
+                            routineEvent.deviceId,
+                            routineEvent.functionId!!,
+                            routineEvent.voldemort!!
+                        )
                     }
                 }
 
@@ -94,12 +113,51 @@ class AutomationService  @Autowired constructor(
     }
 
 
+    private fun onOffRoutine(triggerEventByDevice: TriggerEventByDevice, status: FunctionDTO): Boolean{
+        val expectedFun = triggerEventByDevice.function
+        if(expectedFun.onOff != null)
+        {
+            if(expectedFun.onOff == status.onOff)
+            {
+                return true
+            }
+        }
+        return false
+    }
+
+    private  fun rangeRoutine(comparisonType:Int, triggerEventByDevice: TriggerEventByDevice, status: FunctionDTO):Boolean
+    {
+        val range = triggerEventByDevice.function.range
+        if(range != null) {
+            if(comparisonType == 0) {
+                if (range.currentValue == status.rangeDTO!!.currentValue) {
+                    return true
+                }
+
+            } else if (comparisonType == 1) {
+                if (range.currentValue!! < status.rangeDTO!!.currentValue) {
+                    return true
+                }
+
+            } else if (comparisonType == 2) {
+                if (range.currentValue!! > status.rangeDTO!!.currentValue) {
+                    return true
+                }
+            }
+
+        }
+        return false
+    }
+
+
+
     /**
      * updates Devices
      */
     @Scheduled(fixedRate = 1440000)
     fun updateDevices()
     {
+        log.info("Update Device at the time {}", dateFormat.format(Date()))
         val allOpenHabDevice = openHabController.getDevices()
         if(allOpenHabDevice != null)
         {

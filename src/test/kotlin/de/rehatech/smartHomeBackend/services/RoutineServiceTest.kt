@@ -183,6 +183,16 @@ class RoutineServiceTest{
     }
 
     @Test
+    fun triggerTimeTest() {
+        val trigger = TriggerTimeDTO(LocalTime.now().plusMinutes(1), false, null, null)
+        val event = RoutineEventDTO("OH:9", 18, 0.0F, null, null)
+        val eventlist = arrayListOf<RoutineEventDTO>()
+        eventlist.add(event)
+        val routineTest = RoutineDTO.Builder("TriggerTest", 0, eventlist, -1, trigger, null).build()
+        routineService.createRoutine(routineTest)
+    }
+
+    @Test
     fun testDeleteRoutine() {
         val routineName = "My Routine"
         val triggerType = 1

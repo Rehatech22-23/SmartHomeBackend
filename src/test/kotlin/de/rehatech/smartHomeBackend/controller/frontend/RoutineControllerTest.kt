@@ -44,7 +44,7 @@ class RoutineControllerTest(@field:Autowired private val mockedService: RoutineS
         val controller = RoutineController(mockedService)
         val routineDTO = RoutineDTO.Builder(
             routineName="MyRoutine",
-            triggerType=1,
+            comparisonType = 1,
             routineEventDTO = arrayListOf(RoutineEventDTO(
                 deviceId="device123",
                 functionId=456L,
