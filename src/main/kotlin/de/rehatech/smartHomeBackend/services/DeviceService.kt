@@ -11,17 +11,13 @@ import de.rehatech.smartHomeBackend.repositories.HomeeDeviceRepository
 import de.rehatech.smartHomeBackend.repositories.OpenHabDeviceRepository
 import de.rehatech2223.datamodel.DeviceDTO
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 
 @Service
 class DeviceService @Autowired constructor(
 
     val openHabDeviceRepository: OpenHabDeviceRepository,
-    val homeeDeviceRepository: HomeeDeviceRepository,
-    val functionService: FunctionService,
-    val openHabController: OpenHabController,
-    val homeeController: HomeeController
+    val homeeDeviceRepository: HomeeDeviceRepository
 )
 {
 
@@ -36,7 +32,7 @@ class DeviceService @Autowired constructor(
         {
             for(device in devices)
             {
-                trangsformThingAndSave(device)
+                transformThingAndSave(device)
             }
         }
         else
@@ -55,7 +51,7 @@ class DeviceService @Autowired constructor(
                 }
                 if(!found)
                 {
-                    trangsformThingAndSave(device)
+                    transformThingAndSave(device)
                 }
             }
         }
@@ -75,7 +71,7 @@ class DeviceService @Autowired constructor(
         {
             for(node in nodes)
             {
-                trangsformNodeAndSave(node)
+                transformNodeAndSave(node)
             }
         }
         else
@@ -94,7 +90,7 @@ class DeviceService @Autowired constructor(
                 }
                 if(!found)
                 {
-                    trangsformNodeAndSave(node)
+                    transformNodeAndSave(node)
                 }
             }
         }
@@ -104,7 +100,7 @@ class DeviceService @Autowired constructor(
      * //TODO: Docs, refactor trangsformNodeAndSave -> transformNodeAndSave, nodes class -> Nodes class (classes start with Capital Letters)
      * @param node
      */
-    private fun trangsformNodeAndSave(node: nodes)
+    private fun transformNodeAndSave(node: nodes)
     {
         val newDevice = HomeeDevice(name = node.name, homeeID = node.id)
         homeeDeviceRepository.save(newDevice)
@@ -115,7 +111,7 @@ class DeviceService @Autowired constructor(
      * //TODO: Docs, refactor trangsformThingAndSave -> transformThingAndSave
      * @param things
      */
-    private  fun trangsformThingAndSave(things: Things)
+    private  fun transformThingAndSave(things: Things)
     {
         val newDevice = OpenHabDevice(name = things.label, uid = things.UID )
         openHabDeviceRepository.save(newDevice)
