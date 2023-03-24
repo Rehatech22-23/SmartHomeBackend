@@ -1,6 +1,5 @@
 package de.rehatech.smartHomeBackend.controller.backend
 
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -21,6 +20,6 @@ class HomeeDeviceControllerTest
     @Test
     fun setNode2off()
     {
-        homeeController.sendcommand(2,26,1.0)
+        homeeController.sendCommand(2,26,1F)
     }
 }

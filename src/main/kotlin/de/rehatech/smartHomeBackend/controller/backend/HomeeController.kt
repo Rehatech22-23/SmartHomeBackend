@@ -37,12 +37,11 @@ class HomeeController@Autowired constructor (
     }
 
     /**
-     * //TODO: Docs, refactor sendcommand -> sendCommand
      * @param node
      * @param attribute
      * @param value
      */
-    fun sendcommand(node:Int, attribute:Int, value:Float ):Boolean
+    fun sendCommand(node:Int, attribute:Int, value:Float ): Boolean
     {
 
         val ok = homee.sendNodeBefehl(node, attribute, value)

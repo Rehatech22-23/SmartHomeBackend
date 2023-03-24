@@ -28,14 +28,13 @@ class OpenHabController @Autowired constructor (
 
 
     /**
-     * //TODO: Docs, refactor sendcommand -> sendCommand, itemname -> itemName
-     * @param itemname This parameter contains the item name for OpenHab
+     * @param itemName This parameter contains the item name for OpenHab
      * @param command This parameter contains the command for the OpenHab item
      * @return
      */
-    fun sendcommand(itemname: String, command: String): Boolean{
+    fun sendCommand(itemName: String, command: String): Boolean{
         val request = Request.Builder()
-            .url("${url}/rest/items/${itemname}")
+            .url("${url}/rest/items/${itemName}")
             .addHeader("Authorization","Bearer " + token) //seek seek lest
             .addHeader("Content-Type", " text/plain")
             .post(command.toRequestBody())
@@ -54,13 +53,13 @@ class OpenHabController @Autowired constructor (
 
     /**
      * //TODO Docs, refactor itemname -> itemName
-     * @param itemname This parameter contains the item name for OpenHab
+     * @param itemName This parameter contains the item name for OpenHab
      * @return
      */
-    fun getItemByName(itemname: String): Item?
+    fun getItemByName(itemName: String): Item?
     {
         val request = Request.Builder()
-            .url("${url}/rest/items/${itemname}")
+            .url("${url}/rest/items/${itemName}")
             .addHeader("Authorization","Bearer " + token)
             .build()
 

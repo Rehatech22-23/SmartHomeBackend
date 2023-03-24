@@ -15,7 +15,7 @@ class OpenHabDeviceControllerTest {
     val thingUID = "shelly:shellyem3:bcff4dfd0bca";
     @Test
     fun sendcommand() {
-        val erg = openHabController.sendcommand(itemname, "ON");
+        val erg = openHabController.sendCommand(itemname, "ON");
         assertEquals(true, erg)
     }
 
