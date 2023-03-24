@@ -5,7 +5,7 @@ import de.rehatech.smartHomeBackend.enums.FunctionType
 import de.rehatech.smartHomeBackend.response.Item
 import de.rehatech.smartHomeBackend.entities.DeviceMethods
 import de.rehatech.smartHomeBackend.repositories.HomeeDeviceRepository
-import de.rehatech.smartHomeBackend.services.FunctionTypService
+import de.rehatech.smartHomeBackend.services.FunctionTypeService
 import de.rehatech2223.datamodel.FunctionDTO
 import de.rehatech2223.datamodel.util.RangeDTO
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,7 +17,7 @@ class BackendController @Autowired constructor(
     val openHabController: OpenHabController,
     val homeeDeviceRepository: HomeeDeviceRepository,
     val homeeController: HomeeController,
-    val functionTypService: FunctionTypService
+    val functionTypeService: FunctionTypeService
 
 
 ) {
@@ -124,7 +124,7 @@ class BackendController @Autowired constructor(
      * @return FunctionDTO?
      */
     fun getFunctionFromItem(item: Item, deviceMethod: DeviceMethods): FunctionDTO? {
-        val functionType = functionTypService.functionsTypeOpenHab(item) ?: return null
+        val functionType = functionTypeService.functionsTypeOpenHab(item) ?: return null
         when (functionType) {
             FunctionType.Switch -> {
                 var on = false

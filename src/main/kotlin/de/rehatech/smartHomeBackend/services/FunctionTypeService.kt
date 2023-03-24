@@ -6,7 +6,7 @@ import de.rehatech.smartHomeBackend.response.Item
 import org.springframework.stereotype.Service
 
 @Service
-class FunctionTypService { //TODO refactor FunctionTypService -> FunctionTypeService
+class FunctionTypeService {
 
     /**
      * //TODO: Docs

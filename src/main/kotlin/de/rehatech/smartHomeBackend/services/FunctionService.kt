@@ -12,7 +12,6 @@ import de.rehatech2223.datamodel.FunctionDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import de.rehatech.smartHomeBackend.entities.Function
-import java.sql.RowId
 
 
 @Service
@@ -21,7 +20,7 @@ class FunctionService @Autowired constructor(
     val deviceMethodsRepository: DeviceMethodsRepository,
     val openHabDeviceRepository: OpenHabDeviceRepository,
     val homeeDeviceRepository: HomeeDeviceRepository,
-    val functionTypService: FunctionTypService
+    val functionTypeService: FunctionTypeService
 ) {
 
 
@@ -188,7 +187,7 @@ class FunctionService @Autowired constructor(
      */
     fun saveFunctionOpenHab(uid: String, item: Item) {
         val openhab = openHabDeviceRepository.findOpenHabByUid(uid)
-        val functType = functionTypService.functionsTypeOpenHab(item)
+        val functType = functionTypeService.functionsTypeOpenHab(item)
         if (functType != null) {
             val newDeviceMethods =
                 DeviceMethods(label = item.label, name = item.name, type = functType, deviceOpenHab = openhab)
@@ -204,7 +203,7 @@ class FunctionService @Autowired constructor(
      */
     fun saveFunctionHomee(attribute: attributes) {
         val homeeNode = homeeDeviceRepository.findHomeeByHomeeID(attribute.node_id)
-        val functType = functionTypService.functionsTypeHomee(attribute)
+        val functType = functionTypeService.functionsTypeHomee(attribute)
         if (functType != null) {
             val newDeviceMethods = DeviceMethods(
                 label = attribute.name,
