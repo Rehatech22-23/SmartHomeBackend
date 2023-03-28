@@ -1,5 +1,6 @@
 package de.rehatech.smartHomeBackend.services
 
+import de.rehatech.homeekt.model.nodes
 import de.rehatech.smartHomeBackend.controller.backend.BackendController
 import de.rehatech.smartHomeBackend.controller.backend.HomeeController
 import de.rehatech.smartHomeBackend.controller.backend.OpenHabController
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalTime
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 @Service
@@ -47,26 +49,36 @@ class AutomationService  @Autowired constructor(
             {
                 val triggerTime = routine.triggerTime
                 val eventtime = triggerTime!!.localTime!!
-                val range = LocalTime.now().minusSeconds(5)..
-                        LocalTime.now().plusSeconds(5)
+                val range = LocalTime.now().minusSeconds(10)..
+                        LocalTime.now().plusSeconds(10)
 
                 if(eventtime in range)
                 {
                     if (triggerTime!!.repeat == true)
                     {
                         log.info("Time Event getriggert")
+                        val routineEvents = routine.routineEvent
+                        for (routineEvent in routineEvents) {
+                            functionService.triggerFunc(
+                                routineEvent.deviceId,
+                                routineEvent.functionId!!,
+                                routineEvent.voldemort!!
+                            )
+                        }
                     }
                     else if (!triggerTime.repeatExecuted)
                     {
                         triggerTime.repeatExecuted = true
                         triggerTimeRepository.save(triggerTime)
                         log.info("Ein einmaliges Time Event wurde ausgeführt")
-
-                    }
-                    val routineEvents= routine.routineEvent
-                    for (routineEvent in routineEvents)
-                    {
-                        functionService.triggerFunc(routineEvent.deviceId, routineEvent.functionId!!, routineEvent.voldemort!!)
+                        val routineEvents = routine.routineEvent
+                        for (routineEvent in routineEvents) {
+                            functionService.triggerFunc(
+                                routineEvent.deviceId,
+                                routineEvent.functionId!!,
+                                routineEvent.voldemort!!
+                            )
+                        }
 
                     }
                 }
@@ -154,15 +166,16 @@ class AutomationService  @Autowired constructor(
     /**
      * updates Devices
      */
-    @Scheduled(fixedRate = 1440000)
+    @Scheduled(fixedRate = 900000)
     fun updateDevices()
     {
         log.info("Update Device at the time {}", dateFormat.format(Date()))
         val allOpenHabDevice = openHabController.getDevices()
         if(allOpenHabDevice != null)
         {
+            val allOpenHabDeviveList = allOpenHabDevice.toList()
             deviceService.updateDevicesOpenHab(allOpenHabDevice)
-            for (device in allOpenHabDevice)
+            for (device in allOpenHabDeviveList)
             {
                 val channels= device.channels
                 for(channel in channels)
@@ -181,8 +194,9 @@ class AutomationService  @Autowired constructor(
         if(homeeController.updateNodes()) {
             val allHomeeNodes = homeeController.getNodes()
             if (allHomeeNodes != null) {
+                val allNodesCopy = allHomeeNodes.toList()
                 deviceService.updateNodeHomee(allHomeeNodes)
-                for (node in allHomeeNodes) {
+                for (node in allNodesCopy) {
                     for (att in node.attributes) {
                         functionService.saveFunctionHomee(att)
                     }

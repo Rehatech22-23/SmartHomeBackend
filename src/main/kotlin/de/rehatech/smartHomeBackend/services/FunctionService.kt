@@ -191,7 +191,27 @@ class FunctionService @Autowired constructor(
         if (functType != null) {
             val newDeviceMethods =
                 DeviceMethods(label = item.label, name = item.name, type = functType, deviceOpenHab = openhab)
-            deviceMethodsRepository.save(newDeviceMethods)
+            var found = false
+            val allDevice = deviceMethodsRepository.findAll()
+            for (device in allDevice)
+            {
+                if(device.deviceOpenHab != null)
+                {
+                    if( device.deviceOpenHab == newDeviceMethods.deviceOpenHab)
+                    {
+                        if( device.label == newDeviceMethods.label)
+                        {
+                            if( device.name == newDeviceMethods.name)
+                            {
+                                found = true
+                            }
+                        }
+                    }
+                }
+            }
+            if (!found) {
+                deviceMethodsRepository.save(newDeviceMethods)
+            }
         }
 
     }
@@ -205,6 +225,7 @@ class FunctionService @Autowired constructor(
         val homeeNode = homeeDeviceRepository.findHomeeByHomeeID(attribute.node_id)
         val functType = functionTypeService.functionsTypeHomee(attribute)
         if (functType != null) {
+            val allnodes =  deviceMethodsRepository.findAll()
             val newDeviceMethods = DeviceMethods(
                 label = attribute.name,
                 name = attribute.name,
@@ -212,11 +233,32 @@ class FunctionService @Autowired constructor(
                 type = functType,
                 deviceHomee = homeeNode
             )
-            deviceMethodsRepository.save(newDeviceMethods)
+            var found = false
+            for (node in allnodes)
+            {
+                if (node.deviceHomee != null)
+                {
+
+                    if (newDeviceMethods.deviceHomee == node.deviceHomee)
+                    {
+                        if (newDeviceMethods.label == node.label)
+                        {
+                            if (newDeviceMethods.name == node.name)
+                            {
+                                if (newDeviceMethods.homeeattrID == node.homeeattrID)
+                                {
+                                    found = true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (!found) {
+                deviceMethodsRepository.save(newDeviceMethods)
+            }
         }
     }
 
-    fun equals(functionDTO: FunctionDTO, function: Function): Boolean {
-        return true
-    }
+
 }
