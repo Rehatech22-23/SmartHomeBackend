@@ -110,11 +110,11 @@ class FunctionService @Autowired constructor(
 
     private fun airPurifierState(body: Float): String{
         val command: String = when(body){
-            0F -> "Silent"
+            0F -> "s"
             1F -> "1"
             2F -> "2"
             3F -> "3"
-            4F -> "Turbo"
+            4F -> "t"
             else -> ""
         }
         return command
