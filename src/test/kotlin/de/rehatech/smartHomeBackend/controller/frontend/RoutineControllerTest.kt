@@ -12,15 +12,20 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest
 class RoutineControllerTest(@field:Autowired private val mockedService: RoutineService) {
 
-    @Test // Test the getAllRoutineIds() method
+    /**
+     * Tests the getAllRoutineIds method from the Routine Controller
+     */
+    @Test
     fun testGetAllRoutineIds() {
         val controller = RoutineController(mockedService)
         val response = controller.getAllRoutineIds()
         assertNotNull(response)
     }
 
-
-    @Test // Test the getRoutine() method
+    /**
+     * Tests the getRoutine method from the Routine Controller
+     */
+    @Test
     fun testGetRoutine() {
         val controller = RoutineController(mockedService)
         val routineId: Long = 123
@@ -28,8 +33,10 @@ class RoutineControllerTest(@field:Autowired private val mockedService: RoutineS
         assertNotNull(response)
     }
 
-
-    @Test // Test the triggerRoutineById() method
+    /**
+     * Test the triggerRoutineById method from the Routine Controller
+     */
+    @Test
     fun testTriggerRoutineById() {
         val controller = RoutineController(mockedService)
         val routineId: Long = 123
@@ -38,8 +45,10 @@ class RoutineControllerTest(@field:Autowired private val mockedService: RoutineS
     }
 
 
-
-    @Test // Test the createRoutine() method
+    /**
+     * Tests the createRoutine method from the Routine Controller
+     */
+    @Test
     fun testCreateRoutine() {
         val controller = RoutineController(mockedService)
         val routineDTO = RoutineDTO.Builder(
@@ -57,8 +66,10 @@ class RoutineControllerTest(@field:Autowired private val mockedService: RoutineS
         assertNotNull(response)
     }
 
-
-    @Test // Test the deleteRoutine() method
+    /**
+     * Tests the deleteRoutine method from the Routine Controller
+     */
+    @Test
     fun testDeleteRoutine() {
         val controller = RoutineController(mockedService)
         val routineId: Long = 123

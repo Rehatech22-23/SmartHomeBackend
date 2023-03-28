@@ -18,6 +18,13 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.ResponseEntity
 import java.time.LocalTime
 
+/**
+ * A Testing Class for the RoutineService
+ *
+ * This class contains methods for testing the business logic concerning Routine Entities
+ *
+ * @author Tim Lukas Bräuker
+ */
 
 @SpringBootTest
 class RoutineServiceTest{
@@ -32,6 +39,10 @@ class RoutineServiceTest{
     @Autowired
     lateinit var routineEventRepository: RoutineEventRepository
 
+
+    /**
+     * This method tests the method getAllRoutineIds from the RoutineService
+     */
     @Test
     fun testGetAllRoutineIds() {
         //Call the method to test
@@ -41,6 +52,9 @@ class RoutineServiceTest{
         assertEquals(0, result.body!!.size)
     }
 
+    /**
+     * This method tests the method getRoutine from the RoutineService
+     */
     @Test
     fun testGetRoutine() {
         //Create a mock routine
@@ -86,10 +100,14 @@ class RoutineServiceTest{
 
         routineService.createRoutine(mockRoutine)
         val result2 = routineService.getRoutine(mockRoutine.routineId!!)
+        routineService.deleteRoutine(mockRoutine.routineId)
         assertNotNull(result2)
 
     }
 
+    /**
+     * This method tests the method triggerRoutineById from the RoutineService
+     */
     @Test
     fun testTriggerRoutineById() {
         val routineName = "My Routine"
@@ -133,6 +151,9 @@ class RoutineServiceTest{
         assertEquals("Es konnte keine Routine mit der angegebenen Id gefunden werden!", result.body)
     }
 
+    /**
+     * This method tests the method createRoutine from the RoutineService
+     */
     @Test
     fun testCreateRoutine() {
         val routineName = "My Routine"
@@ -179,19 +200,24 @@ class RoutineServiceTest{
             println( test.routineEvent)
         }
         //Check the returned value
+        routineService.deleteRoutine(mockRoutine.routineId)
         assertNotNull(result)
     }
 
     @Test
-    fun triggerTimeTest() {
+    fun testTriggerTime() {
         val trigger = TriggerTimeDTO(LocalTime.now().plusMinutes(1), false, null, null)
         val event = RoutineEventDTO("OH:9", 18, 0.0F, null, null)
         val eventlist = arrayListOf<RoutineEventDTO>()
         eventlist.add(event)
         val routineTest = RoutineDTO.Builder("TriggerTest", 0, eventlist, -1, trigger, null).build()
         routineService.createRoutine(routineTest)
+        routineService.deleteRoutine(routineTest.routineId)
     }
 
+    /**
+     * This method tests the method deleteRoutine from the RoutineService
+     */
     @Test
     fun testDeleteRoutine() {
         val routineName = "My Routine"
