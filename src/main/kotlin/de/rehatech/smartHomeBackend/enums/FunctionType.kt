@@ -14,6 +14,7 @@ enum class FunctionType(val typ: String) {
     Player("Player"),
     Rollershutter("Rollershutter"),
     StringType("String"),
+    Air("Air")
 
 
 }

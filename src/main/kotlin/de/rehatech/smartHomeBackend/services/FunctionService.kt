@@ -99,6 +99,27 @@ class FunctionService @Autowired constructor(
         return ""       //falscher wert im body
     }
 
+    private fun playPause(body: Float): String{
+        if(body == 1F){
+            return "PLAY"
+        }else if(body == 0F){
+            return "PAUSE"
+        }
+        return ""
+    }
+
+    private fun airPurifierState(body: Float): String{
+        val command: String = when(body){
+            0F -> "Silent"
+            1F -> "1"
+            2F -> "2"
+            3F -> "3"
+            4F -> "Turbo"
+            else -> ""
+        }
+        return command
+    }
+
 
     /**
      * called when Function from a OpenHab Device should get triggered
@@ -112,6 +133,8 @@ class FunctionService @Autowired constructor(
             FunctionType.Switch -> onOff(body)
             FunctionType.Call -> "REFRESH"
             FunctionType.Image -> "REFRESH"
+            FunctionType.Player -> playPause(body)
+            FunctionType.Air -> airPurifierState(body)
 
             //REFRESH
             //Fehler: meistens nichts was getriggert wird, sondern was was bei Aufruf refreshed wird
@@ -120,7 +143,6 @@ class FunctionService @Autowired constructor(
             FunctionType.Group -> "-"             //nur zum item nesting, (ohne Command)
             FunctionType.Location -> "Point"      //REFRESH, POINT (String of 3 decimals [altitude, longitude, altitude in m], für uns nicht von nutzen)
             FunctionType.Number -> "Decimal"      //REFRESH, DECIMAL
-            FunctionType.Player -> "PlayPause"    //wir benutzen keine Player-Geräte
             FunctionType.StringType -> "String"   //stores nur einen String -> REFRESH
         }
         if (command == "") {
@@ -158,21 +180,21 @@ class FunctionService @Autowired constructor(
     }
 
     private fun checkValueDimmingLevel(body: Float): String {
-        if (body >= 0.0 && body <= 100.0) { //Prozent (0: aus, 100: an)
+        if (body in 0.0..100.0) { //Prozent (0: aus, 100: an)
             return body.toString()
         }
         return ""
     }
 
     private fun checkValueColor(body: Float): String {
-        if (body >= 0F && body <= 16777215) { //HEX Farbcode als Dezimal
+        if (body in 0F..16777215F) { //HEX Farbcode als Dezimal
             return body.toString()
         }
         return ""
     }
 
     private fun checkValueColorTemperature(body: Float): String {
-        if (body >= 2000F && body <= 6535) { //Farb Temp als Kelvin
+        if (body in 2000F..6535F) { //Farb Temp als Kelvin
             return body.toString()
         }
         return ""
