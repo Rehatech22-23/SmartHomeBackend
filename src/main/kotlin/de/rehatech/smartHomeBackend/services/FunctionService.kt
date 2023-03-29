@@ -11,9 +11,17 @@ import de.rehatech.smartHomeBackend.response.Item
 import de.rehatech2223.datamodel.FunctionDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import de.rehatech.smartHomeBackend.entities.Function
 
-
+/**
+ * A Service for the handling of DeviceMethods concerning functions executed by Homee and Openhab devices*
+ *
+ * @param backendController Instance gets automatically autowired into the Service
+ * @param deviceMethodsRepository Instance gets automatically autowired into the Service
+ * @param openHabDeviceRepository Instance gets automatically autowired into the Service
+ * @param homeeDeviceRepository Instance gets automatically autowired into the Service
+ * @param functionTypeService Instance gets automatically autowired into the Service
+ * @author Sofia Bonas
+ */
 @Service
 class FunctionService @Autowired constructor(
     val backendController: BackendController,
@@ -168,7 +176,7 @@ class FunctionService @Autowired constructor(
         }else if(command == "-1"){
             //fehlerbehandlung (falsches homeeattr übergeben)
         }
-        return command;
+        return command
     }
 
 

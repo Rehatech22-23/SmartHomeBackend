@@ -3,6 +3,9 @@ package de.rehatech.smartHomeBackend.response
 import de.rehatech.smartHomeBackend.response.util.CommandDescription
 import de.rehatech.smartHomeBackend.response.util.StateDescription
 
+/**
+ * A data class storing the required values for Items concerning OpenHab Devices
+ */
 data class Item(
     var type: String,
     var name: String,

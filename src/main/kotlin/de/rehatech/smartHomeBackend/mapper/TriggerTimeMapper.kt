@@ -3,6 +3,11 @@ package de.rehatech.smartHomeBackend.mapper
 import de.rehatech.smartHomeBackend.entities.TriggerTime
 import de.rehatech2223.datamodel.util.TriggerTimeDTO
 
+/**
+ * A mapper that maps TriggerTimeDTOs to TriggerTimeEntities and vice versa
+ *
+ * @author Tim Bräuker
+ */
 class TriggerTimeMapper {
 
     companion object{

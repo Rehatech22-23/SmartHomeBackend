@@ -5,13 +5,19 @@ import de.rehatech.smartHomeBackend.enums.FunctionType
 import de.rehatech.smartHomeBackend.response.Item
 import org.springframework.stereotype.Service
 
+/**
+ * A Service class handling the automated execution of Routines
+ *
+ *  @author Sebastian Kurth, Sofia Bonas
+ */
 @Service
 class FunctionTypeService {
 
     /**
      * //TODO: Docs
-     * @param attribute
+     * @param attribute referencing the attributes data class of our homeekt library
      * @return FunctionType?
+     * @author Sebastian Kurth
      */
     fun functionsTypeHomee(attribute: attributes): FunctionType?
     {

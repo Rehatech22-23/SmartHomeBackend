@@ -4,6 +4,11 @@ import de.rehatech.smartHomeBackend.entities.OpenHabDevice
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
+/**
+ * An Interface class extending a CrudRepository in order to handle CRUD operations on a repository for OpenHabDevices
+ *
+ * @author Sebastian Kurth, Sofia Bonas
+ */
 @Repository
 interface OpenHabDeviceRepository : CrudRepository<OpenHabDevice, Long> {
 

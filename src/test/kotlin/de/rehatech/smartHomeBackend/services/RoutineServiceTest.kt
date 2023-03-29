@@ -1,10 +1,7 @@
 package de.rehatech.smartHomeBackend.services
 
 import de.rehatech.smartHomeBackend.mapper.RoutineMapper
-import de.rehatech.smartHomeBackend.repositories.RoutineEventRepository
 import de.rehatech.smartHomeBackend.repositories.RoutineRepository
-import de.rehatech.smartHomeBackend.repositories.TriggerEventByDeviceRepository
-import de.rehatech.smartHomeBackend.repositories.TriggerTimeRepository
 import de.rehatech2223.datamodel.FunctionDTO
 import de.rehatech2223.datamodel.RoutineDTO
 import de.rehatech2223.datamodel.util.RangeDTO
@@ -32,13 +29,6 @@ class RoutineServiceTest{
     lateinit var routineService: RoutineService
     @Autowired
     lateinit var routineRepository: RoutineRepository
-    @Autowired
-    lateinit var triggerTimeRepository: TriggerTimeRepository
-    @Autowired
-    lateinit var triggerEventByDeviceRepository: TriggerEventByDeviceRepository
-    @Autowired
-    lateinit var routineEventRepository: RoutineEventRepository
-
 
     /**
      * This method tests the method getAllRoutineIds from the RoutineService
@@ -93,13 +83,13 @@ class RoutineServiceTest{
         val mockRoutine = routineDTOBuilder.build()
 
         //Call the method to test
-        val result = routineService.getRoutine(mockRoutine.routineId!!)
+        val result = routineService.getRoutine(mockRoutine.routineId)
 
         //Check the returned value
         assertEquals("Es konnte keine Routine mit der angegebenen Id gefunden werden!", result.body)
 
         routineService.createRoutine(mockRoutine)
-        val result2 = routineService.getRoutine(mockRoutine.routineId!!)
+        val result2 = routineService.getRoutine(mockRoutine.routineId)
         routineService.deleteRoutine(mockRoutine.routineId)
         assertNotNull(result2)
 
@@ -145,7 +135,7 @@ class RoutineServiceTest{
         val mockRoutine = routineDTOBuilder.build()
 
         //Call the method to test
-        val result = routineService.triggerRoutineById(mockRoutine.routineId!!)
+        val result = routineService.triggerRoutineById(mockRoutine.routineId)
 
         //Check the returned value
         assertEquals("Es konnte keine Routine mit der angegebenen Id gefunden werden!", result.body)

@@ -3,6 +3,11 @@ package de.rehatech.smartHomeBackend.mapper
 import de.rehatech.smartHomeBackend.entities.RoutineEvent
 import de.rehatech2223.datamodel.util.RoutineEventDTO
 
+/**
+ * A mapper that maps RoutineEventDTOs to RoutineEventEntities and vice versa
+ *
+ * @author Tim Bräuker
+ */
 class RoutineEventMapper {
 
     companion object{

@@ -3,6 +3,11 @@ package de.rehatech.smartHomeBackend.mapper
 import de.rehatech.smartHomeBackend.entities.TriggerEventByDevice
 import de.rehatech2223.datamodel.util.TriggerEventByDeviceDTO
 
+/**
+ * A mapper that maps TriggerEventByDeviceDTOs to TriggerEventByDeviceEntities and vice versa
+ *
+ * @author Tim Bräuker
+ */
 class TriggerEventByDeviceMapper {
 
     companion object{

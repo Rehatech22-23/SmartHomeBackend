@@ -7,6 +7,12 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
+/**
+ * A class that handles API calls for DeviceMethod Objects
+ *
+ * @param functionService Instance gets automatically autowired into the Controller
+ * @authors Sebastian Kurth, Sofia Bonas
+ */
 @RestController
 @RequestMapping("/function")
 class FunctionController @Autowired constructor(val functionService: FunctionService){

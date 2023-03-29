@@ -2,6 +2,11 @@ package de.rehatech.smartHomeBackend.entities
 
 import jakarta.persistence.*
 
+/**
+ * An Entity that represents the function the Routine Object it is stored in will be executed when the Routine is triggered
+ *
+ * @author Tim Lukas Bräuker
+ */
 @Entity(name = "function")
 class Function {
 

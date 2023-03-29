@@ -1,6 +1,5 @@
 package de.rehatech.smartHomeBackend.services
 
-import de.rehatech.homeekt.model.nodes
 import de.rehatech.smartHomeBackend.controller.backend.BackendController
 import de.rehatech.smartHomeBackend.controller.backend.HomeeController
 import de.rehatech.smartHomeBackend.controller.backend.OpenHabController
@@ -17,9 +16,21 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalTime
 import java.util.*
-import kotlin.collections.ArrayList
 
-
+/**
+ * A Service class handling the automated execution of Routines
+ *
+ * @param routineRepository Instance gets automatically autowired into the Service
+ * @param functionService Instance gets automatically autowired into the Service
+ * @param backendController Instance gets automatically autowired into the Service
+ * @param triggerTimeRepository Instance gets automatically autowired into the Service
+ * @param deviceMethodsRepository Instance gets automatically autowired into the Service
+ * @param openHabController Instance gets automatically autowired into the Service
+ * @param homeeController Instance gets automatically autowired into the Service
+ * @param deviceService Instance gets automatically autowired into the Service
+ *
+ *  @author Sebastian Kurth
+ */
 @Service
 class AutomationService  @Autowired constructor(
 
@@ -54,7 +65,7 @@ class AutomationService  @Autowired constructor(
 
                 if(eventtime in range)
                 {
-                    if (triggerTime!!.repeat == true)
+                    if (triggerTime.repeat == true)
                     {
                         log.info("Time Event getriggert")
                         val routineEvents = routine.routineEvent
@@ -89,7 +100,7 @@ class AutomationService  @Autowired constructor(
             {
                 val triggerEventByDevice = routine.triggerEventByDevice
                 val deviceMethodsVal = deviceMethodsRepository.findById(triggerEventByDevice!!.function.deviceMethodsId!!).get()
-                val statusDevice = backendController.getMethodStatus(triggerEventByDevice!!.deviceId,deviceMethodsVal )
+                val statusDevice = backendController.getMethodStatus(triggerEventByDevice.deviceId,deviceMethodsVal )
                 var triggerfunc = false
                 when(deviceMethodsVal.type)
                 {

@@ -14,10 +14,13 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
-@Component
 /**
+ * A class that handles commands dor OpenHabDevices
  *
+ * @param apiConfiguration Instance gets automatically autowired into the Controller
+ * @authors Sebastian Kurth, Sofia Bonas
  */
+@Component
 class OpenHabController @Autowired constructor (
 
     apiConfiguration: ApiConfiguration

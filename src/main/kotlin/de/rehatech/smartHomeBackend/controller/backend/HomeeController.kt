@@ -6,6 +6,12 @@ import de.rehatech.smartHomeBackend.config.ApiConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 
+/**
+ * A class that handles commands dor HomeeDevices
+ *
+ * @param apiConfiguration Instance gets automatically autowired into the Controller
+ * @authors Sebastian Kurth, Sofia Bonas
+ */
 @Controller
 class HomeeController@Autowired constructor (
 
@@ -38,8 +44,8 @@ class HomeeController@Autowired constructor (
 
     /**
      * The Methode send a command to the Homee
-     * @param node
-     * @param attribute
+     * @param nodeId
+     * @param attributeId
      * @param value
      * @return
      */

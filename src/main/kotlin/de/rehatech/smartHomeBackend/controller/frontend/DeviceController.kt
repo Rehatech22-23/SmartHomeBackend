@@ -9,7 +9,13 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
-
+/**
+ * A class that handles API calls for Device Objects
+ *
+ * @param deviceService Instance gets automatically autowired into the Controller
+ * @param automationService Instance gets automatically autowired into the Controller
+ * @authors Sebastian Kurth, Sofia Bonas
+ */
 @RestController
 @RequestMapping("/device")
 class DeviceController @Autowired constructor(val deviceService: DeviceService, val automationService: AutomationService) {

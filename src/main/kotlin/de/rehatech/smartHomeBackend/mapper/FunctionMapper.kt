@@ -3,6 +3,11 @@ package de.rehatech.smartHomeBackend.mapper
 import de.rehatech.smartHomeBackend.entities.Function
 import de.rehatech2223.datamodel.FunctionDTO
 
+/**
+ * A mapper that maps FunctionsDTOs to FunctionEntities and vice versa
+ *
+ * @author Tim Bräuker
+ */
 class FunctionMapper {
 
     companion object {
@@ -26,7 +31,7 @@ class FunctionMapper {
             if (function.onOff != null) functionDTOBuilder.onOff(function.onOff!!)
             if (function.outputValue != null) functionDTOBuilder.outputValue(function.outputValue!!)
             if (function.outputTrigger != null) functionDTOBuilder.outputTrigger(function.outputTrigger!!)
-            return functionDTOBuilder.build();
+            return functionDTOBuilder.build()
         }
     }
 }

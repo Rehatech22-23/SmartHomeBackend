@@ -1,10 +1,7 @@
 package de.rehatech.smartHomeBackend.services
 
 import de.rehatech.smartHomeBackend.mapper.RoutineMapper
-import de.rehatech.smartHomeBackend.repositories.RoutineEventRepository
 import de.rehatech.smartHomeBackend.repositories.RoutineRepository
-import de.rehatech.smartHomeBackend.repositories.TriggerEventByDeviceRepository
-import de.rehatech.smartHomeBackend.repositories.TriggerTimeRepository
 import de.rehatech2223.datamodel.RoutineDTO
 import jakarta.transaction.Transactional
 import kotlinx.serialization.encodeToString
@@ -18,11 +15,11 @@ import org.springframework.stereotype.Service
  *
  * This class contains methods the business logic concerning Routine Entities
  *
- * @param the RoutineRepository Interface gets automatically autowired into the Service
+ * @param  routineRepository Interface gets automatically autowired into the Service
  * @author Tim Lukas Bräuker
  */
 @Service
-class RoutineService(private val routineRepository: RoutineRepository, private val triggerTimeRepository: TriggerTimeRepository, private val triggerEventByDeviceRepository: TriggerEventByDeviceRepository, private val routineEventRepository: RoutineEventRepository) {
+class RoutineService(private val routineRepository: RoutineRepository) {
 
     /**
      * Finds all Routine Objects stored in the Database and filters out their Ids

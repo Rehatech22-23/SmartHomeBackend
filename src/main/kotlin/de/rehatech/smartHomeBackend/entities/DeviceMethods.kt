@@ -3,6 +3,11 @@ package de.rehatech.smartHomeBackend.entities
 import de.rehatech.smartHomeBackend.enums.FunctionType
 import jakarta.persistence.*
 
+/**
+ * An Entity Class that represents the DeviceMethods
+ *
+ * @author Sebastian Kurth
+ */
 @Entity
 data class DeviceMethods(
     @Id

@@ -11,6 +11,18 @@ import de.rehatech2223.datamodel.util.RangeDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 
+/**
+ * A class determining if a DeviceMethods belongs to a Homee device or OpenHab device and routes
+ * these commands either to the OpenHabController or HomeeController. It works essentially as a
+ * pre determination Controller above the actual Controller layer. That is necessary as OpenHab
+ * and Homee use different APIs
+ *
+ * @param openHabController Instance gets automatically autowired into the Controller
+ * @param homeeDeviceRepository Instance gets automatically autowired into the Controller
+ * @param homeeController Instance gets automatically autowired into the Controller
+ * @param functionTypeService Instance gets automatically autowired into the Controller
+ * @authors Sebastian Kurth, Sofia Bonas
+ */
 @Controller
 class BackendController @Autowired constructor(
 

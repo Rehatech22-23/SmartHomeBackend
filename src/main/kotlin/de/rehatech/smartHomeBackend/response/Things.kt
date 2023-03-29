@@ -5,6 +5,11 @@ import de.rehatech.smartHomeBackend.response.util.FirmwareStatus
 import de.rehatech.smartHomeBackend.response.util.Prop
 import de.rehatech.smartHomeBackend.response.util.StatusInfo
 
+/**
+ * A data class storing the required values for Things concerning OpenHab Devices
+ *
+ * @author Sebastian Kurth
+ */
 data class Things(
     var label: String,
     var bridgeUID: String,
