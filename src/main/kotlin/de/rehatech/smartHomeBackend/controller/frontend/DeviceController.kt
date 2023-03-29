@@ -1,19 +1,18 @@
 package de.rehatech.smartHomeBackend.controller.frontend
 
+import de.rehatech.smartHomeBackend.services.AutomationService
 import de.rehatech.smartHomeBackend.services.DeviceService
 import de.rehatech2223.datamodel.DeviceDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 
 @RestController
 @RequestMapping("/device")
-class DeviceController @Autowired constructor(val deviceService: DeviceService) {
+class DeviceController @Autowired constructor(val deviceService: DeviceService, val automationService: AutomationService) {
 
     @GetMapping("/list")
     fun getDeviceIdList(): List<String> = deviceService.getDeviceIdList()
@@ -28,7 +27,10 @@ class DeviceController @Autowired constructor(val deviceService: DeviceService) 
         }
     }
 
-    @GetMapping("/updatedDevices")
-    fun getUpdatedDevices(): List<String> = deviceService.updatedDevices()
+    @GetMapping("/updated")
+    fun getUpdatedDevices(): ResponseEntity<Nothing> {
+        automationService.updateDevices()
+        return ResponseEntity(null,null, HttpStatus.OK)
+    }
 
 }
