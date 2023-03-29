@@ -2,6 +2,7 @@ package de.rehatech.smartHomeBackend.services
 
 import de.rehatech.homeekt.model.attributes
 import de.rehatech.smartHomeBackend.controller.backend.BackendController
+import de.rehatech.smartHomeBackend.controller.backend.HomeeController
 import de.rehatech.smartHomeBackend.entities.DeviceMethods
 import de.rehatech.smartHomeBackend.enums.FunctionType
 import de.rehatech.smartHomeBackend.repositories.DeviceMethodsRepository
@@ -74,11 +75,14 @@ class FunctionService @Autowired constructor(
         val command: String = when (tmp[0]) {
             "OH" -> setCommandOH(functionId, body)
             "HM" -> setCommandHM(functionId, body)
-
-            //ception()
             else -> {""}
         }
 
+        if(command == ""){
+            throw NullPointerException() //falscher wert im body übergeben
+        }else if(command == "-1"){
+            throw NullPointerException() //falsches Homeeattr übergeben (eine nummer die keinen sinn ergibt)
+        }
         backendController.sendCommand(deviceId, deviceMethodsRepository.findById(functionId).get(), command)
     }
 
@@ -108,12 +112,22 @@ class FunctionService @Autowired constructor(
     }
 
     private fun playPause(body: Float): String{
-        if(body == 1F){
+        val command = when (body){
+            0F -> "PLAY"
+            1F -> "NEXT"
+            2F -> "PREVIOUS"
+            3F -> "PAUSE"
+            4F -> "REWIND"
+            5F -> "FASTFORWARD"
+            6F -> "REFRESH"
+            else -> ""
+        }
+        /*if(body == 1F){
             return "PLAY"
         }else if(body == 0F){
             return "PAUSE"
-        }
-        return ""
+        }*/
+        return command
     }
 
     private fun airPurifierState(body: Float): String{
@@ -164,11 +178,10 @@ class FunctionService @Autowired constructor(
      */
     private fun setCommandHM(functionId: Long, body: Float): String {
         val funcVal = deviceMethodsRepository.findById(functionId).get()
-        val command: String = when (funcVal.homeeattrID) {
-            26 -> checkValueOnOff(body) //else error
-            27 -> checkValueDimmingLevel(body) //else error
-            29 -> checkValueColor(body)//else error
-            30 -> checkValueColorTemperature(body)//else error
+        val command: String = when (funcVal.type) {
+            FunctionType.Switch -> checkValueOnOff(body) //else error
+            FunctionType.Dimmer -> checkValueDimmingLevel(body) //else error
+            FunctionType.Color -> checkValueColor(body)//else error
             else -> {"-1"}
         }
         if(command == ""){
@@ -196,13 +209,6 @@ class FunctionService @Autowired constructor(
 
     private fun checkValueColor(body: Float): String {
         if (body in 0F..16777215F) { //HEX Farbcode als Dezimal
-            return body.toString()
-        }
-        return ""
-    }
-
-    private fun checkValueColorTemperature(body: Float): String {
-        if (body in 2000F..6535F) { //Farb Temp als Kelvin
             return body.toString()
         }
         return ""
