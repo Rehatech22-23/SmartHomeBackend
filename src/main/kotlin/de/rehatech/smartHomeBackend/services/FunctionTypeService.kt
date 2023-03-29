@@ -54,7 +54,13 @@ class FunctionTypeService {
         }
         if(itemstring.contains("String"))
         {
-            itemstring = "StringType"
+            if ("Philips_AirPurifier_Air" in item.name)
+            {
+                itemstring = "Air"
+            }
+            else {
+                itemstring = "StringType"
+            }
         }
         try {
             val test = FunctionType.valueOf(itemstring)

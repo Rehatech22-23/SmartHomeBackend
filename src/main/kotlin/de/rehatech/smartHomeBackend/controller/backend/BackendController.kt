@@ -93,7 +93,7 @@ class BackendController @Autowired constructor(
                     on = true
                 }
                 FunctionDTO.Builder(
-                    functionName = deviceMethod.name,
+                    functionName = deviceMethod.label,
                     functionId = deviceMethod.id!!,
                     onOff = on,
                     outputValue = attribute.state.toString()
@@ -102,7 +102,7 @@ class BackendController @Autowired constructor(
 
             FunctionType.Dimmer -> {
                 FunctionDTO.Builder(
-                    functionName = deviceMethod.name,
+                    functionName = deviceMethod.label,
                     functionId = deviceMethod.id!!,
                     outputValue = attribute.state.toString(),
                     rangeDTO = RangeDTO(
@@ -132,7 +132,7 @@ class BackendController @Autowired constructor(
                     on = true
                 }
                 return FunctionDTO.Builder(
-                    functionName = deviceMethod.name,
+                    functionName = deviceMethod.label,
                     functionId = deviceMethod.id!!,
                     onOff = on,
                     outputValue = item.state
@@ -142,14 +142,14 @@ class BackendController @Autowired constructor(
             FunctionType.Color -> return null
             FunctionType.Call -> return null
             FunctionType.Contact -> return FunctionDTO.Builder(
-                functionName = deviceMethod.name,
+                functionName = deviceMethod.label,
                 functionId = deviceMethod.id!!,
                 outputValue = item.state
             ).build()
 
             FunctionType.Datetime -> return null
             FunctionType.Dimmer -> return FunctionDTO.Builder(
-                functionName = deviceMethod.name,
+                functionName = deviceMethod.label,
                 functionId = deviceMethod.id!!,
                 outputValue = item.state,
                 rangeDTO = RangeDTO(item.stateDescription.minimum, item.stateDescription.maximum, item.state.toDouble())
@@ -158,25 +158,32 @@ class BackendController @Autowired constructor(
             FunctionType.Group -> return null
             FunctionType.Image -> return null
             FunctionType.Location -> return null
+            FunctionType.Air -> return null
             FunctionType.Number -> return FunctionDTO.Builder(
-                functionName = deviceMethod.name,
+                functionName = deviceMethod.label,
                 functionId = deviceMethod.id!!,
                 outputValue = item.state
             ).build()
 
-            FunctionType.Player -> return null
+            FunctionType.Player -> return FunctionDTO.Builder(
+                functionName = deviceMethod.label,
+                functionId = deviceMethod.id!!,
+                outputValue = item.state
+            ).build()
+
             FunctionType.Rollershutter -> return FunctionDTO.Builder(
-                functionName = deviceMethod.name,
+                functionName = deviceMethod.label,
                 functionId = deviceMethod.id!!,
                 outputValue = item.state,
                 rangeDTO = RangeDTO(item.stateDescription.minimum, item.stateDescription.maximum, item.state.toDouble())
             ).build()
 
             FunctionType.StringType -> return FunctionDTO.Builder(
-                functionName = deviceMethod.name,
+                functionName = deviceMethod.label,
                 functionId = deviceMethod.id!!,
                 outputValue = item.state
             ).build()
+
         }
 
     }

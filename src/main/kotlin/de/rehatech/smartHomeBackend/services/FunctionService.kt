@@ -248,8 +248,16 @@ class FunctionService @Autowired constructor(
         val functType = functionTypeService.functionsTypeHomee(attribute)
         if (functType != null) {
             val allnodes =  deviceMethodsRepository.findAll()
+            val label = when(attribute.id)
+            {
+                26 -> "OnOff"
+                27 -> "Dimmer"
+                29 -> "Color"
+                30 -> "Farbtemperatur"
+                else -> "error"
+            }
             val newDeviceMethods = DeviceMethods(
-                label = attribute.name,
+                label = label,
                 name = attribute.name,
                 homeeattrID = attribute.id,
                 type = functType,

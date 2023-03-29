@@ -2,8 +2,6 @@ package de.rehatech.smartHomeBackend.services
 
 
 import de.rehatech.homeekt.model.nodes
-import de.rehatech.smartHomeBackend.controller.backend.HomeeController
-import de.rehatech.smartHomeBackend.controller.backend.OpenHabController
 import de.rehatech.smartHomeBackend.response.Things
 import de.rehatech.smartHomeBackend.entities.HomeeDevice
 import de.rehatech.smartHomeBackend.entities.OpenHabDevice
@@ -11,13 +9,15 @@ import de.rehatech.smartHomeBackend.repositories.HomeeDeviceRepository
 import de.rehatech.smartHomeBackend.repositories.OpenHabDeviceRepository
 import de.rehatech2223.datamodel.DeviceDTO
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.env.Environment
 import org.springframework.stereotype.Service
 
 @Service
 class DeviceService @Autowired constructor(
 
     val openHabDeviceRepository: OpenHabDeviceRepository,
-    val homeeDeviceRepository: HomeeDeviceRepository
+    val homeeDeviceRepository: HomeeDeviceRepository,
+    val environment: Environment
 )
 {
 
@@ -102,7 +102,18 @@ class DeviceService @Autowired constructor(
      */
     private fun transformNodeAndSave(node: nodes)
     {
-        val newDevice = HomeeDevice(name = node.name, homeeID = node.id)
+
+        val devicenames = environment.getProperty("homee.device")!!.split(',')
+        var nodeName = ""
+        for (name in devicenames)
+        {
+            if(name.contains(node.name))
+            {
+                val splitname = name.split("=")
+                nodeName = splitname[1]
+            }
+        }
+        val newDevice = HomeeDevice(name = nodeName, homeeID = node.id)
         homeeDeviceRepository.save(newDevice)
     }
 
