@@ -128,7 +128,6 @@ class DeviceService @Autowired constructor(
 
 
     /**
-     * //TODO: Docs, refactor trangsformThingAndSave -> transformThingAndSave
      * @param things
      */
     private  fun transformThingAndSave(things: Things)
@@ -178,7 +177,7 @@ class DeviceService @Autowired constructor(
             val OHL = openHabDeviceRepository.findById(i)
             OH = OHL.get()
         }catch(Exception: NumberFormatException){
-            // Todo: Do nothing
+
         }
 
         if(OH == null){
