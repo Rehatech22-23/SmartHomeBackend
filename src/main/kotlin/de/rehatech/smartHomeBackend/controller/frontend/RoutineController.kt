@@ -34,7 +34,7 @@ class RoutineController(@field:Autowired private val routineService: RoutineServ
      * @param routineId referencing the Routine from the Database that will be selected
      * @return a ResponseEntity containing a Json String representing a RoutineDTO
      */
-    @GetMapping("/get-routine")
+    @GetMapping()
     fun getRoutine(@RequestParam routineId: Long): ResponseEntity<String> {
         return routineService.getRoutine(routineId)
     }
