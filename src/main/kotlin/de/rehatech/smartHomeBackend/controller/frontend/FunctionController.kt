@@ -23,6 +23,10 @@ class FunctionController @Autowired constructor(val functionService: FunctionSer
                     return functionService.getFunction(functionId)
             } catch (ex: NullPointerException){
                     throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.localizedMessage, ex)
+            } catch (ex: IllegalArgumentException){
+                    throw ResponseStatusException(HttpStatus.NO_CONTENT, ex.localizedMessage, ex)
+            } catch (ex: NoSuchMethodError){
+                    throw ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, ex.localizedMessage, ex)
             }
         }
 

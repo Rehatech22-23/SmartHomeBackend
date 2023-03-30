@@ -77,9 +77,9 @@ class FunctionService @Autowired constructor(
         }
 
         if(command == ""){
-            throw NullPointerException() //falscher wert im body übergeben
+            throw IllegalArgumentException() //falscher wert im body übergeben
         }else if(command == "-1"){
-            throw NullPointerException() //falsches Homeeattr übergeben (eine nummer die keinen sinn ergibt)
+            throw NoSuchMethodError() //falsches Homeeattr übergeben (eine nummer die keinen sinn ergibt)
         }
         backendController.sendCommand(deviceId, deviceMethodsRepository.findById(functionId).get(), command)
     }
