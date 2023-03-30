@@ -170,7 +170,12 @@ class BackendController @Autowired constructor(
             FunctionType.Group -> return null
             FunctionType.Image -> return null
             FunctionType.Location -> return null
-            FunctionType.Air -> return null
+            FunctionType.Air -> return FunctionDTO.Builder(
+                functionName = deviceMethod.label,
+                functionId = deviceMethod.id!!,
+                outputValue = item.state
+            ).build()
+
             FunctionType.Number -> return FunctionDTO.Builder(
                 functionName = deviceMethod.label,
                 functionId = deviceMethod.id!!,

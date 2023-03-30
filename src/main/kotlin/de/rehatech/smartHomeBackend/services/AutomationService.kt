@@ -1,8 +1,12 @@
 package de.rehatech.smartHomeBackend.services
 
+import de.rehatech.homeekt.model.nodes
 import de.rehatech.smartHomeBackend.controller.backend.BackendController
 import de.rehatech.smartHomeBackend.controller.backend.HomeeController
 import de.rehatech.smartHomeBackend.controller.backend.OpenHabController
+import de.rehatech.smartHomeBackend.entities.DeviceMethods
+import de.rehatech.smartHomeBackend.entities.HomeeDevice
+import de.rehatech.smartHomeBackend.entities.OpenHabDevice
 import de.rehatech.smartHomeBackend.entities.TriggerEventByDevice
 import de.rehatech.smartHomeBackend.enums.FunctionType
 import de.rehatech.smartHomeBackend.repositories.*
@@ -35,16 +39,20 @@ import java.util.*
 class AutomationService  @Autowired constructor(
 
     val routineRepository: RoutineRepository,
-    val functionService: FunctionService,
-    val backendController: BackendController,
     val triggerTimeRepository: TriggerTimeRepository,
     val deviceMethodsRepository: DeviceMethodsRepository,
+    val openHabDeviceRepository: OpenHabDeviceRepository,
+    val homeeDeviceRepository: HomeeDeviceRepository,
+
+    val functionService: FunctionService,
+    val backendController: BackendController,
+
     val openHabController: OpenHabController,
     val homeeController: HomeeController,
-    val deviceService: DeviceService
+    val deviceService: DeviceService,
+    val functionTypeService: FunctionTypeService
 
 ){
-
 
     private val log: Logger = LoggerFactory.getLogger(AutomationService::class.java)
 
@@ -52,7 +60,7 @@ class AutomationService  @Autowired constructor(
     @Scheduled(fixedRate = 10000)
     fun automation()
     {
-        log.info("The time is now {}", dateFormat.format(Date()))
+        log.info("Automation: The time is now {}", dateFormat.format(Date()))
         val routinelist = routineRepository.findAll().toList()
         for (routine in routinelist)
         {
@@ -67,7 +75,7 @@ class AutomationService  @Autowired constructor(
                 {
                     if (triggerTime.repeat == true)
                     {
-                        log.info("Time Event getriggert")
+                        log.info("Automation: Time Event getriggert")
                         val routineEvents = routine.routineEvent
                         for (routineEvent in routineEvents) {
                             functionService.triggerFunc(
@@ -81,7 +89,7 @@ class AutomationService  @Autowired constructor(
                     {
                         triggerTime.repeatExecuted = true
                         triggerTimeRepository.save(triggerTime)
-                        log.info("Ein einmaliges Time Event wurde ausgeführt")
+                        log.info("Automation: Ein einmaliges Time Event wurde ausgeführt")
                         val routineEvents = routine.routineEvent
                         for (routineEvent in routineEvents) {
                             functionService.triggerFunc(
@@ -111,12 +119,12 @@ class AutomationService  @Autowired constructor(
                     FunctionType.Player -> triggerfunc = false
                     FunctionType.Rollershutter -> triggerfunc = rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!! )
                     FunctionType.Number -> triggerfunc = rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!! )
-                    else -> {log.error("Eine fehlerhafte Routine ")}
+                    else -> {log.error("Automation: Eine fehlerhafte Routine ")}
                 }
 
 
                 if (triggerfunc) {
-                    log.info("Ein trigger by Device wurde gefunden")
+                    log.info("Automation: Ein trigger by Device wurde gefunden")
                     val routineEvents = routine.routineEvent
                     for (routineEvent in routineEvents) {
                         functionService.triggerFunc(
@@ -180,7 +188,7 @@ class AutomationService  @Autowired constructor(
     @Scheduled(fixedRate = 900000)
     fun updateDevices()
     {
-        log.info("Update Device at the time {}", dateFormat.format(Date()))
+        log.info("updateDevice: Update Device at the time {}", dateFormat.format(Date()))
         val allOpenHabDevice = openHabController.getDevices()
         if(allOpenHabDevice != null)
         {
@@ -211,6 +219,195 @@ class AutomationService  @Autowired constructor(
                     for (att in node.attributes) {
                         functionService.saveFunctionHomee(att)
                     }
+                }
+            }
+        }
+    }
+
+
+
+
+    @Scheduled(fixedRate = 3600000)
+    fun removeOldDevicesAndMethods()
+    {
+        checkDeleteOpenHab()
+        checkDeleteHomee()
+        checkDeleteHomeeMethods()
+        checkDeleteOpenHabMethods()
+    }
+
+
+
+    private fun checkDeleteOpenHabMethods()
+    {
+        val allOpenHabDevice = openHabController.getDevices()
+        if (allOpenHabDevice != null) {
+            val allOpenHabDeviveList = allOpenHabDevice.toList()
+
+
+            for (device in allOpenHabDeviveList) {
+                val allOpenHabTransformMethods = mutableListOf<DeviceMethods>()
+                val channels = device.channels
+                for (channel in channels) {
+                    for (itemname in channel.linkedItems) {
+                        val item = openHabController.getItemByName(itemname)
+                        if (item != null) {
+                            val functType = functionTypeService.functionsTypeOpenHab(item)
+                            if (functType != null) {
+                                allOpenHabTransformMethods.add(
+                                    DeviceMethods(
+                                        label = item.label,
+                                        name = item.name,
+                                        type = functType,
+                                    ))
+                            }
+
+                        }
+                    }
+                }
+
+                val savedDevice = openHabDeviceRepository.findOpenHabByUid(device.UID)
+                for (savedMethode in savedDevice.deviceMethodsIDS)
+                {
+                    var found = false
+                    for (methode in allOpenHabTransformMethods)
+                    {
+                        if (savedMethode.label == methode.label)
+                        {
+                            if (savedMethode.type == methode.type)
+                            {
+                                if(savedMethode.name == methode.name)
+                                {
+                                    found = true
+                                }
+                            }
+                        }
+                    }
+                    if(!found)
+                    {
+                        log.warn("checkDeleteOpenHabMethods: Delete OpenHab Methode: ${savedMethode.name}")
+                        deviceMethodsRepository.delete(savedMethode)
+
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    private fun checkDeleteHomeeMethods()
+    {
+
+        val allHomeeNodes = homeeController.getNodes()
+
+        if(allHomeeNodes !=null)
+        {
+
+            for(node in allHomeeNodes) {
+
+                val deviceMethodsList = mutableListOf<DeviceMethods>()
+                for (attr in node.attributes) {
+                    val device = functionService.transformAttribut(attr)
+                    if (device != null) {
+                        deviceMethodsList.add(device)
+                    }
+                }
+                val savedNode = homeeDeviceRepository.findHomeeByHomeeID(node.id)
+                for (savedMethod in savedNode.deviceMethodsIDS) {
+                    var found = false
+                    for(method in deviceMethodsList)
+                    {
+                        if(savedMethod.label == method.label)
+                        {
+                            if(savedMethod.homeeattrID == method.homeeattrID)
+                            {
+                                if (savedMethod.type == method.type)
+                                {
+                                    found = true
+                                }
+                            }
+                        }
+                    }
+                    if(!found)
+                    {
+                        log.warn("checkDeleteHomeeMethods: Delete Homee Methode: ${savedMethod.name}")
+                        deviceMethodsRepository.delete(savedMethod)
+
+                    }
+
+                }
+            }
+        }
+    }
+
+
+    private fun checkDeleteHomee()
+    {
+        val allHomeeNodes:ArrayList<nodes>? = homeeController.getNodes()
+        if (allHomeeNodes != null) {
+            if (allHomeeNodes.isNotEmpty()) {
+
+
+                val allHomeeTransformDevice = mutableListOf<HomeeDevice>()
+                for (node in allHomeeNodes) {
+                    allHomeeTransformDevice.add(deviceService.transformNode(node))
+                }
+                val allSavedHomeeDevice = homeeDeviceRepository.findAll().toList()
+                for (savedDevice in allSavedHomeeDevice) {
+                    var found = false
+                    for (device in allHomeeTransformDevice) {
+                        if (savedDevice.homeeID == device.homeeID) {
+                            if (savedDevice.name == device.name) {
+                                found = true
+
+                            }
+                        }
+                    }
+                    if (!found) {
+                        log.warn("checkDeleteHomee: Delete a Homee Device: ${savedDevice.name}")
+                        deviceMethodsRepository.deleteAll(savedDevice.deviceMethodsIDS.toList())
+                        homeeDeviceRepository.delete(savedDevice)
+
+                    }
+                }
+            }
+        }
+
+
+    }
+    private fun checkDeleteOpenHab()
+    {
+        val allOpenHabDevice = openHabController.getDevices()
+
+        if (allOpenHabDevice != null)
+        {
+
+            val allOpenHabTransformDevice = mutableListOf<OpenHabDevice>()
+            for (thing in allOpenHabDevice)
+            {
+                allOpenHabTransformDevice.add(deviceService.transformThing(thing))
+            }
+            val allSavedOpenHabDevice = openHabDeviceRepository.findAll().toList()
+            for (deviceSaved in allSavedOpenHabDevice)
+            {
+                var found = false
+                for (device in allOpenHabTransformDevice)
+                {
+                    if (deviceSaved.uid == device.uid)
+                    {
+                        if (deviceSaved.name == device.name)
+                        {
+                            found = true
+                        }
+                    }
+                }
+                if(!found)
+                {
+                    log.warn("checkDeleteOpenHab: Delete a OpenHab Device: ${deviceSaved.name}")
+                    deviceMethodsRepository.deleteAll(deviceSaved.deviceMethodsIDS.toList())
+                    openHabDeviceRepository.delete(deviceSaved)
+
                 }
             }
         }

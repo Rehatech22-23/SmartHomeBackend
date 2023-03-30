@@ -2,7 +2,6 @@ package de.rehatech.smartHomeBackend.services
 
 import de.rehatech.homeekt.model.attributes
 import de.rehatech.smartHomeBackend.controller.backend.BackendController
-import de.rehatech.smartHomeBackend.controller.backend.HomeeController
 import de.rehatech.smartHomeBackend.entities.DeviceMethods
 import de.rehatech.smartHomeBackend.enums.FunctionType
 import de.rehatech.smartHomeBackend.repositories.DeviceMethodsRepository
@@ -22,6 +21,7 @@ import org.springframework.stereotype.Service
  * @param homeeDeviceRepository Instance gets automatically autowired into the Service
  * @param functionTypeService Instance gets automatically autowired into the Service
  * @author Sofia Bonas
+ * @author Sebastian Kurth
  */
 @Service
 class FunctionService @Autowired constructor(
@@ -170,7 +170,7 @@ class FunctionService @Autowired constructor(
         if (command == "") {
             //es wurde ein falscher wert im body übergeben
         }
-        return command;
+        return command
     }
 
     /**
@@ -246,7 +246,7 @@ class FunctionService @Autowired constructor(
                 }
             }
             if (!found) {
-                deviceMethodsRepository.save(newDeviceMethods)
+                deviceMethodsRepository.save( newDeviceMethods)
             }
         }
 
@@ -258,39 +258,17 @@ class FunctionService @Autowired constructor(
      * @param attribute
      */
     fun saveFunctionHomee(attribute: attributes) {
-        val homeeNode = homeeDeviceRepository.findHomeeByHomeeID(attribute.node_id)
-        val functType = functionTypeService.functionsTypeHomee(attribute)
-        if (functType != null) {
-            val allnodes =  deviceMethodsRepository.findAll()
-            val label = when(attribute.id)
-            {
-                26 -> "OnOff"
-                27 -> "Dimmer"
-                29 -> "Color"
-                30 -> "Farbtemperatur"
-                else -> "error"
-            }
-            val newDeviceMethods = DeviceMethods(
-                label = label,
-                name = attribute.name,
-                homeeattrID = attribute.id,
-                type = functType,
-                deviceHomee = homeeNode
-            )
-            var found = false
-            for (node in allnodes)
-            {
-                if (node.deviceHomee != null)
-                {
+        val allnodes = deviceMethodsRepository.findAll()
+        var found = false
+        val newDeviceMethods = transformAttribut(attribute)
+        if(newDeviceMethods !=null) {
+            for (node in allnodes) {
+                if (node.deviceHomee != null) {
 
-                    if (newDeviceMethods.deviceHomee == node.deviceHomee)
-                    {
-                        if (newDeviceMethods.label == node.label)
-                        {
-                            if (newDeviceMethods.name == node.name)
-                            {
-                                if (newDeviceMethods.homeeattrID == node.homeeattrID)
-                                {
+                    if (newDeviceMethods.deviceHomee == node.deviceHomee) {
+                        if (newDeviceMethods.label == node.label) {
+                            if (newDeviceMethods.name == node.name) {
+                                if (newDeviceMethods.homeeattrID == node.homeeattrID) {
                                     found = true
                                 }
                             }
@@ -302,6 +280,30 @@ class FunctionService @Autowired constructor(
                 deviceMethodsRepository.save(newDeviceMethods)
             }
         }
+
+    }
+
+    fun transformAttribut(attribute: attributes): DeviceMethods?
+    {
+        val homeeNode = homeeDeviceRepository.findHomeeByHomeeID(attribute.node_id)
+        val functType = functionTypeService.functionsTypeHomee(attribute)
+        if (functType != null) {
+
+            val label = when (functType) {
+                FunctionType.Switch -> "OnOff"
+                FunctionType.Dimmer -> "Dimmer"
+                FunctionType.Color -> "Color"
+                else -> "error"
+            }
+             return DeviceMethods(
+                label = label,
+                name = attribute.name,
+                homeeattrID = attribute.id,
+                type = functType,
+                deviceHomee = homeeNode
+            )
+        }
+        return null
     }
 
 

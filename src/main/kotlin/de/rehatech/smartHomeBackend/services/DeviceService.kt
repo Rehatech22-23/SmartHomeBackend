@@ -41,7 +41,7 @@ class DeviceService @Autowired constructor(
         {
             for(device in devices)
             {
-                transformThingAndSave(device)
+                openHabDeviceRepository.save(transformThing(device))
             }
         }
         else
@@ -60,7 +60,7 @@ class DeviceService @Autowired constructor(
                 }
                 if(!found)
                 {
-                    transformThingAndSave(device)
+                    openHabDeviceRepository.save(transformThing(device))
                 }
             }
         }
@@ -80,7 +80,7 @@ class DeviceService @Autowired constructor(
         {
             for(node in nodes)
             {
-                transformNodeAndSave(node)
+                homeeDeviceRepository.save(transformNode(node))
             }
         }
         else
@@ -99,7 +99,7 @@ class DeviceService @Autowired constructor(
                 }
                 if(!found)
                 {
-                    transformNodeAndSave(node)
+                    homeeDeviceRepository.save(transformNode(node))
                 }
             }
         }
@@ -109,7 +109,7 @@ class DeviceService @Autowired constructor(
      * //TODO: Docs, refactor trangsformNodeAndSave -> transformNodeAndSave, nodes class -> Nodes class (classes start with Capital Letters)
      * @param node
      */
-    private fun transformNodeAndSave(node: nodes)
+    fun transformNode(node: nodes):HomeeDevice
     {
 
         val devicenames = environment.getProperty("homee.device")!!.split(',')
@@ -122,18 +122,18 @@ class DeviceService @Autowired constructor(
                 nodeName = splitname[1]
             }
         }
-        val newDevice = HomeeDevice(name = nodeName, homeeID = node.id)
-        homeeDeviceRepository.save(newDevice)
+        return HomeeDevice(name = nodeName, homeeID = node.id)
+
     }
 
 
     /**
      * @param things
      */
-    private  fun transformThingAndSave(things: Things)
+    fun transformThing(things: Things):OpenHabDevice
     {
-        val newDevice = OpenHabDevice(name = things.label, uid = things.UID )
-        openHabDeviceRepository.save(newDevice)
+        return  OpenHabDevice(name = things.label, uid = things.UID )
+
     }
 
 
@@ -214,15 +214,4 @@ class DeviceService @Autowired constructor(
     }
 
 
-    //TODO: implementation of updatedDevices()
-    /**
-     * //TODO: Docs
-     * @return List<String>
-     */
-    /**
-     * @return returns all ids from updated devices since last update call as List of DeviceIds (Strings)
-     */
-    fun updatedDevices(): List<String>{
-        return emptyList()
-    }
 }
