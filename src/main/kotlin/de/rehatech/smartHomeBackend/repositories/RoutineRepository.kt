@@ -1,5 +1,6 @@
 package de.rehatech.smartHomeBackend.repositories
 import de.rehatech.smartHomeBackend.entities.Routine
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 

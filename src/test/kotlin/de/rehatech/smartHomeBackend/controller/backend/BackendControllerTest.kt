@@ -43,6 +43,7 @@ class BackendControllerTest {
         val opstage = backendController.getMethodStatus("OH:11", l1.get(11).deviceMethodsIDS[0])
         val hmstage = backendController.getMethodStatus("HM:11", l2.get(2).deviceMethodsIDS[0])
 
+        println(opstage)
         println(hmstage)
 
     }

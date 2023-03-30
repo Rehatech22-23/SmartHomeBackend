@@ -77,13 +77,13 @@ class RoutineService(private val routineRepository: RoutineRepository) {
 
     /**
      * Deletes the Routine specified by the parameter
-     * @param routineId referencing the Routine object in the Database that will be deleted
+     * @param id referencing the Routine object in the Database that will be deleted
      * @return a ResponseEntity containing a String either constituting an OK on a successful
      * delete or an Internal Server Error on a failed deletion attempt
      */
-    fun deleteRoutine(routineId: Long): ResponseEntity<String> {
+    fun deleteRoutine(id: Long): ResponseEntity<String> {
         return try {
-            routineRepository.deleteById(routineId)
+            routineRepository.deleteById(id)
             ResponseEntity.ok("Entity deleted")
         }catch (error: Error) {
             ResponseEntity.internalServerError().build()

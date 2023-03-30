@@ -1,5 +1,6 @@
 package de.rehatech.smartHomeBackend.services
 
+import de.rehatech.smartHomeBackend.entities.Routine
 import de.rehatech.smartHomeBackend.mapper.RoutineMapper
 import de.rehatech.smartHomeBackend.repositories.RoutineRepository
 import de.rehatech2223.datamodel.FunctionDTO
@@ -8,12 +9,18 @@ import de.rehatech2223.datamodel.util.RangeDTO
 import de.rehatech2223.datamodel.util.RoutineEventDTO
 import de.rehatech2223.datamodel.util.TriggerEventByDeviceDTO
 import de.rehatech2223.datamodel.util.TriggerTimeDTO
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.ResponseEntity
+import org.springframework.web.client.HttpServerErrorException.InternalServerError
 import java.time.LocalTime
+import java.util.NoSuchElementException
 
 /**
  * A Testing Class for the RoutineService
@@ -22,9 +29,10 @@ import java.time.LocalTime
  */
 
 @SpringBootTest
-class RoutineServiceTest{
+class RoutineServiceTest {
     @Autowired
     lateinit var routineService: RoutineService
+
     @Autowired
     lateinit var routineRepository: RoutineRepository
 
@@ -179,17 +187,15 @@ class RoutineServiceTest{
         val mockRoutine = routineDTOBuilder.build()
 
         //Call the method to test
-        val result = routineService.createRoutine(mockRoutine)
+        val result = Json.decodeFromString<RoutineDTO>(routineService.createRoutine(mockRoutine).body!!)
 
         val tests = routineRepository.findAll()
-        for (test in tests)
-        {
+        for (test in tests) {
             println(test.id)
-            println( test.routineEvent)
+            println(test.routineEvent)
         }
         //Check the returned value
-        routineService.deleteRoutine(mockRoutine.routineId)
-        assertNotNull(result)
+        routineRepository.deleteById(result.routineId)
     }
 
     @Test
@@ -199,8 +205,10 @@ class RoutineServiceTest{
         val eventlist = arrayListOf<RoutineEventDTO>()
         eventlist.add(event)
         val routineTest = RoutineDTO.Builder("TriggerTest", 0, eventlist, -1, trigger, null).build()
-        routineService.createRoutine(routineTest)
-        routineService.deleteRoutine(routineTest.routineId)
+        val savedRoutineDTO = Json.decodeFromString<RoutineDTO>(routineService.createRoutine(routineTest).body!!)
+        assertNotEquals(routineTest.routineId, savedRoutineDTO.routineId)
+        assertEquals(routineTest.routineName, savedRoutineDTO.routineName)
+        assertEquals(routineTest.comparisonType, savedRoutineDTO.comparisonType)
     }
 
     /**
@@ -242,15 +250,18 @@ class RoutineServiceTest{
         val routineDTOBuilder = RoutineDTO.Builder(routineName, triggerType, routineEventDTO, routineId, triggerTimeDTO, triggerEventByDeviceDTO)
         val mockRoutineDTO = routineDTOBuilder.build()
         val mockRoutine = RoutineMapper.mapToEntity(mockRoutineDTO)
+        val result: ResponseEntity<String>
+        val ids = routineService.getAllRoutineIds();
+        if (ids.body!!.contains(1)) {
+            result = routineService.deleteRoutine(1)
+        } else {
+            mockRoutine.id = 1
+            val savedRoutine = routineRepository.save(mockRoutine)
+            result = routineService.deleteRoutine(savedRoutine.id!!)
+        }
 
-        try {
-            routineService.deleteRoutine(1)
-        } catch (_: Error) {}
-
-        mockRoutine.id=1
-        routineRepository.save(mockRoutine)
         //Call the method to test
-        val result = routineService.deleteRoutine(1)
+
 
         //Check the returned value
         assertEquals("Entity deleted", result.body)

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.Mockito.doThrow
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
 import org.springframework.web.server.ResponseStatusException
@@ -18,7 +19,9 @@ import org.springframework.web.server.ResponseStatusException
  */
 @SpringBootTest
 internal class FunctionControllerTest {
+    @Autowired
     private var functionController: FunctionController? = null
+    @Autowired
     private var mockFunctionService: FunctionService? = null
     @BeforeEach
     fun setUp() {

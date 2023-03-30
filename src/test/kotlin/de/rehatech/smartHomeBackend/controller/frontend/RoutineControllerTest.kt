@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest
 
 
 @SpringBootTest
-class RoutineControllerTest(@field:Autowired private val mockedService: RoutineService) {
+class RoutineControllerTest(@Autowired private val mockedService: RoutineService) {
 
     /**
      * Tests the getAllRoutineIds method from the Routine Controller

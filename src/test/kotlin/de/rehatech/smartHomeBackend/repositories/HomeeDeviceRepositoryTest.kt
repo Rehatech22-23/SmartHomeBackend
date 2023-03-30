@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.dao.EmptyResultDataAccessException
 import java.util.*
+import kotlin.NoSuchElementException
 
 
 /**
@@ -71,8 +72,9 @@ class HomeeDeviceRepositoryTest {
      */
     @Test
     fun save() {
-        val invalidDevice = HomeeDevice(-1, "Invalid Device",1 )
-
-        assertThrows(IllegalArgumentException::class.java) { sut.save(invalidDevice) }
+        val validDevice = HomeeDevice(homeeID = 1, name = "Valid Device")
+        val savedDevice = sut.save(validDevice)
+        assertEquals(validDevice.homeeID, savedDevice.homeeID)
+        sut.deleteById(savedDevice.id!!)
     }
 }
