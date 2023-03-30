@@ -15,8 +15,6 @@ import java.util.*
  * In this test class, we are using the @DataJpaTest annotation to enable JPA-specific configuration for testing, and we are autowiring the HomeeDeviceRepository instance to our test class.
  * We are also defining a few test scenarios, such as verifying that findHomeeByHomeeID method returns a valid HomeeDevice entity when a matching homeeID is provided, or that an exception is thrown when trying to save a null HomeeDevice.
  * We are using the beforeEach annotation to set up some default data (in this case, a HomeeDevice entity) before each test scenario. This allows us to have a consistent state for each test case.
- *
- * @author Tim Bräuker
  */
 @DataJpaTest
 class HomeeDeviceRepositoryTest {

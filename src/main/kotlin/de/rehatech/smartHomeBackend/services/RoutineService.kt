@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service
  * This class contains methods the business logic concerning Routine Entities
  *
  * @param  routineRepository Interface gets automatically autowired into the Service
- * @author Tim Lukas Bräuker
  */
 @Service
 class RoutineService(private val routineRepository: RoutineRepository) {

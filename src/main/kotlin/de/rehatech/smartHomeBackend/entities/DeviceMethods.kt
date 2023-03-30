@@ -5,8 +5,6 @@ import jakarta.persistence.*
 
 /**
  * An Entity Class that represents the DeviceMethods
- *
- * @author Sebastian Kurth
  */
 @Entity
 data class DeviceMethods(

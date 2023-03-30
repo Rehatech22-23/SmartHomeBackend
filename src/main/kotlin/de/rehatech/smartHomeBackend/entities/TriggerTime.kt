@@ -4,8 +4,6 @@ import jakarta.persistence.*
 import java.time.LocalTime
 /**
  * An Entity Class that represents the TriggerTime
- *
- * @author Tim Lukas Bräuker
  */
 @Entity(name = "triggerTime")
 class TriggerTime {

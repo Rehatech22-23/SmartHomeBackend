@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller
  * A class that handles commands dor HomeeDevices
  *
  * @param apiConfiguration Instance gets automatically autowired into the Controller
- * @authors Sebastian Kurth, Sofia Bonas
  */
 @Controller
 class HomeeController@Autowired constructor (

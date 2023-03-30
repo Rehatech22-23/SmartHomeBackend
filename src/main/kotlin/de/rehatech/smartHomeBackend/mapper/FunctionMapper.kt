@@ -5,8 +5,6 @@ import de.rehatech2223.datamodel.FunctionDTO
 
 /**
  * A mapper that maps FunctionsDTOs to FunctionEntities and vice versa
- *
- * @author Tim Bräuker
  */
 class FunctionMapper {
 

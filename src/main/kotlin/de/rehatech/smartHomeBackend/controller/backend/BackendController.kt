@@ -21,7 +21,6 @@ import org.springframework.stereotype.Controller
  * @param homeeDeviceRepository Instance gets automatically autowired into the Controller
  * @param homeeController Instance gets automatically autowired into the Controller
  * @param functionTypeService Instance gets automatically autowired into the Controller
- * @authors Sebastian Kurth, Sofia Bonas
  */
 @Controller
 class BackendController @Autowired constructor(

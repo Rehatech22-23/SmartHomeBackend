@@ -5,8 +5,6 @@ import de.rehatech2223.datamodel.util.RoutineEventDTO
 
 /**
  * A mapper that maps RoutineEventDTOs to RoutineEventEntities and vice versa
- *
- * @author Tim Bräuker
  */
 class RoutineEventMapper {
 

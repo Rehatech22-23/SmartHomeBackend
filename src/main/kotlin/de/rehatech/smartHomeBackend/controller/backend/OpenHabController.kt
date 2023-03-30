@@ -18,7 +18,6 @@ import kotlin.collections.ArrayList
  * A class that handles commands dor OpenHabDevices
  *
  * @param apiConfiguration Instance gets automatically autowired into the Controller
- * @authors Sebastian Kurth, Sofia Bonas
  */
 @Component
 class OpenHabController @Autowired constructor (

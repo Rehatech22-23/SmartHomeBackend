@@ -20,8 +20,6 @@ import org.springframework.stereotype.Service
  * @param openHabDeviceRepository Instance gets automatically autowired into the Service
  * @param homeeDeviceRepository Instance gets automatically autowired into the Service
  * @param functionTypeService Instance gets automatically autowired into the Service
- * @author Sofia Bonas
- * @author Sebastian Kurth
  */
 @Service
 class FunctionService @Autowired constructor(
