@@ -107,36 +107,61 @@ class AutomationService  @Autowired constructor(
             if( routine.triggerEventByDevice != null)
             {
                 val triggerEventByDevice = routine.triggerEventByDevice
-                val deviceMethodsVal = deviceMethodsRepository.findById(triggerEventByDevice!!.function.deviceMethodsId!!).get()
-                val statusDevice = backendController.getMethodStatus(triggerEventByDevice.deviceId,deviceMethodsVal )
-                var triggerfunc = false
-                when(deviceMethodsVal.type)
-                {
-                    FunctionType.Switch -> triggerfunc = onOffRoutine(triggerEventByDevice, statusDevice!!)
-                    FunctionType.Color -> triggerfunc = rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!! )
-                    FunctionType.Contact -> triggerfunc = onOffRoutine(triggerEventByDevice,statusDevice!!)
-                    FunctionType.Dimmer -> triggerfunc = rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!! )
-                    FunctionType.Player -> triggerfunc = false
-                    FunctionType.Rollershutter -> triggerfunc = rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!! )
-                    FunctionType.Number -> triggerfunc = rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!! )
-                    else -> {log.error("Automation: Eine fehlerhafte Routine ")}
-                }
+                try {
 
 
-                if (triggerfunc) {
-                    log.info("Automation: Ein trigger by Device wurde gefunden")
-                    val routineEvents = routine.routineEvent
-                    for (routineEvent in routineEvents) {
-                        functionService.triggerFunc(
-                            routineEvent.deviceId,
-                            routineEvent.functionId!!,
-                            routineEvent.voldemort!!
-                        )
+                    val deviceMethodsVal =
+                        deviceMethodsRepository.findById(triggerEventByDevice!!.function.deviceMethodsId!!).get()
+                    val statusDevice =
+                        backendController.getMethodStatus(triggerEventByDevice.deviceId, deviceMethodsVal)
+                    var triggerfunc = false
+                    when (deviceMethodsVal.type) {
+                        FunctionType.Switch -> triggerfunc = onOffRoutine(triggerEventByDevice, statusDevice!!)
+                        FunctionType.Color -> triggerfunc =
+                            rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!!)
+
+                        FunctionType.Contact -> triggerfunc = onOffRoutine(triggerEventByDevice, statusDevice!!)
+                        FunctionType.Dimmer -> triggerfunc =
+                            rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!!)
+
+                        FunctionType.Player -> triggerfunc = false
+                        FunctionType.Rollershutter -> triggerfunc =
+                            rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!!)
+
+                        FunctionType.Number -> triggerfunc =
+                            rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!!)
+
+                        else -> {
+                            log.error("Automation: Eine fehlerhafte Routine ")
+                        }
+                    }
+
+
+                    if (triggerfunc) {
+                        log.info("Automation: Ein trigger by Device wurde gefunden")
+                        val routineEvents = routine.routineEvent
+                        for (routineEvent in routineEvents) {
+                            functionService.triggerFunc(
+                                routineEvent.deviceId,
+                                routineEvent.functionId!!,
+                                routineEvent.voldemort!!
+                            )
+                        }
                     }
                 }
+                catch (ex: NoSuchElementException)
+                {
+                    log.error("Automation: Error Routine")
+                    routineRepository.delete(routine)
+                }
 
 
 
+            }
+            if(routine.triggerTime==null && routine.triggerEventByDevice == null)
+            {
+                log.error("Automation: Error Routine: No TriggerTime and Triggerbydevice")
+                routineRepository.delete(routine)
             }
 
         }

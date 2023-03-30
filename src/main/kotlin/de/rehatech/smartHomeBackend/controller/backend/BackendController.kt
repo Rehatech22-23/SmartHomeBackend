@@ -123,6 +123,17 @@ class BackendController @Autowired constructor(
                 ).build()
             }
 
+            FunctionType.Color -> {
+                FunctionDTO.Builder(
+                    functionName = deviceMethod.label,
+                    functionId = deviceMethod.id!!,
+                    outputValue = attribute.state.toString(),
+                    rangeDTO = RangeDTO(
+                        attribute.minimum.toDouble(), attribute.maximum.toDouble(), attribute.state.toDouble()
+                    )
+                ).build()
+            }
+
             else -> {
                 null
             }
@@ -179,7 +190,9 @@ class BackendController @Autowired constructor(
             FunctionType.Number -> return FunctionDTO.Builder(
                 functionName = deviceMethod.label,
                 functionId = deviceMethod.id!!,
-                outputValue = item.state
+                outputValue = item.state,
+                rangeDTO = RangeDTO(item.stateDescription.minimum, item.stateDescription.maximum, item.state.toDouble())
+
             ).build()
 
             FunctionType.Player -> return FunctionDTO.Builder(
