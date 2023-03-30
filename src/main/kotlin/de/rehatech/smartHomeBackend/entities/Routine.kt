@@ -4,8 +4,6 @@ import jakarta.persistence.*
 import org.springframework.context.annotation.Bean
 /**
  * An Entity that represents the Routines devices will execute
- *
- * @author Tim Lukas Bräuker
  */
 @Entity(name = "routine")
 class Routine {

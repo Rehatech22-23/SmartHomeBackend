@@ -4,8 +4,6 @@ import jakarta.persistence.*
 
 /**
  * An Entity Class that represents HomeeDevices
- *
- * @author Sebastian Kurth, Sofia Bonas, Tim Bräuker
  */
 @Entity
 data class HomeeDevice(

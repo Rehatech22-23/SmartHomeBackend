@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*
  * This class contains methods for handling API Calls for RoutineDTOs
  *
  * @param routineService Instance gets automatically autowired into the Controller
- * @author Tim Lukas Bräuker
  */
 
 @Controller

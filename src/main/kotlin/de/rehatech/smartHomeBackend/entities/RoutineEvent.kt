@@ -3,8 +3,6 @@ package de.rehatech.smartHomeBackend.entities
 import jakarta.persistence.*
 /**
  * An Entity Class that represents the RoutineEvent
- *
- * @author Tim Lukas Bräuker
  */
 @Entity(name = "routineEvent")
 class RoutineEvent {

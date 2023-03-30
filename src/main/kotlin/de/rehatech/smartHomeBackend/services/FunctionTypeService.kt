@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service
 
 /**
  * A Service class handling the automated execution of Routines
- *
- *  @author Sebastian Kurth, Sofia Bonas
  */
 @Service
 class FunctionTypeService {
@@ -17,7 +15,6 @@ class FunctionTypeService {
      * //TODO: Docs
      * @param attribute referencing the attributes data class of our homeekt library
      * @return FunctionType?
-     * @author Sebastian Kurth
      */
     fun functionsTypeHomee(attribute: attributes): FunctionType?
     {

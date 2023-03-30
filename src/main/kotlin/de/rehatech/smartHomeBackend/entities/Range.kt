@@ -6,8 +6,6 @@ import jakarta.persistence.*
  *
  * The fields of this class represent values tahr determine the value which will
  * be applied to the settings of the device
- *
- * @author Tim Lukas Bräuker
  */
 @Entity(name ="range")
 class Range {

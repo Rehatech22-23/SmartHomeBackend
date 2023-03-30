@@ -5,8 +5,6 @@ import de.rehatech2223.datamodel.util.TriggerTimeDTO
 
 /**
  * A mapper that maps TriggerTimeDTOs to TriggerTimeEntities and vice versa
- *
- * @author Tim Bräuker
  */
 class TriggerTimeMapper {
 

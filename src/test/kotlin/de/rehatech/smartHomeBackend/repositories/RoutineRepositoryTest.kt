@@ -12,8 +12,6 @@ import java.util.*
  * In this test class, we are using the @DataJpaTest annotation to enable JPA-specific configuration for testing, and we are autowiring the RoutineRepository instance to our test class.
  * We are also defining a few test scenarios, such as verifying that findAll method returns all persisted routines, or that an exception is thrown when trying to save a null Routine.
  * We are using the beforeEach annotation to set up some default data (in this case, a Routine entity) before each test scenario. This allows us to have a consistent state for each test case.
- *
- * @author Tim Bräuker
  */
 @DataJpaTest
 class RoutineRepositoryTest {

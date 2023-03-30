@@ -7,8 +7,6 @@ import de.rehatech.smartHomeBackend.response.util.StatusInfo
 
 /**
  * A data class storing the required values for Things concerning OpenHab Devices
- *
- * @author Sebastian Kurth
  */
 data class Things(
     var label: String,

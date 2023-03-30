@@ -19,8 +19,6 @@ import java.time.LocalTime
  * A Testing Class for the RoutineService
  *
  * This class contains methods for testing the business logic concerning Routine Entities
- *
- * @author Tim Lukas Bräuker
  */
 
 @SpringBootTest

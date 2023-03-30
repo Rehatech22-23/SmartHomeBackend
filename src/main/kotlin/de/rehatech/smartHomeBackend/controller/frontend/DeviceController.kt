@@ -14,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException
  *
  * @param deviceService Instance gets automatically autowired into the Controller
  * @param automationService Instance gets automatically autowired into the Controller
- * @authors Sebastian Kurth, Sofia Bonas
  */
 @RestController
 @RequestMapping("/device")

@@ -5,8 +5,6 @@ import de.rehatech2223.datamodel.RoutineDTO
 
 /**
  * A mapper that maps RoutineDTOs to RoutineEntities and vice versa
- *
- * @author Tim Bräuker
  */
 class RoutineMapper {
 

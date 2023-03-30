@@ -32,8 +32,6 @@ import java.util.*
  * @param openHabController Instance gets automatically autowired into the Service
  * @param homeeController Instance gets automatically autowired into the Service
  * @param deviceService Instance gets automatically autowired into the Service
- *
- *  @author Sebastian Kurth
  */
 @Service
 class AutomationService  @Autowired constructor(

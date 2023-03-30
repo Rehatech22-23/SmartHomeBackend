@@ -6,8 +6,6 @@ import jakarta.persistence.*
 /**
  * An Entity that states, that the Routine Event of the Routine object it is stored in,
  * will be triggered by a Device instead of a specific time
- *
- * @author Tim Lukas Bräuker
  */
 @Entity(name = "triggerEventByDevice")
 class TriggerEventByDevice {
