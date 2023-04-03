@@ -68,13 +68,17 @@ class AutomationService  @Autowired constructor(
         val routinelist = routineRepository.findAll().toList()
         for (routine in routinelist)
         {
+            // Check of triggerTime event
             if (routine.triggerTime != null)
             {
+
                 val triggerTime = routine.triggerTime
                 val eventtime = triggerTime!!.localTime!!
+
                 val range = LocalTime.now().minusSeconds(10)..
                         LocalTime.now().plusSeconds(10)
 
+                // The time event must be in the range of 10s before and after the specified time.
                 if(eventtime in range)
                 {
                     if (triggerTime.repeat == true)
@@ -119,6 +123,8 @@ class AutomationService  @Autowired constructor(
                     val statusDevice =
                         backendController.getMethodStatus(triggerEventByDevice.deviceId, deviceMethodsVal)
                     var triggerfunc = false
+
+                    //Check The Device of Event
                     when (deviceMethodsVal.type) {
                         FunctionType.Switch -> triggerfunc = onOffRoutine(triggerEventByDevice, statusDevice!!)
                         FunctionType.Color -> triggerfunc =
@@ -173,6 +179,9 @@ class AutomationService  @Autowired constructor(
     }
 
 
+    /**
+     *
+     */
     private fun onOffRoutine(triggerEventByDevice: TriggerEventByDevice, status: FunctionDTO): Boolean{
         val expectedFun = triggerEventByDevice.function
         if(expectedFun.onOff != null)
@@ -256,6 +265,9 @@ class AutomationService  @Autowired constructor(
 
 
 
+    /**
+     * This method is a scheduled method to delete Device and Methods.
+     */
     @Scheduled(fixedRate = 3600000)
     fun removeOldDevicesAndMethods()
     {
@@ -267,6 +279,9 @@ class AutomationService  @Autowired constructor(
 
 
 
+    /**
+     *  Check of deletable OpenHab Device Methods
+     */
     private fun checkDeleteOpenHabMethods()
     {
         val allOpenHabDevice = openHabController.getDevices()
@@ -325,6 +340,9 @@ class AutomationService  @Autowired constructor(
     }
 
 
+    /**
+     *  Check of deletable Homee Device Methods
+     */
     private fun checkDeleteHomeeMethods()
     {
 
@@ -371,6 +389,9 @@ class AutomationService  @Autowired constructor(
     }
 
 
+    /**
+     *  Check of deletable Homee Device
+     */
     private fun checkDeleteHomee()
     {
         val allHomeeNodes:ArrayList<nodes>? = homeeController.getNodes()
@@ -405,6 +426,10 @@ class AutomationService  @Autowired constructor(
 
 
     }
+
+    /**
+     *  Check of deletable OpenHab Device
+     */
     private fun checkDeleteOpenHab()
     {
         val allOpenHabDevice = openHabController.getDevices()

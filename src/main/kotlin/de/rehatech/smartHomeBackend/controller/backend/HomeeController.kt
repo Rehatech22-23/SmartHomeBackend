@@ -25,7 +25,8 @@ class HomeeController@Autowired constructor (
 
 
     /**
-     * //TODO: Docs
+     * Update the nodelist
+     * @return Boolean
      */
     fun updateNodes():Boolean
     {
@@ -44,7 +45,7 @@ class HomeeController@Autowired constructor (
 
     /**
      * The Methode send a command to the Homee
-     * @param nodeId
+     * @param nodeId Int
      * @param attributeId
      * @param value
      * @return

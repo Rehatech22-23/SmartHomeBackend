@@ -10,6 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
  * @param homeeUrl String stating the URL to connect to the homee Api
  * @param homeeUser String stating the Security Username necessary to access the OpenHab Api
  * @param homeePassword String stating the Security password necessary to access the OpenHab Api
+ * @param deviceHomeeName String stating the Name for registering in Homee
  */
 @ConfigurationProperties(prefix = "api")
 data class ApiConfiguration(

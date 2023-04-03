@@ -54,7 +54,7 @@ class OpenHabController @Autowired constructor (
     }
 
     /**
-     * //TODO Docs, refactor itemname -> itemName
+     * The Methode return a Item by the itemName.
      * @param itemName This parameter contains the item name for OpenHab
      * @return
      */

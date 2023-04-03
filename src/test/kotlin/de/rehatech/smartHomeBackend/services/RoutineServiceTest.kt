@@ -1,6 +1,5 @@
 package de.rehatech.smartHomeBackend.services
 
-import de.rehatech.smartHomeBackend.entities.Routine
 import de.rehatech.smartHomeBackend.mapper.RoutineMapper
 import de.rehatech.smartHomeBackend.repositories.RoutineRepository
 import de.rehatech2223.datamodel.FunctionDTO
@@ -10,17 +9,13 @@ import de.rehatech2223.datamodel.util.RoutineEventDTO
 import de.rehatech2223.datamodel.util.TriggerEventByDeviceDTO
 import de.rehatech2223.datamodel.util.TriggerTimeDTO
 import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.ResponseEntity
-import org.springframework.web.client.HttpServerErrorException.InternalServerError
 import java.time.LocalTime
-import java.util.NoSuchElementException
 
 /**
  * A Testing Class for the RoutineService
@@ -251,7 +246,7 @@ class RoutineServiceTest {
         val mockRoutineDTO = routineDTOBuilder.build()
         val mockRoutine = RoutineMapper.mapToEntity(mockRoutineDTO)
         val result: ResponseEntity<String>
-        val ids = routineService.getAllRoutineIds();
+        val ids = routineService.getAllRoutineIds()
         if (ids.body!!.contains(1)) {
             result = routineService.deleteRoutine(1)
         } else {

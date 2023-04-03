@@ -204,6 +204,7 @@ class BackendController @Autowired constructor(
 
             FunctionType.Number -> {
                 try {
+                    val itemsplit = item.state.split(" ")
                     return FunctionDTO.Builder(
                         functionName = deviceMethod.label,
                         functionId = deviceMethod.id!!,
@@ -211,7 +212,7 @@ class BackendController @Autowired constructor(
                         rangeDTO = RangeDTO(
                             item.stateDescription.minimum,
                             item.stateDescription.maximum,
-                            item.state.toDouble()
+                            itemsplit[0].toDouble()
                         )
                     ).build()
                 }
