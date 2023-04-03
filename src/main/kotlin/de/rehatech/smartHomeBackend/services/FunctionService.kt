@@ -250,7 +250,6 @@ class FunctionService @Autowired constructor(
 
     }
 
-    //TODO: Docs, attributes class -> Attributes class (Classes start with Capital Letters)
     /**
      *
      * @param attribute
@@ -281,15 +280,26 @@ class FunctionService @Autowired constructor(
 
     }
 
+    /**
+     * transform attribut to DeviceMethod
+     * @param attribute A attribute from a node
+     * @return
+     */
     fun transformAttribut(attribute: attributes): DeviceMethods?
     {
         val homeeNode = homeeDeviceRepository.findHomeeByHomeeID(attribute.node_id)
         val functType = functionTypeService.functionsTypeHomee(attribute)
         if (functType != null) {
-
+        // decide a Name for the deviceMethode
             val label = when (functType) {
                 FunctionType.Switch -> "OnOff"
-                FunctionType.Dimmer -> "Dimmer"
+                FunctionType.Dimmer -> when(attribute.type)
+                {
+                    23 -> "Color"
+                    42 -> "ColorTemperature"
+                    124 -> "ColorMode"
+                    else -> {"error"}
+                }
                 FunctionType.Color -> "Color"
                 else -> "error"
             }
