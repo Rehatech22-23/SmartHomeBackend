@@ -18,4 +18,5 @@ data class ApiConfiguration(
     val homeeUrl: String,
     val homeeUser: String,
     val homeePassword: String,
+    val deviceHomeeName:String
 )

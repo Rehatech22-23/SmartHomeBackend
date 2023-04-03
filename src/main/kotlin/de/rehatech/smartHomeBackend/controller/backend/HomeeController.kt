@@ -19,7 +19,8 @@ class HomeeController@Autowired constructor (
     val url = apiConfiguration.homeeUrl
     val user = apiConfiguration.homeeUser
     val password = apiConfiguration.homeePassword
-    val homee: Homee = Homee(url,user, password)
+    val deviceName = apiConfiguration.deviceHomeeName
+    val homee: Homee = Homee(url,user, password, device = deviceName)
 
 
 

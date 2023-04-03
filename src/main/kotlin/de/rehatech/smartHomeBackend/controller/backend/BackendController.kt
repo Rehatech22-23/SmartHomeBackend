@@ -170,12 +170,28 @@ class BackendController @Autowired constructor(
             ).build()
 
             FunctionType.Datetime -> return null
-            FunctionType.Dimmer -> return FunctionDTO.Builder(
-                functionName = deviceMethod.label,
-                functionId = deviceMethod.id!!,
-                outputValue = item.state,
-                rangeDTO = RangeDTO(item.stateDescription.minimum, item.stateDescription.maximum, item.state.toDouble())
-            ).build()
+            FunctionType.Dimmer -> {
+                try {
+                    return FunctionDTO.Builder(
+                        functionName = deviceMethod.label,
+                        functionId = deviceMethod.id!!,
+                        outputValue = item.state,
+                        rangeDTO = RangeDTO(
+                            item.stateDescription.minimum,
+                            item.stateDescription.maximum,
+                            item.state.toDouble()
+                        )
+                    ).build()
+                }
+                catch (ex: NumberFormatException)
+                {
+                    return FunctionDTO.Builder(
+                        functionName = deviceMethod.label,
+                        functionId = deviceMethod.id!!,
+                        outputValue = item.state,
+                    ).build()
+                    }
+            }
 
             FunctionType.Group -> return null
             FunctionType.Image -> return null
@@ -186,13 +202,28 @@ class BackendController @Autowired constructor(
                 outputValue = item.state
             ).build()
 
-            FunctionType.Number -> return FunctionDTO.Builder(
-                functionName = deviceMethod.label,
-                functionId = deviceMethod.id!!,
-                outputValue = item.state,
-                rangeDTO = RangeDTO(item.stateDescription.minimum, item.stateDescription.maximum, item.state.toDouble())
-
-            ).build()
+            FunctionType.Number -> {
+                try {
+                    return FunctionDTO.Builder(
+                        functionName = deviceMethod.label,
+                        functionId = deviceMethod.id!!,
+                        outputValue = item.state,
+                        rangeDTO = RangeDTO(
+                            item.stateDescription.minimum,
+                            item.stateDescription.maximum,
+                            item.state.toDouble()
+                        )
+                    ).build()
+                }
+                catch (ex: NumberFormatException)
+                {
+                    return FunctionDTO.Builder(
+                        functionName = deviceMethod.label,
+                        functionId = deviceMethod.id!!,
+                        outputValue = item.state,
+                    ).build()
+                }
+            }
 
             FunctionType.Player -> return FunctionDTO.Builder(
                 functionName = deviceMethod.label,
@@ -200,12 +231,28 @@ class BackendController @Autowired constructor(
                 outputValue = item.state
             ).build()
 
-            FunctionType.Rollershutter -> return FunctionDTO.Builder(
-                functionName = deviceMethod.label,
-                functionId = deviceMethod.id!!,
-                outputValue = item.state,
-                rangeDTO = RangeDTO(item.stateDescription.minimum, item.stateDescription.maximum, item.state.toDouble())
-            ).build()
+            FunctionType.Rollershutter -> {
+                try {
+                    return FunctionDTO.Builder(
+                        functionName = deviceMethod.label,
+                        functionId = deviceMethod.id!!,
+                        outputValue = item.state,
+                        rangeDTO = RangeDTO(
+                            item.stateDescription.minimum,
+                            item.stateDescription.maximum,
+                            item.state.toDouble()
+                        )
+                    ).build()
+                }
+                catch (ex: NumberFormatException)
+                {
+                    return FunctionDTO.Builder(
+                        functionName = deviceMethod.label,
+                        functionId = deviceMethod.id!!,
+                        outputValue = item.state,
+                    ).build()
+                }
+            }
 
             FunctionType.StringType -> return FunctionDTO.Builder(
                 functionName = deviceMethod.label,

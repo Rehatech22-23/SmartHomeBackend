@@ -55,7 +55,7 @@ dependencies {
 
 	// Füge eigene Dritt Library hinzu. Weitere Infos unter https://developerlife.com/2021/02/06/publish-kotlin-library-as-gradle-dep/
 	implementation("com.github.Rehatech22-23:smartHomeSharedLibrary:0.2.10")
-	implementation("com.github.Rehatech22-23:homeekt:0.4.1")
+	implementation("com.github.Rehatech22-23:homeekt:0.5.0")
 
 }
 

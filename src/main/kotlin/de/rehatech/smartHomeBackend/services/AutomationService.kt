@@ -55,6 +55,12 @@ class AutomationService  @Autowired constructor(
     private val log: Logger = LoggerFactory.getLogger(AutomationService::class.java)
 
     private val dateFormat = SimpleDateFormat("HH:mm:ss")
+
+    /**
+     * This method is a scheduled method.
+     * The method checks all routines whether they can be executed or not.
+     * Routines that can be executed are executed
+     */
     @Scheduled(fixedRate = 10000)
     fun automation()
     {
