@@ -5,7 +5,7 @@ api:
     homeeUrl: "192.168.83.199"
     homeeUser: "rehatech"
     homeePassword: "rehatech07"
-    deviceHomeeName: "LGG Backend"
+    deviceHomeeName: "LGG Backend2"
 
 homee:
     device: "Paulmann%20Lampe=light:Paulmann:,Philips%20%20Hue=light:PhilipsHue:,homee=:homee:"
