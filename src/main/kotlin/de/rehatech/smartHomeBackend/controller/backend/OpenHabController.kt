@@ -4,12 +4,17 @@ import com.google.gson.Gson
 import de.rehatech.smartHomeBackend.config.ApiConfiguration
 import de.rehatech.smartHomeBackend.response.Item
 import de.rehatech.smartHomeBackend.response.Things
+import de.rehatech.smartHomeBackend.services.AutomationService
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.net.UnknownHostException
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
@@ -28,27 +33,39 @@ class OpenHabController @Autowired constructor (
     val url = apiConfiguration.openhabUrl
     val token = apiConfiguration.openhabToken
 
+    private val log: Logger = LoggerFactory.getLogger(OpenHabController::class.java)
+
+    private val dateFormat = SimpleDateFormat("HH:mm:ss")
+
 
     /**
+     * send a Command to OpenHab
      * @param itemName This parameter contains the item name for OpenHab
      * @param command This parameter contains the command for the OpenHab item
      * @return
      */
     fun sendCommand(itemName: String, command: String): Boolean{
-        val request = Request.Builder()
-            .url("${url}/rest/items/${itemName}")
-            .addHeader("Authorization","Bearer " + token) //seek seek lest
-            .addHeader("Content-Type", " text/plain")
-            .post(command.toRequestBody())
-            .build()
+        try {
+            val request = Request.Builder()
+                .url("${url}/rest/items/${itemName}")
+                .addHeader("Authorization", "Bearer " + token) //seek seek lest
+                .addHeader("Content-Type", " text/plain")
+                .post(command.toRequestBody())
+                .build()
 
-        val client = OkHttpClient.Builder()
-            .connectTimeout(2500,TimeUnit.MILLISECONDS)
-            .build()
+            val client = OkHttpClient.Builder()
+                .connectTimeout(2500, TimeUnit.MILLISECONDS)
+                .build()
 
-        val respond = client.newCall(request).execute()
+            val respond = client.newCall(request).execute()
 
-        return respond.isSuccessful
+            return respond.isSuccessful
+        }
+        catch (ex: UnknownHostException)
+        {
+            log.error("Der Host vom OpenHab wurde nicht gefunden.")
+            return false
+        }
 
 
     }
@@ -60,70 +77,96 @@ class OpenHabController @Autowired constructor (
      */
     fun getItemByName(itemName: String): Item?
     {
-        val request = Request.Builder()
-            .url("${url}/rest/items/${itemName}")
-            .addHeader("Authorization","Bearer " + token)
-            .build()
+        try {
 
-        val client = OkHttpClient.Builder()
-            .connectTimeout(2500,TimeUnit.MILLISECONDS)
-            .build()
 
-        val respond = client.newCall(request).execute()
-        val json = respond.body?.string()
-        if(respond.isSuccessful) {
-            return Gson().fromJson(json, Item::class.java)
+            val request = Request.Builder()
+                .url("${url}/rest/items/${itemName}")
+                .addHeader("Authorization", "Bearer " + token)
+                .build()
+
+            val client = OkHttpClient.Builder()
+                .connectTimeout(2500, TimeUnit.MILLISECONDS)
+                .build()
+
+            val respond = client.newCall(request).execute()
+            val json = respond.body?.string()
+            if (respond.isSuccessful) {
+                return Gson().fromJson(json, Item::class.java)
+            }
+            return null
         }
-        return null
+        catch (ex: UnknownHostException)
+        {
+            log.error("Der Host vom OpenHab wurde nicht gefunden.")
+            return null
+        }
     }
 
     /**
+     * send a command to get a List with Things
      * @return It will return an ArrayList of the type Things
      */
     fun getDevices():ArrayList<Things>?
     {
-        val request = Request.Builder()
-            .url("${url}/rest/things")
-            .addHeader("Authorization","Bearer " + token)
-            .build()
+        try {
 
-        val client = OkHttpClient.Builder()
-            .connectTimeout(2500,TimeUnit.MILLISECONDS)
-            .build()
 
-        val respond = client.newCall(request).execute()
-        val json = respond.body?.string()
-        if(respond.isSuccessful) {
-            val arr = Gson().fromJson(json, Array<Things>::class.java)
-            val arrayList = ArrayList<Things>()
-            Collections.addAll(arrayList, *arr)
-            return arrayList
+            val request = Request.Builder()
+                .url("${url}/rest/things")
+                .addHeader("Authorization", "Bearer " + token)
+                .build()
+
+            val client = OkHttpClient.Builder()
+                .connectTimeout(2500, TimeUnit.MILLISECONDS)
+                .build()
+
+            val respond = client.newCall(request).execute()
+            val json = respond.body?.string()
+            if (respond.isSuccessful) {
+                val arr = Gson().fromJson(json, Array<Things>::class.java)
+                val arrayList = ArrayList<Things>()
+                Collections.addAll(arrayList, *arr)
+                return arrayList
+            }
+            return null
         }
-        return null
+        catch (ex: UnknownHostException)
+        {
+            log.error("Der Host vom OpenHab wurde nicht gefunden.")
+            return null
+        }
     }
 
-    /** //TODO Docs
-     * @param uid
-     * @return
+    /**
+     * get a Thing from uid
+     * @param uid String of the device name
+     * @return Thing
      */
     fun getDevice(uid:String): Things?
     {
-        val request = Request.Builder()
-            .url("${url}/rest/things/${uid}")
-            .addHeader("Authorization","Bearer " + token)
-            .build()
+        try {
+            val request = Request.Builder()
+                .url("${url}/rest/things/${uid}")
+                .addHeader("Authorization", "Bearer " + token)
+                .build()
 
-        val client = OkHttpClient.Builder()
+            val client = OkHttpClient.Builder()
 
-            .connectTimeout(2500,TimeUnit.MILLISECONDS)
-            .build()
+                .connectTimeout(2500, TimeUnit.MILLISECONDS)
+                .build()
 
-        val respond = client.newCall(request).execute()
-        val json = respond.body?.string()
-        if(respond.isSuccessful) {
-            val arr = Gson().fromJson(json, Things::class.java)
-            return arr
+            val respond = client.newCall(request).execute()
+            val json = respond.body?.string()
+            if (respond.isSuccessful) {
+                val arr = Gson().fromJson(json, Things::class.java)
+                return arr
+            }
+            return null
+        }catch (ex: UnknownHostException)
+        {
+            log.error("Der Host vom OpenHab wurde nicht gefunden.")
+            return null
         }
-        return null
     }
 }
