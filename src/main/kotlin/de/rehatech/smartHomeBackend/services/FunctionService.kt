@@ -251,7 +251,7 @@ class FunctionService @Autowired constructor(
     }
 
     /**
-     *
+     * The method stores an attribute from the one Homee Node.
      * @param attribute
      */
     fun saveFunctionHomee(attribute: attributes) {
@@ -293,14 +293,14 @@ class FunctionService @Autowired constructor(
         // decide a Name for the deviceMethode
             val label = when (functType) {
                 FunctionType.Switch -> "OnOff"
-                FunctionType.Dimmer -> when(attribute.type)
+                FunctionType.Dimmer -> "Dimmer"
+                FunctionType.Color -> when(attribute.type)
                 {
                     23 -> "Color"
                     42 -> "ColorTemperature"
                     124 -> "ColorMode"
                     else -> {"error"}
                 }
-                FunctionType.Color -> "Color"
                 else -> "error"
             }
              return DeviceMethods(
