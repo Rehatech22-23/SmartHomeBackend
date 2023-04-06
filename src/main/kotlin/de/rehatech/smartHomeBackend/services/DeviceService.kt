@@ -8,6 +8,8 @@ import de.rehatech.smartHomeBackend.entities.OpenHabDevice
 import de.rehatech.smartHomeBackend.repositories.HomeeDeviceRepository
 import de.rehatech.smartHomeBackend.repositories.OpenHabDeviceRepository
 import de.rehatech2223.datamodel.DeviceDTO
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
 import org.springframework.stereotype.Service
@@ -27,6 +29,7 @@ class DeviceService @Autowired constructor(
     val environment: Environment
 )
 {
+    private val log: Logger = LoggerFactory.getLogger(DeviceService::class.java)
 
     /**
      * //TODO: Docs
@@ -148,6 +151,7 @@ class DeviceService @Autowired constructor(
         for (item in listHomee){
             result.add(item.getHomeeID())
         }
+        log.info("All Devices are retrieved from DB")
         return result
     }
 
@@ -159,9 +163,9 @@ class DeviceService @Autowired constructor(
     {
         val tmp = deviceId.split(":")
 
-        when(tmp[0]){
-            "OH" -> return getDeviceOH(tmp[1])
-            "HM" -> return getDeviceHM(tmp[1])
+        return when(tmp[0]){
+            "OH" -> getDeviceOH(tmp[1])
+            "HM" -> getDeviceHM(tmp[1])
             else -> throw NullPointerException()
         }
 
@@ -174,7 +178,7 @@ class DeviceService @Autowired constructor(
             val i = id.toLong()
             val OHL = openHabDeviceRepository.findById(i)
             OH = OHL.get()
-        }catch(Exception: NumberFormatException){
+        }catch(exception: NumberFormatException){
 
         }
 
@@ -196,7 +200,7 @@ class DeviceService @Autowired constructor(
         try{
             id.toLong()
             HM = homeeDeviceRepository.findById(id.toLong()).get()
-        }catch(Exception: NumberFormatException){
+        }catch(exception: NumberFormatException){
 
         }
 

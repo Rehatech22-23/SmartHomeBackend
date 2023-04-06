@@ -9,6 +9,8 @@ import de.rehatech.smartHomeBackend.repositories.HomeeDeviceRepository
 import de.rehatech.smartHomeBackend.repositories.OpenHabDeviceRepository
 import de.rehatech.smartHomeBackend.response.Item
 import de.rehatech2223.datamodel.FunctionDTO
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -29,6 +31,9 @@ class FunctionService @Autowired constructor(
     val homeeDeviceRepository: HomeeDeviceRepository,
     val functionTypeService: FunctionTypeService
 ) {
+
+    private val log: Logger = LoggerFactory.getLogger(FunctionService::class.java)
+
 
 
     //TODO: Docs
@@ -55,6 +60,7 @@ class FunctionService @Autowired constructor(
             )
         }
         if (funcState == null) throw NullPointerException()
+        log.info("Funktion with id: ${funcState.functionId} was retrieved successfully")
         return funcState
     }
 
@@ -81,6 +87,7 @@ class FunctionService @Autowired constructor(
         }else if(command == "-1"){
             throw NoSuchMethodError() //falsches Homeeattr übergeben (eine nummer die keinen sinn ergibt)
         }
+
         backendController.sendCommand(deviceId, deviceMethodsRepository.findById(functionId).get(), command)
     }
 
