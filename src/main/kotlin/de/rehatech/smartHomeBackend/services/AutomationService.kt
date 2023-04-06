@@ -164,6 +164,10 @@ class AutomationService  @Autowired constructor(
                     log.error("Automation: Error Routine")
                     routineRepository.delete(routine)
                 }
+                catch (ex: NullPointerException)
+                {
+                    log.error("Device Controller offline")
+                }
 
 
 
@@ -199,9 +203,9 @@ class AutomationService  @Autowired constructor(
 
     /**
      * Check value
-     * @param comparisonType
+     * @param comparisonType same=0 less=1 or bigger=2
      * @param triggerEventByDevice
-     * @param status
+     * @param status Device Methods aktuall Data Status
      * @return
      */
     private  fun rangeRoutine(comparisonType:Int, triggerEventByDevice: TriggerEventByDevice, status: FunctionDTO):Boolean
@@ -213,11 +217,13 @@ class AutomationService  @Autowired constructor(
                     return true
                 }
 
+                //Value less Value Status
             } else if (comparisonType == 1) {
                 if (range.currentValue!! < status.rangeDTO!!.currentValue) {
                     return true
                 }
 
+                //Value bigger than Value Status
             } else if (comparisonType == 2) {
                 if (range.currentValue!! > status.rangeDTO!!.currentValue) {
                     return true
