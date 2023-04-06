@@ -16,10 +16,10 @@ class HomeeController@Autowired constructor (
 
     apiConfiguration: ApiConfiguration
 ) {
-    val url = apiConfiguration.homeeUrl
-    val user = apiConfiguration.homeeUser
-    val password = apiConfiguration.homeePassword
-    val deviceName = apiConfiguration.deviceHomeeName
+    private final val url = apiConfiguration.homeeUrl
+    private final val user = apiConfiguration.homeeUser
+    private final val password = apiConfiguration.homeePassword
+    private final val deviceName = apiConfiguration.deviceHomeeName
     val homee: Homee = Homee(url,user, password, device = deviceName)
 
 
@@ -47,8 +47,8 @@ class HomeeController@Autowired constructor (
      * The Methode send a command to the Homee
      * @param nodeId Int
      * @param attributeId
-     * @param value
-     * @return
+     * @param value The value to set the node attribut
+     * @return success
      */
     fun sendCommand(nodeId:Int, attributeId:Int, value:Float ):Boolean
     {
