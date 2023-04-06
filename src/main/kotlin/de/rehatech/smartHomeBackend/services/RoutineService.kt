@@ -9,6 +9,9 @@ import kotlinx.serialization.json.Json
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 
 /**
  * A Service for the business logic concerning Routine Entities*
@@ -18,7 +21,12 @@ import org.springframework.stereotype.Service
  * @param  routineRepository Interface gets automatically autowired into the Service
  */
 @Service
-class RoutineService(private val routineRepository: RoutineRepository) {
+class RoutineService(
+        private val routineRepository: RoutineRepository,
+        val functionService: FunctionService,
+) {
+
+    private val log: Logger = LoggerFactory.getLogger(RoutineService::class.java)
 
     /**
      * Finds all Routine Objects stored in the Database and filters out their Ids
@@ -29,6 +37,7 @@ class RoutineService(private val routineRepository: RoutineRepository) {
         routineRepository.findAll().iterator().forEachRemaining {
             ids.add(it.id!!)
         }
+        log.info("All Routines are retrieved from DB")
         return ResponseEntity(ids, null, HttpStatus.OK)
     }
 
@@ -39,9 +48,12 @@ class RoutineService(private val routineRepository: RoutineRepository) {
      */
     fun getRoutine(routineId: Long): ResponseEntity<String> {
         val optionalRoutine = routineRepository.findById(routineId)
-        if(optionalRoutine.isPresent) {
-            return ResponseEntity(Json.encodeToString(RoutineMapper.mapToDTO(optionalRoutine.get())),null, HttpStatus.OK)
+        if (optionalRoutine.isPresent) {
+            val routine = optionalRoutine.get()
+            log.info("Routine with id: ${routine.id} was retrieved successfully")
+            return ResponseEntity(Json.encodeToString(RoutineMapper.mapToDTO(routine)), null, HttpStatus.OK)
         }
+        log.error("Unable to find Routine with id: $routineId")
         return ResponseEntity("Es konnte keine Routine mit der angegebenen Id gefunden werden!", null, HttpStatus.NOT_FOUND)
     }
 
@@ -51,12 +63,22 @@ class RoutineService(private val routineRepository: RoutineRepository) {
      */
     fun triggerRoutineById(routineId: Long): ResponseEntity<String> {
         val optionalRoutine = routineRepository.findById(routineId)
-        if (optionalRoutine.isPresent){
-            return ResponseEntity(Json.encodeToString(RoutineMapper.mapToDTO(optionalRoutine.get())), null, HttpStatus.OK)
-            //Todo: Specify implementation -> routine.active = true (?)
-            //Todo: Actually trigger a routine
+        if (optionalRoutine.isPresent) {
+            val routine = optionalRoutine.get()
+            val routineEvents = routine.routineEvent
+            for (routineEvent in routineEvents) {
+                functionService.triggerFunc(
+                        routineEvent.deviceId,
+                        routineEvent.functionId!!,
+                        routineEvent.voldemort!!
+                )
+            }
+            log.info("Routine with id ${routine.id} was triggered successfully")
+            return ResponseEntity("Routine mit der angegebenen Id wurde getriggert!", null, HttpStatus.OK)
+        } else {
+            log.error("Unable to find Routine with id: $routineId")
+            return ResponseEntity("Es konnte keine Routine mit der angegebenen Id gefunden werden!", null, HttpStatus.NOT_FOUND)
         }
-        return  ResponseEntity("Es konnte keine Routine mit der angegebenen Id gefunden werden!", null, HttpStatus.NOT_FOUND)
     }
 
     /**
@@ -67,9 +89,10 @@ class RoutineService(private val routineRepository: RoutineRepository) {
      */
     @Transactional
     fun createRoutine(routineDTO: RoutineDTO): ResponseEntity<String> {
-        //return ResponseEntity(Json.encodeToString((RoutineMapper.mapToDTO(routineRepository.save(RoutineMapper.mapToEntity(routineDTO))))), null, HttpStatus.OK)
-        var routine = RoutineMapper.mapToEntity(routineDTO)
+        val routine = RoutineMapper.mapToEntity(routineDTO)
         val savedRoutine = routineRepository.save(routine)
+        log.info("Routine: ${savedRoutine.routineName} with id: ${savedRoutine.id} was created successfully")
+
         val savedRoutineDTO = RoutineMapper.mapToDTO(savedRoutine)
         val s = Json.encodeToString(savedRoutineDTO)
         return ResponseEntity(s, null, HttpStatus.OK)
@@ -84,8 +107,10 @@ class RoutineService(private val routineRepository: RoutineRepository) {
     fun deleteRoutine(id: Long): ResponseEntity<String> {
         return try {
             routineRepository.deleteById(id)
+            log.info("Routine with id $id was deleted successfully")
             ResponseEntity.ok("Entity deleted")
-        }catch (error: Error) {
+        } catch (error: Error) {
+            log.error("Unable to delete Routine with id $id")
             ResponseEntity.internalServerError().build()
         }
 
