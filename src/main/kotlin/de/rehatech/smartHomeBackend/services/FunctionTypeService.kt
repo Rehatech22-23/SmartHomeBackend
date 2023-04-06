@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 class FunctionTypeService {
 
     /**
-     * //TODO: Docs
+     * Sets the FunktionType of a Homee Device.
      * @param attribute referencing the attributes data class of our homeekt library
      * @return FunctionType?
      */
@@ -42,8 +42,8 @@ class FunctionTypeService {
     }
 
     /**
-     *
-     * @param item
+     * Sets the FunktionType of a OpenHab Device.
+     * @param item OpenHab Item
      * @return FunctionType?
      */
     fun functionsTypeOpenHab(item: Item): FunctionType?
