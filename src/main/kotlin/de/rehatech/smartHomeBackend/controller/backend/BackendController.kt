@@ -32,7 +32,7 @@ class BackendController @Autowired constructor(
 
 
 ) {
-    /** //TODO: deviceID-> deviceId
+    /**
      * decides from deviceID if its a homee or a OpenHab Device and calls the sendCommand-Function from the
      * corresponding Controller Class (either HomeeController or OpenHabController)
      * @param deviceId String starting either with "OH:" or "HM:" to indicate if its a OpenHab or a Homee Device, after the ":" follows the Id (Long)
@@ -61,14 +61,21 @@ class BackendController @Autowired constructor(
     }
 
     /**
-     * @param deviceId
-     * @param deviceMethods
-     * @return FunctionDTO?
+     * Get a Status from a Method
+     * @param deviceId Homee or OpenHab Id
+     * @param deviceMethods Method from a device
+     * @return FunctionDTO? Get the actuall status in form from FunctionDTO
      */
     fun getMethodStatus(deviceId: String, deviceMethods: DeviceMethods): FunctionDTO? { //Für Homee Und Openhab Methoden
         if (deviceId.contains("OH:")) {
-
+            if (deviceMethods.type != FunctionType.Datetime||deviceMethods.type != FunctionType.Group )
+            {
+                openHabController.sendCommand(deviceMethods.name, "REFRESH")
+                Thread.sleep(120L)
+            }
             val item = openHabController.getItemByName(deviceMethods.name) ?: return null
+
+
             return getFunctionFromItem(item, deviceMethods)
         } else if (deviceId.contains("HM:")) {
             val nodes = homeeController.getNodes()
@@ -92,6 +99,7 @@ class BackendController @Autowired constructor(
     }
 
     /**
+     * Transform a Node attribute in FunctionDTO
      * @param deviceMethod
      * @param attribute
      * @return FunctionDTO?
@@ -140,8 +148,8 @@ class BackendController @Autowired constructor(
     }
 
     /**
-     * //TODO: Docs
-     * @param item
+     * transform a Item to FunctionDTO
+     * @param item OpenHab Item
      * @param deviceMethod
      * @return FunctionDTO?
      */
