@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory
  */
 @Service
 class RoutineService(
-        private val routineRepository: RoutineRepository,
+        val routineRepository: RoutineRepository,
         val functionService: FunctionService,
 ) {
 
@@ -108,7 +108,7 @@ class RoutineService(
         return try {
             routineRepository.deleteById(id)
             log.info("Routine with id $id was deleted successfully")
-            ResponseEntity.ok("Entity deleted")
+            ResponseEntity.ok("Entity deleted successfully")
         } catch (error: Error) {
             log.error("Unable to delete Routine with id $id")
             ResponseEntity.internalServerError().build()
