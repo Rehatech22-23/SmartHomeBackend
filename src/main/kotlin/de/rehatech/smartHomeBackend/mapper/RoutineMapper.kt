@@ -11,49 +11,50 @@ class RoutineMapper {
     companion object {
         fun mapToEntity(routineDTO: RoutineDTO): Routine {
             val result = Routine()
-            if (routineDTO.triggerEventByDeviceDTO == null) {
-                result.id = null
-                result.routineName = routineDTO.routineName
-                result.comparisonType  = routineDTO.comparisonType
-                result.triggerTime = TriggerTimeMapper.mapToEntity(routineDTO.triggerTime!!)
-                result.routineEvent = RoutineEventMapper.mapToEntityMutableList(routineDTO.routineEventDTO)
-            } else { // routineDTO.triggerTimeDTO == null
-                result.id = null
-                result.routineName = routineDTO.routineName
-                result.comparisonType  = routineDTO.comparisonType
+
+            result.id = routineDTO.routineId
+            result.routineName = routineDTO.routineName
+            result.comparisonType = routineDTO.comparisonType
+            result.routineEvent = RoutineEventMapper.mapToEntityMutableList(routineDTO.routineEventDTO)
+
+            if (routineDTO.triggerEventByDeviceDTO != null) {
                 result.triggerEventByDevice =
-                    TriggerEventByDeviceMapper.mapToEntity(routineDTO.triggerEventByDeviceDTO!!)
-                result.routineEvent = RoutineEventMapper.mapToEntityMutableList(routineDTO.routineEventDTO)
+                        TriggerEventByDeviceMapper.mapToEntity(routineDTO.triggerEventByDeviceDTO!!)
+            } else if (routineDTO.triggerTime != null) { // routineDTO.triggerTimeDTO != null
+                result.triggerTime = TriggerTimeMapper.mapToEntity(routineDTO.triggerTime!!)
             }
+
             return result
         }
 
         fun mapToDTO(routine: Routine): RoutineDTO {
-            if (routine.triggerEventByDevice == null) {
+            if (routine.triggerEventByDevice != null) {
                 return RoutineDTO.Builder(
-                    routine.routineName,
-                    routine.comparisonType!!,
-                    RoutineEventMapper.mapToDTOList(routine.routineEvent),
-                    routine.id!!,
-                    null,
-                    null
-                ).routineId(routine.id!!)
-                    .triggerTime(
-                        TriggerTimeMapper
-                            .mapToDTO(routine.triggerTime!!)
-                    )
-                    .build()
-            } else {
+                        routine.routineName,
+                        routine.comparisonType!!,
+                        RoutineEventMapper.mapToDTOList(routine.routineEvent),
+                        routine.id!!,
+                        null,
+                        null
+                ).triggerEventByDeviceDTO(TriggerEventByDeviceMapper.mapToDTO(routine.triggerEventByDevice!!)).build()
+            } else if (routine.triggerTime != null) {
                 return RoutineDTO.Builder(
-                    routine.routineName,
-                    routine.comparisonType!!,
-                    RoutineEventMapper.mapToDTOList(routine.routineEvent),
-                    routine.id!!,
-                    null,
-                    null
-                ).routineId(routine.id!!)
-                    .triggerEventByDeviceDTO(TriggerEventByDeviceMapper.mapToDTO(routine.triggerEventByDevice!!))
-                    .build()
+                        routine.routineName,
+                        routine.comparisonType!!,
+                        RoutineEventMapper.mapToDTOList(routine.routineEvent),
+                        routine.id!!,
+                        null,
+                        null
+                ).triggerTime(TriggerTimeMapper.mapToDTO(routine.triggerTime!!)).build()
+            }else {
+                return RoutineDTO.Builder(
+                        routine.routineName,
+                        routine.comparisonType!!,
+                        RoutineEventMapper.mapToDTOList(routine.routineEvent),
+                        routine.id!!,
+                        null,
+                        null
+                ).build()
             }
         }
     }
