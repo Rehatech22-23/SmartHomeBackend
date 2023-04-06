@@ -42,7 +42,7 @@ class FunctionTypeService {
     }
 
     /**
-     * //TODO: Docs
+     *
      * @param item
      * @return FunctionType?
      */
@@ -57,21 +57,17 @@ class FunctionTypeService {
         }
         if(itemstring.contains("String"))
         {
-            if ("Philips_AirPurifier_Air" in item.name)
-            {
-                itemstring = "Air"
-            }
-            else {
-                itemstring = "StringType"
-            }
+            itemstring =
+                if ("Philips_AirPurifier_Air" in item.name) {
+                    "Air"
+                } else {
+                    "StringType"
+                }
         }
-        try {
-            val test = FunctionType.valueOf(itemstring)
-            return test
-        }
-        catch (  e:IllegalArgumentException      )
-        {
-            return null
+        return try {
+            FunctionType.valueOf(itemstring)
+        } catch (e: IllegalArgumentException) {
+            null
         }
 
 

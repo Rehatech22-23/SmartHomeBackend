@@ -180,7 +180,10 @@ class AutomationService  @Autowired constructor(
 
 
     /**
-     *
+     * Check of same value
+     * @param triggerEventByDevice
+     * @param status
+     * @return Boolean
      */
     private fun onOffRoutine(triggerEventByDevice: TriggerEventByDevice, status: FunctionDTO): Boolean{
         val expectedFun = triggerEventByDevice.function
@@ -194,6 +197,13 @@ class AutomationService  @Autowired constructor(
         return false
     }
 
+    /**
+     * Check value
+     * @param comparisonType
+     * @param triggerEventByDevice
+     * @param status
+     * @return
+     */
     private  fun rangeRoutine(comparisonType:Int, triggerEventByDevice: TriggerEventByDevice, status: FunctionDTO):Boolean
     {
         val range = triggerEventByDevice.function.range
