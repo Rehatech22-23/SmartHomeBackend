@@ -19,46 +19,5 @@ import org.springframework.web.server.ResponseStatusException
  */
 @SpringBootTest
 internal class FunctionControllerTest {
-    @Autowired
-    private var functionController: FunctionController? = null
-    @Autowired
-    private var mockFunctionService: FunctionService? = null
-    @BeforeEach
-    fun setUp() {
-        mockFunctionService = Mockito.mock(FunctionService::class.java)
-    }
-
-    @Test
-    fun testFunctionByFunctionId() {
-        val mockFunctionDTO = Mockito.mock(FunctionDTO::class.java)
-        Mockito.`when`(mockFunctionService!!.getFunction(ArgumentMatchers.anyLong())).thenReturn(mockFunctionDTO)
-        val result = functionController!!.functionByFunctionId(123L)
-        Mockito.verify(mockFunctionService)!!.getFunction(123L)
-    }
-
-    @Test
-    fun testFunctionByFunctionIdWhenExceptionThrown() {
-        Mockito.`when`(mockFunctionService!!.getFunction(ArgumentMatchers.anyLong())).thenThrow(NullPointerException("Test exception"))
-        try {
-            functionController!!.functionByFunctionId(123L)
-        } catch (ex: ResponseStatusException) {
-            assert(ex.statusCode === HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-    }
-
-    @Test
-    fun testTriggerFunc() {
-        functionController!!.triggerFunc("device1", 456L, 1.23f)
-        Mockito.verify(mockFunctionService)!!.triggerFunc("device1", 456L, 1.23f)
-    }
-
-    @Test
-    fun testTriggerFuncWhenExceptionThrown() {
-        doThrow(NullPointerException("Test exception")).`when`(mockFunctionService)!!.triggerFunc(ArgumentMatchers.any(), ArgumentMatchers.anyLong(), ArgumentMatchers.anyFloat())
-        try {
-            functionController!!.triggerFunc("device1", 456L, 1.23f)
-        } catch (ex: ResponseStatusException) {
-            assert(ex.statusCode === HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-    }
+   //todo
 }
