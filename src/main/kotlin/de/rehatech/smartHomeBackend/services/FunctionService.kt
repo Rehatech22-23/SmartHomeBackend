@@ -98,7 +98,7 @@ class FunctionService @Autowired constructor(
             return "CLOSED"
         }
         return ""       //falscher wert im body
-    }
+    }//16264192.0 red
 
     private fun percent(body: Float): String {
         if (body in 0F..100F) {
@@ -188,11 +188,6 @@ class FunctionService @Autowired constructor(
             FunctionType.Dimmer -> checkValueDimmingLevel(body) //else error
             FunctionType.Color -> checkValueColor(body)//else error
             else -> {"-1"}
-        }
-        if(command == ""){
-            //fehlerbehandlung (falscher wert im body übergeben, wert passt nicht zum homeeattr)
-        }else if(command == "-1"){
-            //fehlerbehandlung (falsches homeeattr übergeben)
         }
         return command
     }
