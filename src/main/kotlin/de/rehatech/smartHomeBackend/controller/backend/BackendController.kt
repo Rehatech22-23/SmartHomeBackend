@@ -180,6 +180,14 @@ class BackendController @Autowired constructor(
             FunctionType.Datetime -> return null
             FunctionType.Dimmer -> {
                 try {
+                    if ("makeString" in item.tags)
+                    {
+                        return FunctionDTO.Builder(
+                            functionName = deviceMethod.label,
+                            functionId = deviceMethod.id!!,
+                            outputValue = item.state,
+                        ).build()
+                    }
                     return FunctionDTO.Builder(
                         functionName = deviceMethod.label,
                         functionId = deviceMethod.id!!,
@@ -198,7 +206,7 @@ class BackendController @Autowired constructor(
                         functionId = deviceMethod.id!!,
                         outputValue = item.state,
                     ).build()
-                    }
+                }
             }
 
             FunctionType.Group -> return null
@@ -212,6 +220,14 @@ class BackendController @Autowired constructor(
 
             FunctionType.Number -> {
                 try {
+                    if ("makeString" in item.tags)
+                    {
+                        return FunctionDTO.Builder(
+                            functionName = deviceMethod.label,
+                            functionId = deviceMethod.id!!,
+                            outputValue = item.state,
+                        ).build()
+                    }
                     val itemsplit = item.state.split(" ")
                     return FunctionDTO.Builder(
                         functionName = deviceMethod.label,
@@ -242,6 +258,14 @@ class BackendController @Autowired constructor(
 
             FunctionType.Rollershutter -> {
                 try {
+                    if ("makeString" in item.tags)
+                    {
+                        return FunctionDTO.Builder(
+                            functionName = deviceMethod.label,
+                            functionId = deviceMethod.id!!,
+                            outputValue = item.state,
+                        ).build()
+                    }
                     return FunctionDTO.Builder(
                         functionName = deviceMethod.label,
                         functionId = deviceMethod.id!!,
