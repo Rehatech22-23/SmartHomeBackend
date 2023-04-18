@@ -4,7 +4,6 @@ import com.google.gson.Gson
 import de.rehatech.smartHomeBackend.config.ApiConfiguration
 import de.rehatech.smartHomeBackend.response.Item
 import de.rehatech.smartHomeBackend.response.Things
-import de.rehatech.smartHomeBackend.services.AutomationService
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -13,8 +12,8 @@ import org.slf4j.LoggerFactory
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
@@ -35,7 +34,6 @@ class OpenHabController @Autowired constructor (
 
     private val log: Logger = LoggerFactory.getLogger(OpenHabController::class.java)
 
-    private val dateFormat = SimpleDateFormat("HH:mm:ss")
 
 
     /**
@@ -64,6 +62,11 @@ class OpenHabController @Autowired constructor (
         catch (ex: UnknownHostException)
         {
             log.error("Der Host vom OpenHab wurde nicht gefunden.")
+            return false
+        }
+        catch (ex: SocketTimeoutException)
+        {
+            log.error("Keine Verbindung zum OpenHab Server")
             return false
         }
 
@@ -101,6 +104,11 @@ class OpenHabController @Autowired constructor (
             log.error("Der Host vom OpenHab wurde nicht gefunden.")
             return null
         }
+        catch (ex: SocketTimeoutException)
+        {
+            log.error("Keine Verbindung zum OpenHab Server")
+            return null
+        }
     }
 
     /**
@@ -136,6 +144,11 @@ class OpenHabController @Autowired constructor (
             log.error("Der Host vom OpenHab wurde nicht gefunden.")
             return null
         }
+        catch (ex: SocketTimeoutException)
+        {
+            log.error("Keine Verbindung zum OpenHab Server")
+            return null
+        }
     }
 
     /**
@@ -159,13 +172,17 @@ class OpenHabController @Autowired constructor (
             val respond = client.newCall(request).execute()
             val json = respond.body?.string()
             if (respond.isSuccessful) {
-                val arr = Gson().fromJson(json, Things::class.java)
-                return arr
+                return Gson().fromJson(json, Things::class.java)
             }
             return null
         }catch (ex: UnknownHostException)
         {
             log.error("Der Host vom OpenHab wurde nicht gefunden.")
+            return null
+        }
+        catch (ex: SocketTimeoutException)
+        {
+            log.error("Keine Verbindung zum OpenHab Server")
             return null
         }
     }
