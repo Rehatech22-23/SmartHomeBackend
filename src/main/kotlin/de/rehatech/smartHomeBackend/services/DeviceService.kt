@@ -56,7 +56,11 @@ class DeviceService @Autowired constructor(
                 {
                     if(data.uid == device.UID)
                     {
-                        found = true
+                        if (data.name == device.label)
+                        {
+                            found = true
+                        }
+
                     }
                 }
                 if(!found)
@@ -95,7 +99,12 @@ class DeviceService @Autowired constructor(
                 {
                     if(data.homeeID == node.id)
                     {
-                        found = true
+                        val newnode = transformNode(node)
+                        if (data.name == newnode.name )
+                        {
+                            found = true
+                        }
+
                     }
                 }
                 if(!found)
