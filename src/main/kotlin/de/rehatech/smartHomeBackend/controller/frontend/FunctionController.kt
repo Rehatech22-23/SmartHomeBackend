@@ -29,7 +29,6 @@ class FunctionController @Autowired constructor(val functionService: FunctionSer
                 log.error("Funktion with id: $functionId was not  retrieved successfully")
                 throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.localizedMessage, ex)
             } catch (ex: IllegalArgumentException){
-                log.error("illegal value in request body")
                 throw ResponseStatusException(HttpStatus.NO_CONTENT, ex.localizedMessage, ex)
             } catch (ex: NoSuchMethodError){
                 log.error("There is no Homee Device which has this Functiontype")

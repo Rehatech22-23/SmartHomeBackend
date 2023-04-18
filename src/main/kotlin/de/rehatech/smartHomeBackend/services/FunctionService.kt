@@ -73,17 +73,23 @@ class FunctionService @Autowired constructor(
      * @param deviceId
      * @param functionId
      * @param body
+     * @throws IllegalArgumentException when an illegal value is übergeben in the requestbody or the übergebene deviceId is wrong (does not start with "OH:" or "HM:")
+     * @throws NoSuchMethodError when a Homee device has a functionValue other than SWITCH, DIMMER or COLOR
      */
     fun triggerFunc(deviceId: String, functionId: Long, body: Float) {
         val tmp = deviceId.split(":")
         val command: String = when (tmp[0]) {
             "OH" -> setCommandOH(functionId, body)
             "HM" -> setCommandHM(functionId, body)
-            else -> {""}
+            else -> {"wrongDeviceId"}
         }
 
         if(command == ""){
+            log.error("illegal value in request body")
             throw IllegalArgumentException() //falscher wert im body übergeben
+        }else if(command == "wrongDeviceId"){
+            log.error("DeviceId: $deviceId is illegal")
+            throw IllegalArgumentException()
         }else if(command == "-1"){
             throw NoSuchMethodError() //falsches Homeeattr übergeben (eine nummer die keinen sinn ergibt)
         }
