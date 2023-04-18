@@ -3,8 +3,13 @@ package de.rehatech.smartHomeBackend.controller.backend
 import de.rehatech.homeekt.Homee
 import de.rehatech.homeekt.model.nodes
 import de.rehatech.smartHomeBackend.config.ApiConfiguration
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
+import java.net.SocketException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 /**
  * A class that handles commands dor HomeeDevices
@@ -22,6 +27,7 @@ class HomeeController@Autowired constructor (
     private final val deviceName = apiConfiguration.deviceHomeeName
     val homee: Homee = Homee(url,user, password, device = deviceName)
 
+    private val log: Logger = LoggerFactory.getLogger(HomeeController::class.java)
 
 
     /**
@@ -30,8 +36,27 @@ class HomeeController@Autowired constructor (
      */
     fun updateNodes():Boolean
     {
-        val ok = homee.getallNodes()
-        return !(ok == null || ok == false)
+        try {
+
+
+            val ok = homee.getallNodes()
+            return !(ok == null || ok == false)
+        }
+        catch (ex: UnknownHostException)
+        {
+            log.error("Der Host vom Homee wurde nicht gefunden.")
+            return false
+        }
+        catch (ex: SocketTimeoutException)
+        {
+            log.error("Keine Verbindung zum Homee Server")
+            return false
+        }
+        catch (ex:SocketException)
+        {
+            log.error("Keine Verbing zum Homee")
+            return false
+        }
 
     }
     /**
@@ -53,8 +78,25 @@ class HomeeController@Autowired constructor (
     fun sendCommand(nodeId:Int, attributeId:Int, value:Float ):Boolean
     {
 
-        val ok = homee.sendNodeBefehl(nodeId, attributeId, value)
-        return !(ok == null || ok == false)
+        try {
+            val ok = homee.sendNodeBefehl(nodeId, attributeId, value)
+            return !(ok == null || ok == false)
+        }
+        catch (ex: UnknownHostException)
+        {
+            log.error("Der Host vom Homee wurde nicht gefunden.")
+            return false
+        }
+        catch (ex: SocketTimeoutException)
+        {
+            log.error("Keine Verbindung zum Homee Server")
+            return false
+        }
+        catch (ex:SocketException)
+        {
+            log.error("Keine Verbing zum Homee")
+            return false
+        }
 
     }
 }
