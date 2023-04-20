@@ -16,6 +16,7 @@ import org.mockito.Mockito.never
 import org.mockito.internal.verification.VerificationModeFactory.atLeastOnce
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.test.mock.mockito.SpyBean
 import java.util.*
 
@@ -34,7 +35,7 @@ class AutomationServiceTest {
     @SpyBean
     lateinit var backendController: BackendController
 
-    @SpyBean
+    @MockBean
     lateinit var deviceMethodsRepository: DeviceMethodsRepository
 
     @SpyBean
@@ -56,6 +57,42 @@ class AutomationServiceTest {
         routineService.createRoutine(routineBuild.errorRoutine())
         automationService.automation()
         assertEquals(0, routineRepository.count())
+    }
+
+    @Test
+    fun testTimeRoutineInRange()
+    {
+
+        val mockOH1 = OpenHabDevice(1,"Test", "Test1")
+        val mockDeviceMethod = DeviceMethods(1,null, "test", FunctionType.Switch, "Test",mockOH1,null )
+        Mockito.`when`( deviceMethodsRepository.findById(1)).thenReturn(Optional.of(mockDeviceMethod))
+
+        routineService.createRoutine(routineBuild.triggertimeRoutine())
+        automationService.automation()
+        Mockito.verify(functionService,atLeastOnce()).triggerFunc("HM:1",1,1F)
+    }
+
+    @Test
+    fun testTimeRoutineInRangeNoRepeat()
+    {
+
+
+        val mockOH1 = OpenHabDevice(1,"Test", "Test1")
+        val mockDeviceMethod = DeviceMethods(1,null, "test", FunctionType.Switch, "Test",mockOH1,null )
+        Mockito.`when`( deviceMethodsRepository.findById(1)).thenReturn(Optional.of(mockDeviceMethod))
+        routineService.createRoutine(routineBuild.triggertimeRoutineNoRepeat())
+        automationService.automation()
+        Mockito.verify(functionService,atLeastOnce()).triggerFunc("HM:1",1,1F)
+    }
+
+    @Test
+    fun testTimeRoutineNotInRange()
+    {
+
+
+        routineService.createRoutine(routineBuild.triggertimeBigRangeRoutine())
+        automationService.automation()
+        Mockito.verify(functionService, never()).triggerFunc("HM:1",1,1F)
     }
 
     @Test
