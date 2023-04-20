@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import java.time.LocalTime
 import java.util.*
 
@@ -86,11 +87,19 @@ class AutomationService  @Autowired constructor(
                         log.info("Automation: Time Event getriggert")
                         val routineEvents = routine.routineEvent
                         for (routineEvent in routineEvents) {
-                            functionService.triggerFunc(
-                                routineEvent.deviceId,
-                                routineEvent.functionId!!,
-                                routineEvent.voldemort!!
-                            )
+                            try {
+                                functionService.triggerFunc(
+                                    routineEvent.deviceId,
+                                    routineEvent.functionId!!,
+                                    routineEvent.voldemort!!
+                                )
+                            } catch (ex: IllegalArgumentException) {
+                                log.error("Routine Error+ ${routine.id}")
+                            } catch (ex: NoSuchMethodError) {
+                                log.error("Routine Error+ ${routine.id}")
+
+                            }
+
                         }
                     }
                     else if (!triggerTime.repeatExecuted)
@@ -347,30 +356,29 @@ class AutomationService  @Autowired constructor(
                         }
                     }
                 }
-
-                val savedDevice = openHabDeviceRepository.findOpenHabByUid(device.UID)
-                for (savedMethode in savedDevice.deviceMethodsIDS)
-                {
-                    var found = false
-                    for (methode in allOpenHabTransformMethods)
-                    {
-                        if (savedMethode.label == methode.label)
-                        {
-                            if (savedMethode.type == methode.type)
-                            {
-                                if(savedMethode.name == methode.name)
-                                {
-                                    found = true
+                try {
+                    val savedDevice = openHabDeviceRepository.findOpenHabByUid(device.UID)
+                    for (savedMethode in savedDevice.deviceMethodsIDS) {
+                        var found = false
+                        for (methode in allOpenHabTransformMethods) {
+                            if (savedMethode.label == methode.label) {
+                                if (savedMethode.type == methode.type) {
+                                    if (savedMethode.name == methode.name) {
+                                        found = true
+                                    }
                                 }
                             }
                         }
-                    }
-                    if(!found)
-                    {
-                        log.warn("checkDeleteOpenHabMethods: Delete OpenHab Methode: ${savedMethode.name}")
-                        deviceMethodsRepository.delete(savedMethode)
+                        if (!found) {
+                            log.warn("checkDeleteOpenHabMethods: Delete OpenHab Methode: ${savedMethode.name}")
+                            deviceMethodsRepository.delete(savedMethode)
 
+                        }
                     }
+                }
+                catch (_: EmptyResultDataAccessException)
+                {
+
                 }
             }
         }
@@ -398,28 +406,28 @@ class AutomationService  @Autowired constructor(
                         deviceMethodsList.add(device)
                     }
                 }
-                val savedNode = homeeDeviceRepository.findHomeeByHomeeID(node.id)
-                for (savedMethod in savedNode.deviceMethodsIDS) {
-                    var found = false
-                    for(method in deviceMethodsList)
-                    {
-                        if(savedMethod.label == method.label)
-                        {
-                            if(savedMethod.homeeattrID == method.homeeattrID)
-                            {
-                                if (savedMethod.type == method.type)
-                                {
-                                    found = true
+                try {
+                    val savedNode = homeeDeviceRepository.findHomeeByHomeeID(node.id)
+                    for (savedMethod in savedNode.deviceMethodsIDS) {
+                        var found = false
+                        for (method in deviceMethodsList) {
+                            if (savedMethod.label == method.label) {
+                                if (savedMethod.homeeattrID == method.homeeattrID) {
+                                    if (savedMethod.type == method.type) {
+                                        found = true
+                                    }
                                 }
                             }
                         }
-                    }
-                    if(!found)
-                    {
-                        log.warn("checkDeleteHomeeMethods: Delete Homee Methode: ${savedMethod.name}")
-                        deviceMethodsRepository.delete(savedMethod)
+                        if (!found) {
+                            log.warn("checkDeleteHomeeMethods: Delete Homee Methode: ${savedMethod.name}")
+                            deviceMethodsRepository.delete(savedMethod)
+
+                        }
 
                     }
+                }catch (_: EmptyResultDataAccessException)
+                {
 
                 }
             }
