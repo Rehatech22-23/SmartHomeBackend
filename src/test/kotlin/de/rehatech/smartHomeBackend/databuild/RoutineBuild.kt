@@ -39,6 +39,10 @@ class RoutineBuild {
     {
         return RoutineDTO.Builder("RoutineTest", 0, eventList(),-1, triggerTime()).build()
     }
+    fun triggertimeBigRangeRoutine():RoutineDTO
+    {
+        return RoutineDTO.Builder("RoutineTest", 0, eventList(),-1, triggerTimeBigRange()).build()
+    }
 
     fun errorRoutine():RoutineDTO
     {
@@ -60,6 +64,13 @@ class RoutineBuild {
         return RangeDTO(minValue, maxValue, currentValue)
     }
 
+    private  fun triggerTimeBigRange():TriggerTimeDTO
+    {
+        val time = LocalTime.of(4,2,3)
+        val repeat = true
+        val triggerTimeId = 0L
+        return TriggerTimeDTO(time, repeat, triggerTimeId, null)
+    }
     private  fun triggerTime():TriggerTimeDTO
     {
         val time = LocalTime.now()
