@@ -100,11 +100,22 @@ class AutomationService  @Autowired constructor(
                         log.info("Automation: Ein einmaliges Time Event wurde ausgeführt")
                         val routineEvents = routine.routineEvent
                         for (routineEvent in routineEvents) {
-                            functionService.triggerFunc(
-                                routineEvent.deviceId,
-                                routineEvent.functionId!!,
-                                routineEvent.voldemort!!
-                            )
+                            try {
+                                functionService.triggerFunc(
+                                    routineEvent.deviceId,
+                                    routineEvent.functionId!!,
+                                    routineEvent.voldemort!!
+                                )
+                            }
+                            catch (ex: IllegalArgumentException)
+                            {
+                                log.error("Routine Error+ ${routine.id}")
+                            }
+                            catch (ex: NoSuchMethodError)
+                            {
+                                log.error("Routine Error+ ${routine.id}")
+
+                            }
                         }
 
                     }
@@ -151,11 +162,22 @@ class AutomationService  @Autowired constructor(
                         log.info("Automation: Ein trigger by Device wurde gefunden")
                         val routineEvents = routine.routineEvent
                         for (routineEvent in routineEvents) {
-                            functionService.triggerFunc(
-                                routineEvent.deviceId,
-                                routineEvent.functionId!!,
-                                routineEvent.voldemort!!
-                            )
+                            try {
+                                functionService.triggerFunc(
+                                    routineEvent.deviceId,
+                                    routineEvent.functionId!!,
+                                    routineEvent.voldemort!!
+                                )
+                            }
+                            catch (ex: IllegalArgumentException)
+                            {
+                                log.error("Routine Error+ ${routine.id}")
+                            }
+                            catch (ex: NoSuchMethodError)
+                            {
+                                log.error("Routine Error+ ${routine.id}")
+
+                            }
                         }
                     }
                 }
