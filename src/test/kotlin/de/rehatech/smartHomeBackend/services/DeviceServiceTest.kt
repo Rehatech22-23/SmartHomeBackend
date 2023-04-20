@@ -14,6 +14,8 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.boot.test.mock.mockito.SpyBean
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
@@ -25,10 +27,13 @@ class DeviceServiceTest {
 
 
 
-    @Autowired
+    @MockBean
+    lateinit var automationService: AutomationService
+
+    @SpyBean
     lateinit var openHabDeviceRepository: OpenHabDeviceRepository
 
-    @Autowired
+    @SpyBean
     lateinit var homeeDeviceRepository: HomeeDeviceRepository
 
     @Autowired
@@ -39,12 +44,13 @@ class DeviceServiceTest {
     fun updateDevicesOpenHab() {
         val filePath = "src/test/kotlin/de/rehatech/smartHomeBackend/controller/backend/responsesClass/json/things.json"
 
+        val countbefore= openHabDeviceRepository.count()
         val content = Files.readString(Paths.get(filePath), Charsets.UTF_8)
         val things = Gson().fromJson(content, Array<Things>::class.java)
         val arrayList = ArrayList<Things>()
         Collections.addAll(arrayList, *things)
         deviceService.updateDevicesOpenHab(arrayList)
-        assertEquals(2,openHabDeviceRepository.count())
+        assertEquals(countbefore + 2,openHabDeviceRepository.count())
         val filePath2 = "src/test/kotlin/de/rehatech/smartHomeBackend/controller/backend/responsesClass/json/thing2.json"
 
         val content2 = Files.readString(Paths.get(filePath2), Charsets.UTF_8)
@@ -52,9 +58,9 @@ class DeviceServiceTest {
         val arlist = ArrayList<Things>()
         arlist.add(thing)
         deviceService.updateDevicesOpenHab(arlist)
-        assertEquals(3,openHabDeviceRepository.count())
+        assertEquals(countbefore+3,openHabDeviceRepository.count())
         deviceService.updateDevicesOpenHab(arrayList)
-        assertEquals(3,openHabDeviceRepository.count())
+        assertEquals(countbefore+3,openHabDeviceRepository.count())
 
     }
 
