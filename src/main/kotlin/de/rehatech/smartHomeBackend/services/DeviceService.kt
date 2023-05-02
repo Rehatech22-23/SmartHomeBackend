@@ -60,6 +60,12 @@ class DeviceService @Autowired constructor(
                         {
                             found = true
                         }
+                        else
+                        {
+                            found = true
+                            data.name = device.label
+                            openHabDeviceRepository.save(data)
+                        }
 
                     }
                 }
@@ -102,6 +108,12 @@ class DeviceService @Autowired constructor(
                         val newnode = transformNode(node)
                         if (data.name == newnode.name )
                         {
+                            found = true
+                        }
+                        else
+                        {
+                            data.name = newnode.name
+                            homeeDeviceRepository.save(data)
                             found = true
                         }
 
