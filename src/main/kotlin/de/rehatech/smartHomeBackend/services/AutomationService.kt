@@ -69,6 +69,7 @@ class AutomationService  @Autowired constructor(
         val routinelist = routineRepository.findAll().toList()
         for (routine in routinelist)
         {
+            var triggerfunc = false
             // Check of triggerTime event
             if (routine.triggerTime != null)
             {
@@ -85,47 +86,14 @@ class AutomationService  @Autowired constructor(
                     if (triggerTime.repeat == true)
                     {
                         log.info("Automation: Time Event getriggert")
-                        val routineEvents = routine.routineEvent
-                        for (routineEvent in routineEvents) {
-                            try {
-                                functionService.triggerFunc(
-                                    routineEvent.deviceId,
-                                    routineEvent.functionId!!,
-                                    routineEvent.voldemort!!
-                                )
-                            } catch (ex: IllegalArgumentException) {
-                                log.error("Routine Error+ ${routine.id}")
-                            } catch (ex: NoSuchMethodError) {
-                                log.error("Routine Error+ ${routine.id}")
-
-                            }
-
-                        }
+                        triggerfunc = true
                     }
                     else if (!triggerTime.repeatExecuted)
                     {
                         triggerTime.repeatExecuted = true
                         triggerTimeRepository.save(triggerTime)
                         log.info("Automation: Ein einmaliges Time Event wurde ausgeführt")
-                        val routineEvents = routine.routineEvent
-                        for (routineEvent in routineEvents) {
-                            try {
-                                functionService.triggerFunc(
-                                    routineEvent.deviceId,
-                                    routineEvent.functionId!!,
-                                    routineEvent.voldemort!!
-                                )
-                            }
-                            catch (ex: IllegalArgumentException)
-                            {
-                                log.error("Routine Error+ ${routine.id}")
-                            }
-                            catch (ex: NoSuchMethodError)
-                            {
-                                log.error("Routine Error+ ${routine.id}")
-
-                            }
-                        }
+                        triggerfunc = true
 
                     }
                 }
@@ -142,7 +110,7 @@ class AutomationService  @Autowired constructor(
                         deviceMethodsRepository.findById(triggerEventByDevice!!.function.deviceMethodsId!!).get()
                     val statusDevice =
                         backendController.getMethodStatus(triggerEventByDevice.deviceId, deviceMethodsVal)
-                    var triggerfunc = false
+
 
                     //Check The Device of Event
                     when (deviceMethodsVal.type) {
@@ -167,28 +135,7 @@ class AutomationService  @Autowired constructor(
                     }
 
 
-                    if (triggerfunc) {
-                        log.info("Automation: Ein trigger by Device wurde gefunden")
-                        val routineEvents = routine.routineEvent
-                        for (routineEvent in routineEvents) {
-                            try {
-                                functionService.triggerFunc(
-                                    routineEvent.deviceId,
-                                    routineEvent.functionId!!,
-                                    routineEvent.voldemort!!
-                                )
-                            }
-                            catch (ex: IllegalArgumentException)
-                            {
-                                log.error("Routine Error+ ${routine.id}")
-                            }
-                            catch (ex: NoSuchMethodError)
-                            {
-                                log.error("Routine Error+ ${routine.id}")
 
-                            }
-                        }
-                    }
                 }
                 catch (ex: NoSuchElementException)
                 {
@@ -208,6 +155,27 @@ class AutomationService  @Autowired constructor(
                 log.error("Automation: Error Routine: No TriggerTime and Triggerbydevice")
                 routineRepository.delete(routine)
             }
+            if (triggerfunc) {
+            val routineEvents = routine.routineEvent
+            for (routineEvent in routineEvents) {
+                try {
+                    functionService.triggerFunc(
+                        routineEvent.deviceId,
+                        routineEvent.functionId!!,
+                        routineEvent.voldemort!!
+                    )
+                }
+                catch (ex: IllegalArgumentException)
+                {
+                    log.error("Routine Error + ${routine.id}")
+                }
+                catch (ex: NoSuchMethodError)
+                {
+                    log.error("Routine Error + ${routine.id}")
+
+                }
+            }
+        }
 
         }
 
