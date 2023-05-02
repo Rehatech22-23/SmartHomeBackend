@@ -84,7 +84,7 @@ class FunctionService @Autowired constructor(
             else -> {"wrongDeviceId"}
         }
 
-        if(command == ""){
+        if(command == "invalidBody"){
             log.error("illegal value in request body")
             throw IllegalArgumentException() //falscher wert im body übergeben
         }else if(command == "wrongDeviceId"){
@@ -103,14 +103,14 @@ class FunctionService @Autowired constructor(
         } else if (body == 0F) {
             return "CLOSED"
         }
-        return ""       //falscher wert im body
+        return "invalidBody"       //falscher wert im body
     }//16264192.0 red
 
     private fun percent(body: Float): String {
         if (body in 0F..100F) {
             return body.toString()
         }
-        return ""       //falscher wert im body
+        return "invalidBody"       //falscher wert im body
     }
 
     private fun onOff(body: Float): String {
@@ -119,7 +119,7 @@ class FunctionService @Autowired constructor(
         } else if (body == 0F) {
             return "OFF"
         }
-        return ""       //falscher wert im body
+        return "invalidBody"       //falscher wert im body
     }
 
     private fun playPause(body: Float): String{
@@ -131,7 +131,7 @@ class FunctionService @Autowired constructor(
             4F -> "REWIND"
             5F -> "FASTFORWARD"
             6F -> "REFRESH"
-            else -> ""
+            else -> "invalidBody"
         }
         /*if(body == 1F){
             return "PLAY"
@@ -148,7 +148,7 @@ class FunctionService @Autowired constructor(
             2F -> "2"
             3F -> "3"
             4F -> "t"
-            else -> ""
+            else -> "invalidBody"
         }
         return command
     }
@@ -178,9 +178,6 @@ class FunctionService @Autowired constructor(
             FunctionType.Number -> "Decimal"      //REFRESH, DECIMAL
             FunctionType.StringType -> "String"   //stores nur einen String -> REFRESH
         }
-        if (command == "") {
-            //es wurde ein falscher wert im body übergeben
-        }
         return command
     }
 
@@ -203,21 +200,21 @@ class FunctionService @Autowired constructor(
         if (body == 0F || body == 1F) { //0: an, 1: aus
             return body.toString()
         }
-        return ""
+        return "invalidBody"
     }
 
     private fun checkValueDimmingLevel(body: Float): String {
         if (body in 0.0..100.0) { //Prozent (0: aus, 100: an)
             return body.toString()
         }
-        return ""
+        return "invalidBody"
     }
 
     private fun checkValueColor(body: Float): String {
         if (body in 0F..16777215F) { //HEX Farbcode als Dezimal
             return body.toString()
         }
-        return ""
+        return "invalidBody"
     }
 
 
@@ -321,6 +318,5 @@ class FunctionService @Autowired constructor(
         }
         return null
     }
-
 
 }
