@@ -417,22 +417,25 @@ class AutomationService  @Autowired constructor(
                 for (node in allHomeeNodes) {
                     allHomeeTransformDevice.add(deviceService.transformNode(node))
                 }
-                val allSavedHomeeDevice = homeeDeviceRepository.findAll().toList()
-                for (savedDevice in allSavedHomeeDevice) {
-                    var found = false
-                    for (device in allHomeeTransformDevice) {
-                        if (savedDevice.homeeID == device.homeeID) {
-                            if (savedDevice.name == device.name) {
-                                found = true
 
+                val allSavedHomeeDevice = homeeDeviceRepository.findAll().toList()
+                if (allSavedHomeeDevice.isNotEmpty()) {
+                    for (savedDevice in allSavedHomeeDevice) {
+                        var found = false
+                        for (device in allHomeeTransformDevice) {
+                            if (savedDevice.homeeID == device.homeeID) {
+                                if (savedDevice.name == device.name) {
+                                    found = true
+
+                                }
                             }
                         }
-                    }
-                    if (!found) {
-                        log.warn("checkDeleteHomee: Delete a Homee Device: ${savedDevice.name}")
-                        deviceMethodsRepository.deleteAll(savedDevice.deviceMethodsIDS.toList())
-                        homeeDeviceRepository.delete(savedDevice)
+                        if (!found) {
+                            log.warn("checkDeleteHomee: Delete a Homee Device: ${savedDevice.name}")
+                            deviceMethodsRepository.deleteAll(savedDevice.deviceMethodsIDS.toList())
+                            homeeDeviceRepository.delete(savedDevice)
 
+                        }
                     }
                 }
             }
@@ -448,34 +451,29 @@ class AutomationService  @Autowired constructor(
     {
         val allOpenHabDevice = openHabController.getDevices()
 
-        if (allOpenHabDevice != null)
-        {
+        if (allOpenHabDevice != null) {
 
             val allOpenHabTransformDevice = mutableListOf<OpenHabDevice>()
-            for (thing in allOpenHabDevice)
-            {
+            for (thing in allOpenHabDevice) {
                 allOpenHabTransformDevice.add(deviceService.transformThing(thing))
             }
             val allSavedOpenHabDevice = openHabDeviceRepository.findAll().toList()
-            for (deviceSaved in allSavedOpenHabDevice)
-            {
-                var found = false
-                for (device in allOpenHabTransformDevice)
-                {
-                    if (deviceSaved.uid == device.uid)
-                    {
-                        if (deviceSaved.name == device.name)
-                        {
-                            found = true
+            if (allSavedOpenHabDevice.isNotEmpty()) {
+                for (deviceSaved in allSavedOpenHabDevice) {
+                    var found = false
+                    for (device in allOpenHabTransformDevice) {
+                        if (deviceSaved.uid == device.uid) {
+                            if (deviceSaved.name == device.name) {
+                                found = true
+                            }
                         }
                     }
-                }
-                if(!found)
-                {
-                    log.warn("checkDeleteOpenHab: Delete a OpenHab Device: ${deviceSaved.name}")
-                    deviceMethodsRepository.deleteAll(deviceSaved.deviceMethodsIDS.toList())
-                    openHabDeviceRepository.delete(deviceSaved)
+                    if (!found) {
+                        log.warn("checkDeleteOpenHab: Delete a OpenHab Device: ${deviceSaved.name}")
+                        deviceMethodsRepository.deleteAll(deviceSaved.deviceMethodsIDS.toList())
+                        openHabDeviceRepository.delete(deviceSaved)
 
+                    }
                 }
             }
         }
