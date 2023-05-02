@@ -8,4 +8,4 @@ api:
     deviceHomeeName: "LGG Backend2"
 
 homee:
-    device: "Paulmann%20Lampe=light:Paulmann:,Philips%20%20Hue=light:PhilipsHue:,homee=:homee:"
+    device: 'Paulmann%20Lampe={"name":"Paulmann", "icon":"light"}|Philips%20%20Hue={"name":"PhilipsHue","icon":"light"}|homee={"name":"homee","icon":"controller"}'

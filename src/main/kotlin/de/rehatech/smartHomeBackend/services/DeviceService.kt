@@ -134,7 +134,7 @@ class DeviceService @Autowired constructor(
     fun transformNode(node: nodes):HomeeDevice
     {
 
-        val devicenames = environment.getProperty("homee.device")!!.split(',')
+        val devicenames = environment.getProperty("homee.device")!!.split('|')
         var nodeName = ""
         for (name in devicenames)
         {
