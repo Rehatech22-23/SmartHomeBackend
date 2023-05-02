@@ -26,7 +26,7 @@ class FunctionController @Autowired constructor(val functionService: FunctionSer
             try {
                     return functionService.getFunction(functionId)
             } catch (ex: NullPointerException){
-                log.error("Funktion with id: $functionId was not  retrieved successfully")
+                log.error("Parameter is null")
                 throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.localizedMessage, ex)
             } catch (ex: IllegalArgumentException){
                 throw ResponseStatusException(HttpStatus.NO_CONTENT, ex.localizedMessage, ex)
