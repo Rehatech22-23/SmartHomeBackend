@@ -64,11 +64,12 @@ class BackendController @Autowired constructor(
      * Get a Status from a Method
      * @param deviceId Homee or OpenHab Id
      * @param deviceMethods Method from a device
+     * @param reload Send a Refresh Command OpenHab
      * @return FunctionDTO? Get the actuall status in form from FunctionDTO
      */
-    fun getMethodStatus(deviceId: String, deviceMethods: DeviceMethods): FunctionDTO? { //Für Homee Und Openhab Methoden
+    fun getMethodStatus(deviceId: String, deviceMethods: DeviceMethods, reload: Boolean =true): FunctionDTO? { //Für Homee Und Openhab Methoden
         if (deviceId.contains("OH:")) {
-            if (deviceMethods.type != FunctionType.Datetime||deviceMethods.type != FunctionType.Group )
+            if (reload && (deviceMethods.type != FunctionType.Datetime||deviceMethods.type != FunctionType.Group) )
             {
                 openHabController.sendCommand(deviceMethods.name, "REFRESH")
                 Thread.sleep(120L)

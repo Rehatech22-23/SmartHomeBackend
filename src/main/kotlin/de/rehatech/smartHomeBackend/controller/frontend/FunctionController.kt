@@ -51,6 +51,12 @@ class FunctionController @Autowired constructor(val functionService: FunctionSer
                 }
         }
 
+        @GetMapping("/list")
+        fun getListFunctionDTO():List<FunctionDTO>
+        {
+            return functionService.getListFunctionDTO()
+        }
+
 
 
 }

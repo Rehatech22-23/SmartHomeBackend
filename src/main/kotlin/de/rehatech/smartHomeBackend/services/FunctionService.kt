@@ -64,7 +64,30 @@ class FunctionService @Autowired constructor(
         return funcState
     }
 
+    fun getListFunctionDTO():List<FunctionDTO>
+    {
+        val deviceMethodeList = deviceMethodsRepository.findAll().toList()
+        val functionDTOList = mutableListOf<FunctionDTO>()
+        for (methode in deviceMethodeList)
+        {
+            var functionValue:FunctionDTO? = null
+            if (methode.deviceHomee != null)
+            {
+                functionValue = backendController.getMethodStatus(methode.deviceHomee!!.getHomeeID(), methode, reload = false)
+            }
+            else if(methode.deviceOpenHab != null)
+            {
+                functionValue = backendController.getMethodStatus(methode.deviceOpenHab!!.getOpenHabID(), methode, reload = false)
 
+            }
+            if (functionValue != null)
+            {
+                functionDTOList.add(functionValue)
+            }
+
+        }
+        return functionDTOList.toList()
+    }
     //triggers a function 200 ok (null)=>500 Internal Server Error
 
     //TODO: Docs
