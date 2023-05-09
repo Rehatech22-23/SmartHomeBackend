@@ -249,6 +249,14 @@ class BackendController @Autowired constructor(
                         outputValue = item.state,
                     ).build()
                 }
+                catch (ex: NullPointerException)
+                {
+                    return FunctionDTO.Builder(
+                        functionName = deviceMethod.label,
+                        functionId = deviceMethod.id!!,
+                        outputValue = item.state,
+                    ).build()
+                }
             }
 
             FunctionType.Player -> return FunctionDTO.Builder(
