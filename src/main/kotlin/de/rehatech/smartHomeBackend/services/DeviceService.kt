@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
 import org.springframework.stereotype.Service
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A Service class handling the business logic of devices
@@ -158,6 +160,34 @@ class DeviceService @Autowired constructor(
 
     }
 
+    fun getDeviceList():List<DeviceDTO>
+    {
+        val listOH = openHabDeviceRepository.findAll().toList()
+        val listHM = homeeDeviceRepository.findAll().toList()
+        val listDevices = mutableListOf<DeviceDTO>()
+        for (oh in listOH)
+        {
+            var arrayList: ArrayList<Long> = arrayListOf()
+            for (devicemethodeID in oh.deviceMethodsIDS)
+            {
+                arrayList.add(devicemethodeID.id!!)
+            }
+            listDevices.add(DeviceDTO(deviceName = oh.name, deviceId = oh.getOpenHabID() , functionIds = arrayList))
+        }
+        for (hm in listHM)
+        {
+            var arrayList: ArrayList<Long> = arrayListOf()
+            for (devicemethodeID in hm.deviceMethodsIDS)
+            {
+                arrayList.add(devicemethodeID.id!!)
+            }
+            listDevices.add(DeviceDTO(deviceName = hm.name, deviceId = hm.getHomeeID() , functionIds = arrayList))
+        }
+
+
+
+        return listDevices.toList()
+    }
 
     /**
      * @return returns a list of all deviceIds as List of DeviceIds (Strings)

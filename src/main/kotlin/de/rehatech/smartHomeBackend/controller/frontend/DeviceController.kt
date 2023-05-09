@@ -26,7 +26,8 @@ class DeviceController @Autowired constructor(
     private val log: Logger = LoggerFactory.getLogger(DeviceController::class.java)
 
     @GetMapping("/list")
-    fun getDeviceIdList(): List<String> = deviceService.getDeviceIdList()
+    fun getDeviceIdList(): List<DeviceDTO> = deviceService.getDeviceList()
+
 
     @GetMapping
     fun getDevice(@RequestParam deviceId: String): DeviceDTO {
