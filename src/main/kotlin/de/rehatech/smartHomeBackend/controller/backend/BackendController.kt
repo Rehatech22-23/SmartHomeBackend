@@ -256,7 +256,7 @@ class BackendController @Autowired constructor(
             FunctionType.Player -> return FunctionDTO.Builder(
                 functionName = deviceMethod.label,
                 functionId = deviceMethod.id!!,
-                outputValue = item.state
+                isPlayer = true,
             ).build()
 
             FunctionType.Rollershutter -> {
