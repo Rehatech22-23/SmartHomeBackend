@@ -116,7 +116,6 @@ class BackendController @Autowired constructor(
                     functionName = deviceMethod.label,
                     functionId = deviceMethod.id!!,
                     onOff = on,
-                    outputValue = attribute.state.toString()
                 ).build()
             }
 
@@ -124,7 +123,6 @@ class BackendController @Autowired constructor(
                 FunctionDTO.Builder(
                     functionName = deviceMethod.label,
                     functionId = deviceMethod.id!!,
-                    outputValue = attribute.state.toString(),
                     rangeDTO = RangeDTO(
                         attribute.minimum.toDouble(), attribute.maximum.toDouble(), attribute.state.toDouble()
                     )
@@ -135,7 +133,6 @@ class BackendController @Autowired constructor(
                 FunctionDTO.Builder(
                     functionName = deviceMethod.label,
                     functionId = deviceMethod.id!!,
-                    outputValue = attribute.state.toString(),
                     rangeDTO = RangeDTO(
                         attribute.minimum.toDouble(), attribute.maximum.toDouble(), attribute.state.toDouble()
                     )
@@ -166,7 +163,6 @@ class BackendController @Autowired constructor(
                     functionName = deviceMethod.label,
                     functionId = deviceMethod.id!!,
                     onOff = on,
-                    outputValue = item.state
                 ).build()
             }
             // ToDo return null durch die richtige umwandkung ersetzen
@@ -192,7 +188,6 @@ class BackendController @Autowired constructor(
                     return FunctionDTO.Builder(
                         functionName = deviceMethod.label,
                         functionId = deviceMethod.id!!,
-                        outputValue = item.state,
                         rangeDTO = RangeDTO(
                             item.stateDescription.minimum,
                             item.stateDescription.maximum,
@@ -233,7 +228,6 @@ class BackendController @Autowired constructor(
                     return FunctionDTO.Builder(
                         functionName = deviceMethod.label,
                         functionId = deviceMethod.id!!,
-                        outputValue = item.state,
                         rangeDTO = RangeDTO(
                             item.stateDescription.minimum,
                             item.stateDescription.maximum,
@@ -278,7 +272,6 @@ class BackendController @Autowired constructor(
                     return FunctionDTO.Builder(
                         functionName = deviceMethod.label,
                         functionId = deviceMethod.id!!,
-                        outputValue = item.state,
                         rangeDTO = RangeDTO(
                             item.stateDescription.minimum,
                             item.stateDescription.maximum,
