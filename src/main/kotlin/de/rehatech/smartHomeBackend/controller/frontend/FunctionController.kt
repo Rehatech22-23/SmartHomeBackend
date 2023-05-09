@@ -24,19 +24,10 @@ class FunctionController @Autowired constructor(val functionService: FunctionSer
         @GetMapping
         fun functionByFunctionId(@RequestParam functionId: Long): FunctionDTO? {
             try {
-                    return functionService.getFunction(functionId)
-            } catch (ex: NullPointerException){
-                log.error("Parameter is null")
-                throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.localizedMessage, ex)
-            } catch (ex: IllegalArgumentException){
-                throw ResponseStatusException(HttpStatus.NO_CONTENT, ex.localizedMessage, ex)
-            } catch (ex: NoSuchMethodError){
-                log.error("There is no Homee Device which has this Functiontype")
-                throw ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, ex.localizedMessage, ex)
-            } catch (ex: NoSuchElementException) {
+                return functionService.getFunction(functionId)
+            }catch (ex: NullPointerException) {
                 log.error("Function with id: $functionId does not  exist in Database")
                 throw ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, ex.localizedMessage, ex)
-
             }
         }
 
@@ -48,7 +39,14 @@ class FunctionController @Autowired constructor(val functionService: FunctionSer
                 } catch (ex: NullPointerException){
                     log.error("Funktion with id: $functionId was not  trigger successfully")
                     throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.localizedMessage, ex)
+                } catch (ex: IllegalArgumentException){
+                    throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.localizedMessage, ex)
+                } catch (ex: NoSuchElementException) {
+                    log.error("Function with id: $functionId does not  exist in Database")
+                    throw ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, ex.localizedMessage, ex)
                 }
+
+
         }
 
         @GetMapping("/list")
