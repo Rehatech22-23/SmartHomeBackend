@@ -41,6 +41,17 @@ class RoutineService(
         return ResponseEntity(ids, null, HttpStatus.OK)
     }
 
+    fun getAllRoutines(): ResponseEntity<List<String>>
+    {
+        val routineList = routineRepository.findAll().toList()
+        val routineListString = mutableListOf<String>()
+        for (routine in routineList)
+        {
+            routineListString.add(Json.encodeToString(RoutineMapper.mapToDTO(routine)))
+        }
+        return ResponseEntity(routineListString, null, HttpStatus.OK)
+    }
+
     /**
      * Finds the Routine referenced by the parameter
      * @param routineId referencing the Routine Object stored in the DataBase
