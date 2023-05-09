@@ -24,7 +24,7 @@ class RoutineController(@field:Autowired private val routineService: RoutineServ
      * @return a ResponseEntity<List<Long>> containing a list of all Routine Ids saved in the Database
      */
     @GetMapping("/list")
-    fun getAllRoutineIds(): ResponseEntity<List<String>> {
+    fun getAllRoutineIds(): ResponseEntity<List<RoutineDTO>> {
         return routineService.getAllRoutines()
     }
 

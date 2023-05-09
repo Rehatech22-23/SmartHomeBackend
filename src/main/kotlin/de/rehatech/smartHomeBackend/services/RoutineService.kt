@@ -41,13 +41,13 @@ class RoutineService(
         return ResponseEntity(ids, null, HttpStatus.OK)
     }
 
-    fun getAllRoutines(): ResponseEntity<List<String>>
+    fun getAllRoutines(): ResponseEntity<List<RoutineDTO>>
     {
         val routineList = routineRepository.findAll().toList()
-        val routineListString = mutableListOf<String>()
+        val routineListString = mutableListOf<RoutineDTO>()
         for (routine in routineList)
         {
-            routineListString.add(Json.encodeToString(RoutineMapper.mapToDTO(routine)))
+            routineListString.add(RoutineMapper.mapToDTO(routine))
         }
         return ResponseEntity(routineListString, null, HttpStatus.OK)
     }
