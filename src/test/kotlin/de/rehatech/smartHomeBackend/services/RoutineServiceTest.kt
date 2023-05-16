@@ -78,12 +78,12 @@ class RoutineServiceTest {
     }
 
     /**
-     * This method tests the method getAllRoutineIds from the RoutineService
+     * This method tests the method getAllRoutines from the RoutineService
      */
     @Test
-    fun testGetAllRoutineIds() {
+    fun testGetAllRoutines() {
         //Call the method to test
-        val result: ResponseEntity<List<Long>> = routineService.getAllRoutineIds()
+        val result: ResponseEntity<List<RoutineDTO>> = routineService.getAllRoutines()
         //Check the returned value
         assertTrue(result.hasBody())
         assertEquals(0, result.body!!.size)
@@ -153,9 +153,7 @@ class RoutineServiceTest {
     @Test
     fun testDeleteRoutine() {
         val routine = createMockRoutine()
-        val result: ResponseEntity<String>
-        val ids = routineService.getAllRoutineIds()
-        result = routineService.deleteRoutine(routine.id!!)
+        val result: ResponseEntity<String> = routineService.deleteRoutine(routine.id!!)
 
         //Check the returned value
         assertEquals("Entity deleted successfully", result.body)

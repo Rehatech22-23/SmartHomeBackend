@@ -28,7 +28,7 @@ class RoutineControllerTest(
 
     @BeforeEach
     fun deleteAllExistingRoutinesFromTestDB() {
-        routineRepository.deleteAll();
+        routineRepository.deleteAll()
     }
 
     fun createMockRoutine(): Routine {
@@ -49,15 +49,15 @@ class RoutineControllerTest(
     }
 
     /**
-     * Tests the getAllRoutineIds method from the Routine Controller
+     * Tests the getAllRoutines method from the Routine Controller
      */
     @Test
-    fun testGetAllRoutineIds() {
+    fun testGetAllRoutines() {
         val controller = RoutineController(mockedService)
 
         createMockRoutine()
 
-        val response = controller.getAllRoutineIds()
+        val response = controller.getAllRoutines()
         assertNotNull(response.body!!.isNotEmpty())
     }
 

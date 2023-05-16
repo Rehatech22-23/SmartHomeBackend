@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.*
 class RoutineController(@field:Autowired private val routineService: RoutineService) {
 
     /**
-     * Calls the getAllRoutineIds function in the RoutineService
-     * @return a ResponseEntity<List<Long>> containing a list of all Routine Ids saved in the Database
+     * Calls the getAllRoutines function in the RoutineService
+     * @return a ResponseEntity<List<RoutineDTO>> containing a list of all Routine Ids saved in the Database
      */
     @GetMapping("/list")
-    fun getAllRoutineIds(): ResponseEntity<List<RoutineDTO>> {
+    fun getAllRoutines(): ResponseEntity<List<RoutineDTO>> {
         return routineService.getAllRoutines()
     }
 

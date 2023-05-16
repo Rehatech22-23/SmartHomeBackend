@@ -29,18 +29,9 @@ class RoutineService(
     private val log: Logger = LoggerFactory.getLogger(RoutineService::class.java)
 
     /**
-     * Finds all Routine Objects stored in the Database and filters out their Ids
-     * @returns returns a ResponseEntity containing a List with Ids of all Routine Ids
+     * Finds all Routine Objects stored in the Database and returns them
+     * @returns returns a ResponseEntity containing a List of all Routines
      */
-    fun getAllRoutineIds(): ResponseEntity<List<Long>> {
-        val ids: ArrayList<Long> = ArrayList()
-        routineRepository.findAll().iterator().forEachRemaining {
-            ids.add(it.id!!)
-        }
-        log.info("All Routines are retrieved from DB")
-        return ResponseEntity(ids, null, HttpStatus.OK)
-    }
-
     fun getAllRoutines(): ResponseEntity<List<RoutineDTO>>
     {
         val routineList = routineRepository.findAll().toList()
