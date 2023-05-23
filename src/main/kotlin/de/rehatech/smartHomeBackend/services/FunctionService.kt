@@ -313,31 +313,35 @@ class FunctionService @Autowired constructor(
      * @param attribute A attribute from a node
      * @return
      */
-    fun transformAttribut(attribute: attributes): DeviceMethods?
-    {
-        val homeeNode = homeeDeviceRepository.findHomeeByHomeeID(attribute.node_id)
-        val functType = functionTypeService.functionsTypeHomee(attribute)
-        if (functType != null) {
-        // decide a Name for the deviceMethode
-            val label = when (functType) {
-                FunctionType.Switch -> "OnOff"
-                FunctionType.Dimmer -> "Dimmer"
-                FunctionType.Color -> when(attribute.type)
-                {
-                    23 -> "Color"
-                    42 -> "ColorTemperature"
-                    124 -> "ColorMode"
-                    else -> {"error"}
+    fun transformAttribut(attribute: attributes): DeviceMethods? {
+        if (homeeDeviceRepository.existsByHomeeID(attribute.node_id)) {
+            val homeeNode = homeeDeviceRepository.findHomeeByHomeeID(attribute.node_id)
+            val functType = functionTypeService.functionsTypeHomee(attribute)
+            if (functType != null) {
+                // decide a Name for the deviceMethode
+                val label = when (functType) {
+                    FunctionType.Switch -> "OnOff"
+                    FunctionType.Dimmer -> "Dimmer"
+                    FunctionType.Color -> when (attribute.type) {
+                        23 -> "Color"
+                        42 -> "ColorTemperature"
+                        124 -> "ColorMode"
+                        else -> {
+                            "error"
+                        }
+                    }
+
+                    else -> "error"
                 }
-                else -> "error"
+                return DeviceMethods(
+                    label = label,
+                    name = attribute.name,
+                    homeeattrID = attribute.id,
+                    type = functType,
+                    deviceHomee = homeeNode
+                )
             }
-             return DeviceMethods(
-                label = label,
-                name = attribute.name,
-                homeeattrID = attribute.id,
-                type = functType,
-                deviceHomee = homeeNode
-            )
+
         }
         return null
     }

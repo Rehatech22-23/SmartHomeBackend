@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository
 interface HomeeDeviceRepository : CrudRepository<HomeeDevice, Long> {
 
     fun findHomeeByHomeeID (homeeID: Int): HomeeDevice
+    fun existsByHomeeID(homeeID: Int):Boolean
 }
