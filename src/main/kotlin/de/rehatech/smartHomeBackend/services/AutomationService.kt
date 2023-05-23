@@ -11,14 +11,15 @@ import de.rehatech.smartHomeBackend.entities.TriggerEventByDevice
 import de.rehatech.smartHomeBackend.enums.FunctionType
 import de.rehatech.smartHomeBackend.repositories.*
 import de.rehatech2223.datamodel.FunctionDTO
-import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.stereotype.Service
-import java.text.SimpleDateFormat
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.context.annotation.Profile
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.scheduling.annotation.Scheduled
+import org.springframework.stereotype.Service
+import java.text.SimpleDateFormat
 import java.time.LocalTime
 import java.util.*
 
@@ -339,6 +340,8 @@ class AutomationService  @Autowired constructor(
                         }
                         if (!found) {
                             log.warn("checkDeleteOpenHabMethods: Delete OpenHab Methode: ${savedMethode.name}")
+                            savedMethode.deviceOpenHab = null
+                            deviceMethodsRepository.save(savedMethode)
                             deviceMethodsRepository.delete(savedMethode)
 
                         }
@@ -389,6 +392,8 @@ class AutomationService  @Autowired constructor(
                         }
                         if (!found) {
                             log.warn("checkDeleteHomeeMethods: Delete Homee Methode: ${savedMethod.name}")
+                            savedMethod.deviceHomee = null
+                            deviceMethodsRepository.save(savedMethod)
                             deviceMethodsRepository.delete(savedMethod)
 
                         }
@@ -408,6 +413,7 @@ class AutomationService  @Autowired constructor(
      */
     private fun checkDeleteHomee()
     {
+
         val allHomeeNodes:ArrayList<nodes>? = homeeController.getNodes()
         if (allHomeeNodes != null) {
             if (allHomeeNodes.isNotEmpty()) {

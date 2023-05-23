@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.EnableScheduling
 @EntityScan("de.rehatech.smartHomeBackend.entities")
 @ConfigurationPropertiesScan("de.rehatech.smartHomeBackend.config")
 @EnableJpaRepositories("de.rehatech.smartHomeBackend.repositories")
-@EnableScheduling
 class SmartHomeBackendApplication
 
 fun main(args: Array<String>) {
