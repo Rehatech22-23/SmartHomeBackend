@@ -137,7 +137,7 @@ class DeviceService @Autowired constructor(
     {
 
         val devicenames = environment.getProperty("homee.device")!!.split('|')
-        var nodeName = ""
+        var nodeName = "Test"
         for (name in devicenames)
         {
             if(name.contains(node.name))
