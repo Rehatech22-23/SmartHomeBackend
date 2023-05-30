@@ -119,7 +119,7 @@ class AutomationService  @Autowired constructor(
                         FunctionType.Color -> triggerfunc =
                             rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!!)
 
-                        FunctionType.Contact -> triggerfunc = onOffRoutine(triggerEventByDevice, statusDevice!!)
+                        FunctionType.Contact -> triggerfunc = triggerEventByDevice.function.outputValue == statusDevice!!.outputValue
                         FunctionType.Dimmer -> triggerfunc =
                             rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!!)
 
