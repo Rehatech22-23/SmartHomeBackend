@@ -79,7 +79,7 @@ class DeviceServiceTest {
 
         assert((ohList.size+hmList.size)==result.size)
 
-        verify(openHabDeviceRepository, times(2)).findAll()
+        verify(openHabDeviceRepository, times(1)).findAll()
         verify(homeeDeviceRepository, times(1)).findAll()
     }
 
