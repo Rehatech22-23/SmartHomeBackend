@@ -114,7 +114,7 @@ class FunctionService @Autowired constructor(
             log.error("DeviceId: $deviceId is illegal")
             throw IllegalArgumentException()
         }else if(command == "-1"){
-            throw NoSuchMethodError() //falsches Homeeattr übergeben (eine nummer die keinen sinn ergibt)
+            throw NoSuchElementException() //falsches Homeeattr übergeben (eine nummer die keinen sinn ergibt)
         }
 
         backendController.sendCommand(deviceId, deviceMethodsRepository.findById(functionId).get(), command)
