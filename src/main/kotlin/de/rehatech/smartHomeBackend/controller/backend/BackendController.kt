@@ -72,7 +72,14 @@ class BackendController @Autowired constructor(
             if (reload && (deviceMethods.type != FunctionType.Datetime||deviceMethods.type != FunctionType.Group) )
             {
                 openHabController.sendCommand(deviceMethods.name, "REFRESH")
-                Thread.sleep(120L)
+                if (deviceMethods.type == FunctionType.StringType){
+                    Thread.sleep(6200L)
+                }
+                else
+                {
+                    Thread.sleep(1000L)
+                }
+
             }
             val item = openHabController.getItemByName(deviceMethods.name) ?: return null
 
