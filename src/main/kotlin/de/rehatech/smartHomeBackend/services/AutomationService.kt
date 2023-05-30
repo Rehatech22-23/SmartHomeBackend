@@ -123,13 +123,14 @@ class AutomationService  @Autowired constructor(
                         FunctionType.Dimmer -> triggerfunc =
                             rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!!)
 
-                        FunctionType.Player -> triggerfunc = false
+                        FunctionType.Player -> triggerfunc = playerState(triggerEventByDevice, statusDevice!!)
                         FunctionType.Rollershutter -> triggerfunc =
                             rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!!)
 
                         FunctionType.Number -> triggerfunc =
                             rangeRoutine(routine.comparisonType!!, triggerEventByDevice, statusDevice!!)
 
+                        FunctionType.StringType -> triggerfunc = triggerEventByDevice.function.outputValue == statusDevice!!.outputValue
                         else -> {
                             log.error("Automation: Eine fehlerhafte Routine ")
                         }
@@ -199,6 +200,25 @@ class AutomationService  @Autowired constructor(
             }
         }
         return false
+    }
+
+    private fun playerState(triggerEventByDevice: TriggerEventByDevice, status: FunctionDTO):Boolean
+    {
+        return playPause(triggerEventByDevice.function.outputValue!!.toFloat()) == status.outputValue
+    }
+
+    private fun playPause(body: Float): String{
+        val command = when (body){
+            0F -> "PLAY"
+            1F -> "NEXT"
+            2F -> "PREVIOUS"
+            3F -> "PAUSE"
+            4F -> "REWIND"
+            5F -> "FASTFORWARD"
+            6F -> "REFRESH"
+            else -> "invalidBody"
+        }
+        return command
     }
 
     /**
