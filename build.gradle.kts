@@ -1,12 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "3.0.0"
+	id("org.springframework.boot") version "3.0.8"
 	id("io.spring.dependency-management") version "1.1.0"
-	kotlin("jvm") version "1.7.21"
-	kotlin("plugin.spring") version "1.7.21"
-	kotlin("plugin.jpa") version "1.7.21"
-	kotlin("plugin.allopen") version "1.7.21"
+	kotlin("jvm") version "1.8.22"
+	kotlin("plugin.spring") version "1.8.22"
+	kotlin("plugin.jpa") version "1.8.22"
+	kotlin("plugin.allopen") version "1.8.22"
 
 
 	id("org.hibernate.orm") version "6.1.6.Final"
@@ -21,7 +21,7 @@ allOpen {
 
 
 group = "de.rehatech"
-version = "0.0.1"
+version = "1.0.0"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 allprojects {
@@ -40,22 +40,21 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 	// https://mvnrepository.com/artifact/com.google.code.gson/gson
-	implementation("com.google.code.gson:gson:2.10")
+	implementation("com.google.code.gson:gson:2.10.1")
 	annotationProcessor ("org.springframework.boot:spring-boot-configuration-processor")
-	implementation("com.squareup.okhttp3:okhttp:4.10.0")
+	implementation("com.squareup.okhttp3:okhttp:4.11.0")
 	implementation("org.javassist:javassist:3.29.2-GA")
 
 	implementation("javax.xml.bind:jaxb-api:2.3.1")
 	implementation("org.postgresql:postgresql:42.5.4")
-	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation ("org.mockito:mockito-inline:2.13.0")
+	testImplementation ("org.mockito:mockito-inline:5.2.0")
 
 	// Füge eigene Dritt Library hinzu. Weitere Infos unter https://developerlife.com/2021/02/06/publish-kotlin-library-as-gradle-dep/
-	implementation("com.github.Rehatech22-23:smartHomeSharedLibrary:0.2.11")
-	implementation("com.github.Rehatech22-23:homeekt:0.5.2")
+	implementation("com.github.Rehatech22-23:smartHomeSharedLibrary:1.0")
+	implementation("com.github.Rehatech22-23:homeekt:1.0")
 
 }
 

@@ -9,6 +9,6 @@ EXPOSE 9000
 
 RUN mkdir /app
 
-COPY --from=build /home/gradle/src/build/libs/smartHomeBackend-0.0.1.jar /app/spring-boot-application.jar
+COPY --from=build /home/gradle/src/build/libs/smartHomeBackend-1.0.0.jar /app/spring-boot-application.jar
 
 ENTRYPOINT ["java", "-jar","/app/spring-boot-application.jar"]
