@@ -65,6 +65,11 @@ class FunctionService @Autowired constructor(
         return funcState
     }
 
+    /**
+     * Returns a list of all functionDTOs
+     *
+     * @return List<FunctionDTO> list of all functionDTOs
+     */
     fun getListFunctionDTO():List<FunctionDTO>
     {
         val deviceMethodeList = deviceMethodsRepository.findAll().toList()
@@ -122,6 +127,12 @@ class FunctionService @Autowired constructor(
         backendController.sendCommand(deviceId, deviceMethodsRepository.findById(functionId).get(), command)
     }
 
+    /**
+     * converts a float parameter into OPEN or CLOSED matching the requirements of openHab
+     *
+     * @param body that need to be evaluated
+     * @return String if the given float corresponds to OPEN or CLOSED or invalidBody
+     */
     private fun openClosed(body: Float): String {
         if (body == 1F) {
             return "OPEN"
@@ -131,6 +142,12 @@ class FunctionService @Autowired constructor(
         return "invalidBody"       //falscher wert im body
     }//16264192.0 red
 
+    /**
+     * Checks if the given float corresponds to valid percent
+     *
+     * @param body a float that gets checked if its in range of 0 to 100
+     * @return String to String converted float if its valid or invalidBody
+     */
     private fun percent(body: Float): String {
         if (body in 0F..100F) {
             return body.toString()
@@ -138,6 +155,12 @@ class FunctionService @Autowired constructor(
         return "invalidBody"       //falscher wert im body
     }
 
+    /**
+     * converts a float parameter into ON or OFF matching the requirements given for the functions
+     *
+     * @param body that need to be evaluated
+     * @return String if the given float corresponds to ON or OFF or invalidBody
+     */
     private fun onOff(body: Float): String {
         if (body == 1F) {
             return "ON"
@@ -147,6 +170,12 @@ class FunctionService @Autowired constructor(
         return "invalidBody"       //falscher wert im body
     }
 
+    /**
+     * converts a float parameter into the matching string to correspond to a player-type function
+     *
+     * @param body that need to be evaluated
+     * @return String that corresponds to the requested player-function
+     */
     private fun playPause(body: Float): String{
         val command = when (body){
             0F -> "PLAY"
@@ -158,15 +187,16 @@ class FunctionService @Autowired constructor(
             6F -> "REFRESH"
             else -> "invalidBody"
         }
-        /*if(body == 1F){
-            return "PLAY"
-        }else if(body == 0F){
-            return "PAUSE"
-        }*/
         return command
     }
 
-    private fun airPurifierState(body: Float): String{
+    /**
+     * converts the body floats to the given air-purifier states
+     *
+     * @param body that need to be evaluated
+     * @return String that corresponds to the air-purifier-state or invalidBody
+     */
+    private fun airPurifierState(body: Float): String {
         val command: String = when(body){
             0F -> "s"
             1F -> "1"
@@ -220,7 +250,12 @@ class FunctionService @Autowired constructor(
         return command
     }
 
-
+    /**
+     * converts a float parameter into ON or OFF matching the requirements given for the functions
+     *
+     * @param body that need to be evaluated
+     * @return String if the given float corresponds to ON or OFF or invalidBody
+     */
     private fun checkValueOnOff(body: Float): String {
         if (body == 0F || body == 1F) { //0: an, 1: aus
             return body.toString()
@@ -228,6 +263,12 @@ class FunctionService @Autowired constructor(
         return "invalidBody"
     }
 
+    /**
+     * Checks if the given float corresponds to valid percent
+     *
+     * @param body a float that gets checked if its in range of 0 to 100
+     * @return String to String converted float if its valid or invalidBody
+     */
     private fun checkValueDimmingLevel(body: Float): String {
         if (body in 0.0..100.0) { //Prozent (0: aus, 100: an)
             return body.toString()
@@ -235,6 +276,12 @@ class FunctionService @Autowired constructor(
         return "invalidBody"
     }
 
+    /**
+     * Checks if the given float corresponds to valid color strings
+     *
+     * @param body a float that gets checked if its in range of 0 to 16777215
+     * @return String to String converted float if its valid or invalidBody
+     */
     private fun checkValueColor(body: Float): String {
         if (body in 0F..16777215F) { //HEX Farbcode als Dezimal
             return body.toString()
