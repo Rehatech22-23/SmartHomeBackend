@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.dao.EmptyResultDataAccessException
-import java.util.*
 import kotlin.NoSuchElementException
 
 
@@ -43,13 +42,7 @@ class HomeeDeviceRepositoryTest {
         assertEquals(persistedDevice.name, result.name)
     }
 
-    /**
-     * save should throw NullPointerException when saving a null HomeeDevice
-     */
-    @Test
-    fun saveNull() {
-        assertThrows(NullPointerException::class.java) { sut.save(null!!) }
-    }
+
 
     /**
      * findById should throw NoSuchElementException when trying to retrieve a non-existing HomeeDevice by id

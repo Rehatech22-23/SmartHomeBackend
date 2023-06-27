@@ -49,11 +49,4 @@ class RoutineRepositoryTest {
         assertThrows(NoSuchElementException::class.java) { routineRepository.findById(persistedRoutine.id!!).orElseThrow() }
     }
 
-    /**
-     * save should throw NullPointerException when saving a null Routine
-     */
-    @Test
-    fun save() {
-        assertThrows(NullPointerException::class.java) { routineRepository.save(null!!) }
-    }
 }

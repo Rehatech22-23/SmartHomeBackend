@@ -43,10 +43,6 @@ class FunctionServiceTest {
         MockitoAnnotations.initMocks(this)
     }
 
-    @Test
-    fun testGetFunction() {
-        // TODO: Implement this test
-    }
 
     @Test
     fun testTriggerFuncValidDeviceIdOH() {

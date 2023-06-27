@@ -55,11 +55,5 @@ class TriggerTimeRepositoryTest {
         assertThrows(NoSuchElementException::class.java) { triggerTimeRepository.findById(persistedTriggerTime.id!!).orElseThrow() }
     }
 
-    /**
-     * save should throw NullPointerException when saving a null TriggerTime
-     */
-    @Test
-    fun save() {
-        assertThrows(NullPointerException::class.java) { triggerTimeRepository.save(null!!) }
-    }
+
 }
