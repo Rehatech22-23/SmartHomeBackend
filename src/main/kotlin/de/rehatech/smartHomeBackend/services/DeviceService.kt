@@ -228,7 +228,11 @@ class DeviceService @Autowired constructor(
 
     }
 
-    //Hilfsmethode
+    /**
+     *  Get from OpenHab Id a DeviceDTO
+     * @param id
+     * @return DeviceDTO
+     */
     private fun getDeviceOH(id: String): DeviceDTO? {
         var oh: OpenHabDevice? = null
         try{
@@ -251,7 +255,11 @@ class DeviceService @Autowired constructor(
     }
 
 
-    //Hilfsmethode
+    /**
+     *  Get from Homee Id a DeviceDTO
+     * @param id
+     * @return DeviceDTO
+     */
     private fun getDeviceHM(id: String): DeviceDTO? {
         var hm: HomeeDevice? = null
         try{
