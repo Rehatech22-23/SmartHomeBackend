@@ -14,8 +14,6 @@ import de.rehatech2223.datamodel.FunctionDTO
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
-import org.springframework.context.annotation.Profile
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
@@ -202,11 +200,17 @@ class AutomationService  @Autowired constructor(
         return false
     }
 
+    // Hilfsmethode
     private fun playerState(triggerEventByDevice: TriggerEventByDevice, status: FunctionDTO):Boolean
     {
         return playPause(triggerEventByDevice.function.outputValue!!.toFloat()) == status.outputValue
     }
 
+    /**
+     * Float to correkt Openhab Command
+     * @param body The float command
+     * @return Openhab Command
+     */
     private fun playPause(body: Float): String{
         val command = when (body){
             0F -> "PLAY"
@@ -266,6 +270,7 @@ class AutomationService  @Autowired constructor(
         val allOpenHabDevice = openHabController.getDevices()
         if(allOpenHabDevice != null)
         {
+            // Search new OpenHab Devices and update DB
             val allOpenHabDeviveList = allOpenHabDevice.toList()
             deviceService.updateDevicesOpenHab(allOpenHabDevice)
             for (device in allOpenHabDeviveList)
@@ -285,6 +290,7 @@ class AutomationService  @Autowired constructor(
             }
         }
         if(homeeController.updateNodes()) {
+            // Search new Homee Devices and update DB
             val allHomeeNodes = homeeController.getNodes()
             if (allHomeeNodes != null) {
                 val allNodesCopy = allHomeeNodes.toList()
@@ -443,7 +449,7 @@ class AutomationService  @Autowired constructor(
                 for (node in allHomeeNodes) {
                     allHomeeTransformDevice.add(deviceService.transformNode(node))
                 }
-
+                // Search for exist Device in the DB
                 val allSavedHomeeDevice = homeeDeviceRepository.findAll().toList()
                 if (allSavedHomeeDevice.isNotEmpty()) {
                     for (savedDevice in allSavedHomeeDevice) {
@@ -456,6 +462,7 @@ class AutomationService  @Autowired constructor(
                                 }
                             }
                         }
+                        // Delete not existes Device
                         if (!found) {
                             log.warn("checkDeleteHomee: Delete a Homee Device: ${savedDevice.name}")
                             deviceMethodsRepository.deleteAll(savedDevice.deviceMethodsIDS.toList())
@@ -483,6 +490,7 @@ class AutomationService  @Autowired constructor(
             for (thing in allOpenHabDevice) {
                 allOpenHabTransformDevice.add(deviceService.transformThing(thing))
             }
+            // Search for exist Device in the DB
             val allSavedOpenHabDevice = openHabDeviceRepository.findAll().toList()
             if (allSavedOpenHabDevice.isNotEmpty()) {
                 for (deviceSaved in allSavedOpenHabDevice) {
@@ -494,6 +502,7 @@ class AutomationService  @Autowired constructor(
                             }
                         }
                     }
+                    // Delete not existes Device
                     if (!found) {
                         log.warn("checkDeleteOpenHab: Delete a OpenHab Device: ${deviceSaved.name}")
                         deviceMethodsRepository.deleteAll(deviceSaved.deviceMethodsIDS.toList())
