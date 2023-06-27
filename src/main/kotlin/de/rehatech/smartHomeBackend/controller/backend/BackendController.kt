@@ -172,7 +172,6 @@ class BackendController @Autowired constructor(
                     onOff = on,
                 ).build()
             }
-            // ToDo return null durch die richtige umwandkung ersetzen
             FunctionType.Color -> return null
             FunctionType.Call -> return null
             FunctionType.Contact -> return FunctionDTO.Builder(

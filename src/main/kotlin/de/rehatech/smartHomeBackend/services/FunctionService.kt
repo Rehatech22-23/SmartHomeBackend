@@ -243,11 +243,11 @@ class FunctionService @Autowired constructor(
     }
 
 
-    //TODO: Docs
     /**
+     *  Saves a function Item into the deviceMethodsRepository
      *
-     * @param uid
-     * @param item
+     * @param uid uid of the OpenHabDevice
+     * @param item deviceMethod Item
      */
     fun saveFunctionOpenHab(uid: String, item: Item) {
         val openhab = openHabDeviceRepository.findOpenHabByUid(uid)

@@ -586,13 +586,4 @@ class FunctionServiceTest {
         }
         //Mockito.verify(backendController, VerificationModeFactory.atLeastOnce()).sendCommand(validDeviceIdOH, mockDeviceMethod, "invalidBody")
     }
-
-    @Test
-    fun testSaveFunctionOpenHab() {
-        // TODO: Implement this test
-    }
-    @Test
-    fun testSaveFunctionHomee() {
-        // TODO: Implement this test
-    }
 }

@@ -66,9 +66,9 @@ class DeviceServiceTest {
 
     @Test
     fun getDeviceIdListTest() {
-        val ohList: List<OpenHabDevice> = listOf(OpenHabDevice(1,"name1", "uid1"), OpenHabDevice(2, "name2", "uid2"))
+        val ohList: List<OpenHabDevice> = listOf(OpenHabDevice(1, "name1", "uid1"), OpenHabDevice(2, "name2", "uid2"))
         Mockito.`when`(openHabDeviceRepository.findAll().toList()).thenReturn(ohList)
-        val hmList: List<HomeeDevice> = listOf(HomeeDevice(1,"name1", 2), HomeeDevice(2, "name2", 4))
+        val hmList: List<HomeeDevice> = listOf(HomeeDevice(1, "name1", 2), HomeeDevice(2, "name2", 4))
         Mockito.`when`(homeeDeviceRepository.findAll().toList()).thenReturn(hmList)
 
         val result = deviceService.getDeviceIdList()
@@ -77,40 +77,9 @@ class DeviceServiceTest {
         assertEquals("HM:1", result[2])
         assertEquals("HM:2", result[3])
 
-        assert((ohList.size+hmList.size)==result.size)
+        assert((ohList.size + hmList.size) == result.size)
 
         verify(openHabDeviceRepository, times(1)).findAll()
         verify(homeeDeviceRepository, times(1)).findAll()
-    }
-
-    @Test //TODO
-    fun getDevice() {
-/*
-        Mockito.`when`(getDeviceOH(tmp.get(1))).thenReturn(oh)
-        Mockito.`when`(deviceId.split(":")).thenReturn(listOf("OH","1"))
-        verify(deviceService, times(1)).getDeviceOH("OH:1")
-*/
-
-    }
-
-
-
-    @Test //TODO
-    fun getDeviceOH() {
-    /*
-        val oh = OpenHab(1,"name1","uid1")
-        Mockito.`when`(openHabDeviceRepository.findById(id.toLong()).get()).thenReturn(oh)
-
-        val result = deviceService.getDevice("OH:1")
-
-
-        Mockito.`when`(openHabDeviceRepository.findById(id.toLong()).get()).thenReturn(null)
-*/
-
-    }
-
-    @Test //TODO
-    fun getDeviceHM() {
-
     }
 }
