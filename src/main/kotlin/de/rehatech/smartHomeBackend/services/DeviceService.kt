@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
 import org.springframework.stereotype.Service
-import java.util.*
 import kotlin.collections.ArrayList
 
 /**
@@ -34,8 +33,8 @@ class DeviceService @Autowired constructor(
     private val log: Logger = LoggerFactory.getLogger(DeviceService::class.java)
 
     /**
-     * //TODO: Docs
-     * @param devices
+     * Update OpenHab Device Information
+     * @param devices Arraylist Things
      */
     fun updateDevicesOpenHab(devices: ArrayList<Things>)
     {
@@ -83,8 +82,8 @@ class DeviceService @Autowired constructor(
 
 
     /**
-     * //TODO: Docs, refactor: nodes class -> Nodes class (classes start with Capital Letters)
-     * @param nodes
+     * Update Infos from the node
+     * @param nodes ArrayList
      */
     fun updateNodeHomee(nodes:ArrayList<nodes>)
     {
@@ -130,8 +129,9 @@ class DeviceService @Autowired constructor(
     }
 
     /**
-     * //TODO: Docs, refactor trangsformNodeAndSave -> transformNodeAndSave, nodes class -> Nodes class (classes start with Capital Letters)
+     * Transform a Node to HomeeDevice
      * @param node
+     * @return HomeeDevice Object
      */
     fun transformNode(node: nodes):HomeeDevice
     {
@@ -152,7 +152,9 @@ class DeviceService @Autowired constructor(
 
 
     /**
+     * Transform Thing in Openhab Devices
      * @param things
+     * @return OpenHabDevice
      */
     fun transformThing(things: Things):OpenHabDevice
     {
@@ -160,6 +162,10 @@ class DeviceService @Autowired constructor(
 
     }
 
+    /**
+     *  Get from the DB a list of all Devices
+     *  @return List of all Devices
+     */
     fun getDeviceList():List<DeviceDTO>
     {
         val listOH = openHabDeviceRepository.findAll().toList()
@@ -167,7 +173,7 @@ class DeviceService @Autowired constructor(
         val listDevices = mutableListOf<DeviceDTO>()
         for (oh in listOH)
         {
-            var arrayList: ArrayList<Long> = arrayListOf()
+            val arrayList: ArrayList<Long> = arrayListOf()
             for (devicemethodeID in oh.deviceMethodsIDS)
             {
                 arrayList.add(devicemethodeID.id!!)
@@ -176,7 +182,7 @@ class DeviceService @Autowired constructor(
         }
         for (hm in listHM)
         {
-            var arrayList: ArrayList<Long> = arrayListOf()
+            val arrayList: ArrayList<Long> = arrayListOf()
             for (devicemethodeID in hm.deviceMethodsIDS)
             {
                 arrayList.add(devicemethodeID.id!!)
@@ -224,46 +230,46 @@ class DeviceService @Autowired constructor(
 
     //Hilfsmethode
     private fun getDeviceOH(id: String): DeviceDTO? {
-        var OH: OpenHabDevice? = null
+        var oh: OpenHabDevice? = null
         try{
             val i = id.toLong()
-            val OHL = openHabDeviceRepository.findById(i)
-            OH = OHL.get()
+            val ohl = openHabDeviceRepository.findById(i)
+            oh = ohl.get()
         }catch(exception: NumberFormatException){
 
         }
 
-        if(OH == null){
+        if(oh == null){
             return null
         }
         val funcIds = ArrayList<Long>()
-        for (item in OH.deviceMethodsIDS){
+        for (item in oh.deviceMethodsIDS){
             item.id?.let { funcIds.add(it.toLong()) }
         }
 
-        return DeviceDTO(OH.name, OH.getOpenHabID(), funcIds)
+        return DeviceDTO(oh.name, oh.getOpenHabID(), funcIds)
     }
 
 
     //Hilfsmethode
     private fun getDeviceHM(id: String): DeviceDTO? {
-        var HM: HomeeDevice? = null
+        var hm: HomeeDevice? = null
         try{
             id.toLong()
-            HM = homeeDeviceRepository.findById(id.toLong()).get()
+            hm = homeeDeviceRepository.findById(id.toLong()).get()
         }catch(exception: NumberFormatException){
 
         }
 
-        if(HM == null){
+        if(hm == null){
             return null
         }
         val funcIds = ArrayList<Long>()
-        for (item in HM.deviceMethodsIDS){
+        for (item in hm.deviceMethodsIDS){
             item.id?.let { funcIds.add(it.toLong()) }
         }
 
-        return DeviceDTO(HM.name, HM.getHomeeID(), funcIds)
+        return DeviceDTO(hm.name, hm.getHomeeID(), funcIds)
     }
 
 
