@@ -36,11 +36,12 @@ class FunctionService @Autowired constructor(
 
 
 
-    //TODO: Docs
     /**
-     *
-     * @param functionId
-     * @return FunctionDTO
+     * Requests a FunctionDTO given its Id and returns it.
+     * FF
+     * @param functionId Id of the FunctionDTO that is requested
+     * @return FunctionDTO which matches the given functionId
+     * @throws NullPointerException if no Function was found
      */
     fun getFunction(functionId: Long): FunctionDTO {
 
@@ -90,13 +91,14 @@ class FunctionService @Autowired constructor(
     }
     //triggers a function 200 ok (null)=>500 Internal Server Error
 
-    //TODO: Docs
     /**
+     * TriggerFunc triggers a given function and sets its values according to the values given
+     * in the requestBody
      *
-     * @param deviceId
-     * @param functionId
-     * @param body
-     * @throws IllegalArgumentException when an illegal value is übergeben in the requestbody or the übergebene deviceId is wrong (does not start with "OH:" or "HM:")
+     * @param deviceId Id of the triggered function
+     * @param functionId Id of the triggered function
+     * @param body functionValue of type float that updates the requested state of the triggered function
+     * @throws IllegalArgumentException when an illegal value is given in the requestbody or the given deviceId is wrong (does not start with "OH:" or "HM:")
      * @throws NoSuchMethodError when a Homee device has a functionValue other than SWITCH, DIMMER or COLOR
      */
     fun triggerFunc(deviceId: String, functionId: Long, body: Float) {
